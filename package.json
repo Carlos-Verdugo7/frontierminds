@@ -1,6 +1,8 @@
 {
-  "name": "exam-p-trainer",
-  "version": "0.1.0",
+  "name": "frontierminds",
+  "version": "1.0.0",
+  "description": "AI-Powered Interactive Learning Platform by FrontierMinds LLC",
+  "author": "Carlos Verdugo <info@frontierminds.io>",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,8 +11,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "chart.js": "^4.5.1",
+    "framer-motion": "^12.27.5",
+    "lucide-react": "^0.562.0",
     "next": "16.1.4",
     "react": "19.2.3",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
