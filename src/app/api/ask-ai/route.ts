@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazily initialize OpenAI client to avoid build-time errors
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+  if (!openai && process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openai;
+}
 
 const SYSTEM_PROMPT = `You are an expert probability tutor helping students prepare for the Actuarial Exam P.
 
@@ -27,7 +35,8 @@ export async function POST(request: NextRequest) {
   try {
     const { messages, problemContext } = await request.json();
 
-    if (!process.env.OPENAI_API_KEY) {
+    const client = getOpenAI();
+    if (!client) {
       return NextResponse.json(
         { error: 'OpenAI API key not configured' },
         { status: 500 }
@@ -61,7 +70,7 @@ ${problemContext.explanation}`,
       });
     }
 
-    const completion = await openai.chat.completions.create({
+    const completion = await client.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [...systemMessages, ...messages],
       max_tokens: 1000,
