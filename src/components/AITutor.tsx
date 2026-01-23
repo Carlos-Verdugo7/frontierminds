@@ -7,6 +7,15 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 
+// Minimal preprocessing for LaTeX - the API response is usually well-formatted
+function normalizeLatex(text: string): string {
+  // The raw response from OpenAI is already properly formatted with $...$
+  // Just handle edge cases where \( \) or \[ \] might be used instead
+  return text
+    .replace(/\\\[([\s\S]*?)\\\]/g, '\n$$\n$1\n$$\n')
+    .replace(/\\\(([^)]+)\\\)/g, '$$$1$');
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -88,6 +97,9 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
       if (data.error) {
         throw new Error(data.error);
       }
+
+      // Debug: log raw response to see what OpenAI returns
+      console.log('Raw API response:', JSON.stringify(data.reply));
 
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch (err) {
@@ -191,7 +203,7 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
                         remarkPlugins={[remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                       >
-                        {message.content}
+                        {normalizeLatex(message.content)}
                       </ReactMarkdown>
                     </div>
                   )}
