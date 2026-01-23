@@ -748,11 +748,9 @@ export default function PracticeProblems({ section }: Props) {
   const isCorrect = selectedAnswer === problem.correctIndex;
 
   return (
-    <div className="flex gap-4 pb-20">
-      {/* Main Problem Area */}
-      <div className={`space-y-6 transition-all duration-300 ${isChatOpen ? 'flex-1 min-w-0' : 'w-full'}`}>
-        {/* Problem Selector */}
-        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+    <div className="space-y-6 pb-20">
+      {/* Problem Selector */}
+      <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
           <div className="flex items-center justify-between mb-3">
             <span className="text-slate-400 text-sm font-medium">Jump to Problem</span>
             <span className="text-sm">
@@ -798,8 +796,10 @@ export default function PracticeProblems({ section }: Props) {
           </div>
         </div>
 
+      {/* Problem Card + AI Chat Row */}
+      <div className="flex gap-4">
         {/* Problem Card */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+        <div className={`bg-slate-800 rounded-xl border border-slate-700 overflow-hidden transition-all duration-300 ${isChatOpen ? 'flex-1 min-w-0' : 'w-full'}`}>
           {/* Problem Header */}
           <div className="px-6 py-4 bg-slate-700/50 border-b border-slate-700">
             <div className="flex items-center justify-between">
@@ -965,26 +965,26 @@ export default function PracticeProblems({ section }: Props) {
           )}
         </div>
       </div>
-      </div>
 
-      {/* AI Tutor Side Panel */}
-      {isChatOpen && (
-        <div className="w-80 flex-shrink-0 h-[calc(100vh-200px)] sticky top-4 rounded-xl overflow-hidden">
-          <AITutor
-            problemContext={{
-              question: problem.question,
-              options: problem.options,
-              correctIndex: problem.correctIndex,
-              explanation: problem.explanation,
-              topic: problem.topic,
-              userAnswer: selectedAnswer,
-              isCorrect: selectedAnswer !== null ? selectedAnswer === problem.correctIndex : undefined,
-            }}
-            isOpen={isChatOpen}
-            onToggle={() => setIsChatOpen(false)}
-          />
-        </div>
-      )}
+        {/* AI Tutor Side Panel */}
+        {isChatOpen && (
+          <div className="w-96 flex-shrink-0 rounded-xl overflow-hidden">
+            <AITutor
+              problemContext={{
+                question: problem.question,
+                options: problem.options,
+                correctIndex: problem.correctIndex,
+                explanation: problem.explanation,
+                topic: problem.topic,
+                userAnswer: selectedAnswer,
+                isCorrect: selectedAnswer !== null ? selectedAnswer === problem.correctIndex : undefined,
+              }}
+              isOpen={isChatOpen}
+              onToggle={() => setIsChatOpen(false)}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
