@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, XCircle, Lightbulb, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, Lightbulb, ChevronDown, ChevronUp, RefreshCw, Sparkles } from 'lucide-react';
 import AITutor from './AITutor';
 
 interface Problem {
@@ -686,6 +686,7 @@ export default function PracticeProblems({ section }: Props) {
   const [score, setScore] = useState({ correct: 0, total: 0 });
   // Track answers for each problem: stores { selected: number, isCorrect: boolean } or undefined
   const [problemAnswers, setProblemAnswers] = useState<Record<number, { selected: number; isCorrect: boolean }>>({});
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const sectionProblems = problems[section] || [];
   const problem = sectionProblems[currentProblem];
@@ -747,84 +748,84 @@ export default function PracticeProblems({ section }: Props) {
   const isCorrect = selectedAnswer === problem.correctIndex;
 
   return (
-    <div className="space-y-6 pb-20">
-      {/* Problem Selector */}
-      <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-slate-400 text-sm font-medium">Jump to Problem</span>
-          <span className="text-sm">
-            <span className="text-green-400">{score.correct}</span>
-            <span className="text-slate-500"> / {score.total} correct</span>
-          </span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {sectionProblems.map((_, index) => {
-            const answer = problemAnswers[index];
-            const isCurrent = index === currentProblem;
+    <div className="flex gap-4 pb-20">
+      {/* Main Problem Area */}
+      <div className={`space-y-6 transition-all duration-300 ${isChatOpen ? 'flex-1 min-w-0' : 'w-full'}`}>
+        {/* Problem Selector */}
+        <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-slate-400 text-sm font-medium">Jump to Problem</span>
+            <span className="text-sm">
+              <span className="text-green-400">{score.correct}</span>
+              <span className="text-slate-500"> / {score.total} correct</span>
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {sectionProblems.map((_, index) => {
+              const answer = problemAnswers[index];
+              const isCurrent = index === currentProblem;
 
-            let buttonStyle = 'bg-slate-700 hover:bg-slate-600 text-slate-300';
-            if (isCurrent) {
-              buttonStyle = 'bg-blue-500 text-white ring-2 ring-blue-400';
-            } else if (answer?.isCorrect === true) {
-              buttonStyle = 'bg-green-500/20 text-green-400 border border-green-500/50';
-            } else if (answer?.isCorrect === false) {
-              buttonStyle = 'bg-red-500/20 text-red-400 border border-red-500/50';
-            }
+              let buttonStyle = 'bg-slate-700 hover:bg-slate-600 text-slate-300';
+              if (isCurrent) {
+                buttonStyle = 'bg-blue-500 text-white ring-2 ring-blue-400';
+              } else if (answer?.isCorrect === true) {
+                buttonStyle = 'bg-green-500/20 text-green-400 border border-green-500/50';
+              } else if (answer?.isCorrect === false) {
+                buttonStyle = 'bg-red-500/20 text-red-400 border border-red-500/50';
+              }
 
-            return (
-              <button
-                key={index}
-                onClick={() => goToProblem(index)}
-                className={`w-10 h-10 rounded-lg font-medium text-sm transition-all ${buttonStyle}`}
-              >
-                {index + 1}
-              </button>
-            );
-          })}
-        </div>
-        <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded bg-slate-700"></span> Unanswered
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded bg-green-500/20 border border-green-500/50"></span> Correct
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded bg-red-500/20 border border-red-500/50"></span> Incorrect
-          </span>
-        </div>
-      </div>
-
-      {/* Problem Card */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-        {/* Problem Header */}
-        <div className="px-6 py-4 bg-slate-700/50 border-b border-slate-700">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="px-2 py-1 bg-blue-500/20 rounded text-xs text-blue-300">
-                {problem.topic}
-              </span>
-              <AITutor
-                problemContext={{
-                  question: problem.question,
-                  options: problem.options,
-                  correctIndex: problem.correctIndex,
-                  explanation: problem.explanation,
-                  topic: problem.topic,
-                  userAnswer: selectedAnswer,
-                  isCorrect: selectedAnswer !== null ? selectedAnswer === problem.correctIndex : undefined,
-                }}
-              />
-            </div>
-            <button
-              onClick={resetProblems}
-              className="flex items-center gap-1 text-slate-400 hover:text-white text-sm"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Reset
-            </button>
+              return (
+                <button
+                  key={index}
+                  onClick={() => goToProblem(index)}
+                  className={`w-10 h-10 rounded-lg font-medium text-sm transition-all ${buttonStyle}`}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-slate-700"></span> Unanswered
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-green-500/20 border border-green-500/50"></span> Correct
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded bg-red-500/20 border border-red-500/50"></span> Incorrect
+            </span>
           </div>
         </div>
+
+        {/* Problem Card */}
+        <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+          {/* Problem Header */}
+          <div className="px-6 py-4 bg-slate-700/50 border-b border-slate-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="px-2 py-1 bg-blue-500/20 rounded text-xs text-blue-300">
+                  {problem.topic}
+                </span>
+                {!isChatOpen && (
+                  <button
+                    onClick={() => setIsChatOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-purple-500/20"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Ask AI Tutor
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={resetProblems}
+                className="flex items-center gap-1 text-slate-400 hover:text-white text-sm"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Reset
+              </button>
+            </div>
+          </div>
 
         {/* Problem Content */}
         <div className="p-6">
@@ -950,7 +951,7 @@ export default function PracticeProblems({ section }: Props) {
           {/* Completion Message */}
           {selectedAnswer !== null && currentProblem === sectionProblems.length - 1 && (
             <div className="mt-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-6 border border-green-500/30 text-center">
-              <h3 className="text-xl font-bold text-white mb-2">Section Complete! 🎉</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Section Complete!</h3>
               <p className="text-slate-300 mb-4">
                 You got {score.correct} out of {score.total} correct ({((score.correct / score.total) * 100).toFixed(0)}%)
               </p>
@@ -964,6 +965,26 @@ export default function PracticeProblems({ section }: Props) {
           )}
         </div>
       </div>
+      </div>
+
+      {/* AI Tutor Side Panel */}
+      {isChatOpen && (
+        <div className="w-80 flex-shrink-0 h-[calc(100vh-200px)] sticky top-4 rounded-xl overflow-hidden">
+          <AITutor
+            problemContext={{
+              question: problem.question,
+              options: problem.options,
+              correctIndex: problem.correctIndex,
+              explanation: problem.explanation,
+              topic: problem.topic,
+              userAnswer: selectedAnswer,
+              isCorrect: selectedAnswer !== null ? selectedAnswer === problem.correctIndex : undefined,
+            }}
+            isOpen={isChatOpen}
+            onToggle={() => setIsChatOpen(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }
