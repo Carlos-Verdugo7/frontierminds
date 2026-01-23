@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CheckCircle, XCircle, Lightbulb, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
+import AITutor from './AITutor';
 
 interface Problem {
   id: number;
@@ -799,9 +800,22 @@ export default function PracticeProblems({ section }: Props) {
         {/* Problem Header */}
         <div className="px-6 py-4 bg-slate-700/50 border-b border-slate-700">
           <div className="flex items-center justify-between">
-            <span className="px-2 py-1 bg-blue-500/20 rounded text-xs text-blue-300">
-              {problem.topic}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-1 bg-blue-500/20 rounded text-xs text-blue-300">
+                {problem.topic}
+              </span>
+              <AITutor
+                problemContext={{
+                  question: problem.question,
+                  options: problem.options,
+                  correctIndex: problem.correctIndex,
+                  explanation: problem.explanation,
+                  topic: problem.topic,
+                  userAnswer: selectedAnswer,
+                  isCorrect: selectedAnswer !== null ? selectedAnswer === problem.correctIndex : undefined,
+                }}
+              />
+            </div>
             <button
               onClick={resetProblems}
               className="flex items-center gap-1 text-slate-400 hover:text-white text-sm"
