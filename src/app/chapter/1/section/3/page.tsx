@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, Beaker, PenTool, CheckCircle, XCircle, Lightbulb, ChevronUp, RefreshCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Beaker, PenTool } from 'lucide-react';
 import TreeDiagramSimulator from '@/components/TreeDiagramSimulator';
+import PracticeProblems from '@/components/PracticeProblems';
 
 type Tab = 'learn' | 'simulate' | 'practice';
 
@@ -53,7 +54,27 @@ export default function Section13Page() {
         {/* Tab Content */}
         {activeTab === 'learn' && <LearnContent />}
         {activeTab === 'simulate' && <SimulateContent />}
-        {activeTab === 'practice' && <PracticeContent />}
+        {activeTab === 'practice' && <PracticeProblems section="1.3" />}
+      </div>
+
+      {/* Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700 p-4">
+        <div className="max-w-6xl mx-auto flex justify-between">
+          <Link
+            href="/chapter/1/section/2"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Previous: 1.2 Enumeration
+          </Link>
+          <Link
+            href="/chapter/1/section/4"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors"
+          >
+            Next: 1.4 Independence
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </main>
   );
@@ -233,378 +254,6 @@ function SimulateContent() {
   return (
     <div className="space-y-6">
       <TreeDiagramSimulator />
-    </div>
-  );
-}
-
-// Practice Problems
-interface Problem {
-  id: number;
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
-  hint: string;
-  topic: string;
-}
-
-const problems: Problem[] = [
-  {
-    id: 1,
-    question: `An urn contains 4 red balls and 6 blue balls. Two balls are drawn without replacement. What is the probability that both balls are red?`,
-    options: ['0.133', '0.160', '0.200', '0.240', '0.400'],
-    correctIndex: 0,
-    explanation: `Using the Multiplication Rule:
-P(R₁ ∩ R₂) = P(R₁) × P(R₂|R₁)
-= (4/10) × (3/9)
-= 12/90
-= 2/15
-≈ 0.133`,
-    hint: 'After drawing the first red ball, how many red balls remain? How many total balls remain?',
-    topic: 'Multiplication Rule',
-  },
-  {
-    id: 2,
-    question: `If P(A) = 0.6, P(B) = 0.5, and P(A ∩ B) = 0.3, find P(A|B).`,
-    options: ['0.30', '0.50', '0.60', '0.75', '0.80'],
-    correctIndex: 1,
-    explanation: `Using the definition of conditional probability:
-P(A|B) = P(A ∩ B) / P(B)
-= 0.3 / 0.5
-= 0.6
-
-Wait, let me recalculate:
-P(A|B) = 0.3 / 0.5 = 0.6
-
-Hmm, 0.6 is option C. Let me check if the answer is actually 0.5...
-
-P(A|B) = P(A ∩ B) / P(B) = 0.3 / 0.5 = 0.6
-
-The answer should be 0.60 (option C).
-
-Actually looking at the options again, the correct calculation gives:
-P(A|B) = 0.3/0.5 = 0.6
-
-So correctIndex should be 2 for 0.60, but I marked 1 for 0.50.
-
-Let me correct: P(A|B) = P(A∩B)/P(B) = 0.3/0.5 = 0.60`,
-    hint: 'Use the formula P(A|B) = P(A ∩ B) / P(B)',
-    topic: 'Conditional Probability',
-  },
-  {
-    id: 3,
-    question: `A factory has two machines. Machine A produces 60% of items and has a 3% defect rate. Machine B produces 40% of items and has a 5% defect rate. What is the probability that a randomly selected item is defective?`,
-    options: ['0.032', '0.038', '0.040', '0.045', '0.080'],
-    correctIndex: 1,
-    explanation: `Using the Law of Total Probability:
-P(Defective) = P(A) × P(D|A) + P(B) × P(D|B)
-= 0.60 × 0.03 + 0.40 × 0.05
-= 0.018 + 0.020
-= 0.038`,
-    hint: 'Use the Law of Total Probability: sum over all sources weighted by their probability.',
-    topic: 'Law of Total Probability',
-  },
-  {
-    id: 4,
-    question: `Three cards are drawn without replacement from a standard 52-card deck. What is the probability that all three are hearts?`,
-    options: ['0.0129', '0.0156', '0.0166', '0.0183', '0.0250'],
-    correctIndex: 0,
-    explanation: `Using the Extended Multiplication Rule:
-P(H₁ ∩ H₂ ∩ H₃) = P(H₁) × P(H₂|H₁) × P(H₃|H₁∩H₂)
-= (13/52) × (12/51) × (11/50)
-= (13 × 12 × 11) / (52 × 51 × 50)
-= 1716 / 132600
-= 0.0129`,
-    hint: 'Apply the multiplication rule three times. After each heart is drawn, one fewer heart and one fewer card total.',
-    topic: 'Extended Multiplication Rule',
-  },
-  {
-    id: 5,
-    question: `P(A|B) = 0.4 and P(B) = 0.5. Find P(A ∩ B).`,
-    options: ['0.10', '0.20', '0.40', '0.50', '0.80'],
-    correctIndex: 1,
-    explanation: `From the definition of conditional probability:
-P(A|B) = P(A ∩ B) / P(B)
-
-Rearranging:
-P(A ∩ B) = P(A|B) × P(B)
-= 0.4 × 0.5
-= 0.20`,
-    hint: 'Rearrange the conditional probability formula to solve for P(A ∩ B).',
-    topic: 'Multiplication Rule',
-  },
-  {
-    id: 6,
-    question: `A box contains 3 defective and 7 non-defective items. Two items are drawn with replacement. What is the probability that at least one is defective?`,
-    options: ['0.30', '0.42', '0.49', '0.51', '0.58'],
-    correctIndex: 2,
-    explanation: `Use the complement rule:
-P(at least one defective) = 1 - P(none defective)
-
-With replacement, draws are independent:
-P(none defective) = P(ND₁) × P(ND₂)
-= (7/10) × (7/10)
-= 49/100 = 0.49
-
-P(at least one defective) = 1 - 0.49 = 0.51
-
-Hmm wait, the answer 0.49 is for P(none defective). Let me recalculate:
-P(at least one) = 1 - 0.49 = 0.51, which is option D.
-
-But option C is 0.49 and option D is 0.51. If correctIndex is 2, that's 0.49.
-
-Let me re-read: "probability that at least one is defective" = 1 - P(both non-defective) = 1 - 0.49 = 0.51
-
-So the answer should be 0.51, index 3.`,
-    hint: 'With replacement, draws are independent. Use P(at least one) = 1 - P(none).',
-    topic: 'Independence & Complement',
-  },
-  {
-    id: 7,
-    question: `If P(A) = 0.7, P(B|A) = 0.4, and P(B|A') = 0.2, find P(B).`,
-    options: ['0.28', '0.34', '0.40', '0.46', '0.60'],
-    correctIndex: 1,
-    explanation: `Using the Law of Total Probability:
-P(B) = P(A) × P(B|A) + P(A') × P(B|A')
-= 0.7 × 0.4 + 0.3 × 0.2
-= 0.28 + 0.06
-= 0.34`,
-    hint: 'A and A\' form a partition. Use the Law of Total Probability.',
-    topic: 'Law of Total Probability',
-  },
-  {
-    id: 8,
-    question: `In a survey, 40% of people exercise regularly. Of those who exercise, 70% report good health. Of those who don't exercise, 30% report good health. What is P(exercises | good health)?`,
-    options: ['0.280', '0.438', '0.467', '0.609', '0.700'],
-    correctIndex: 3,
-    explanation: `First find P(Good Health) using Total Probability:
-P(G) = P(E)P(G|E) + P(E')P(G|E')
-= 0.4 × 0.7 + 0.6 × 0.3
-= 0.28 + 0.18 = 0.46
-
-Then use Bayes' Theorem (or the definition):
-P(E|G) = P(E ∩ G) / P(G)
-= P(E)P(G|E) / P(G)
-= (0.4 × 0.7) / 0.46
-= 0.28 / 0.46
-≈ 0.609`,
-    hint: 'First find P(Good Health) using Total Probability, then use the definition of conditional probability.',
-    topic: 'Conditional Probability & Total Probability',
-  },
-];
-
-function PracticeContent() {
-  const [currentProblem, setCurrentProblem] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [showHint, setShowHint] = useState(false);
-  const [score, setScore] = useState({ correct: 0, total: 0 });
-
-  // Fix the problematic answers in the problems
-  const fixedProblems = [...problems];
-  fixedProblems[1] = { ...fixedProblems[1], correctIndex: 2 }; // P(A|B) = 0.6
-  fixedProblems[5] = { ...fixedProblems[5], correctIndex: 3 }; // At least one defective = 0.51
-
-  const problem = fixedProblems[currentProblem];
-
-  const handleAnswer = (index: number) => {
-    if (selectedAnswer !== null) return;
-
-    setSelectedAnswer(index);
-    setScore(prev => ({
-      correct: prev.correct + (index === problem.correctIndex ? 1 : 0),
-      total: prev.total + 1,
-    }));
-    setShowExplanation(true);
-  };
-
-  const nextProblem = () => {
-    if (currentProblem < fixedProblems.length - 1) {
-      setCurrentProblem(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-      setShowHint(false);
-    }
-  };
-
-  const resetProblems = () => {
-    setCurrentProblem(0);
-    setSelectedAnswer(null);
-    setShowExplanation(false);
-    setShowHint(false);
-    setScore({ correct: 0, total: 0 });
-  };
-
-  const isCorrect = selectedAnswer === problem.correctIndex;
-
-  return (
-    <div className="space-y-6 pb-20">
-      {/* Progress Bar */}
-      <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-slate-400 text-sm">
-            Problem {currentProblem + 1} of {fixedProblems.length}
-          </span>
-          <span className="text-sm">
-            <span className="text-green-400">{score.correct}</span>
-            <span className="text-slate-500"> / {score.total} correct</span>
-          </span>
-        </div>
-        <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-blue-500 transition-all duration-300"
-            style={{ width: `${((currentProblem + 1) / fixedProblems.length) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Problem Card */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-        <div className="px-6 py-4 bg-slate-700/50 border-b border-slate-700">
-          <div className="flex items-center justify-between">
-            <span className="px-2 py-1 bg-blue-500/20 rounded text-xs text-blue-300">
-              {problem.topic}
-            </span>
-            <button
-              onClick={resetProblems}
-              className="flex items-center gap-1 text-slate-400 hover:text-white text-sm"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Reset
-            </button>
-          </div>
-        </div>
-
-        <div className="p-6">
-          <div className="bg-slate-700/30 rounded-lg p-4 mb-6">
-            <pre className="text-slate-200 whitespace-pre-wrap font-sans text-sm leading-relaxed">
-              {problem.question}
-            </pre>
-          </div>
-
-          {!showHint && selectedAnswer === null && (
-            <button
-              onClick={() => setShowHint(true)}
-              className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 text-sm mb-4"
-            >
-              <Lightbulb className="w-4 h-4" />
-              Show Hint
-            </button>
-          )}
-
-          {showHint && (
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-4">
-              <div className="flex items-start gap-2">
-                <Lightbulb className="w-5 h-5 text-yellow-400 mt-0.5" />
-                <p className="text-yellow-200 text-sm">{problem.hint}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-3">
-            {problem.options.map((option, index) => {
-              let buttonStyle = 'bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600';
-
-              if (selectedAnswer !== null) {
-                if (index === problem.correctIndex) {
-                  buttonStyle = 'bg-green-500/20 text-green-300 border-green-500';
-                } else if (index === selectedAnswer) {
-                  buttonStyle = 'bg-red-500/20 text-red-300 border-red-500';
-                } else {
-                  buttonStyle = 'bg-slate-700/50 text-slate-500 border-slate-600';
-                }
-              }
-
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleAnswer(index)}
-                  disabled={selectedAnswer !== null}
-                  className={`w-full p-4 rounded-lg border text-left transition-colors flex items-center gap-3 ${buttonStyle}`}
-                >
-                  <span className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center text-sm font-medium">
-                    {String.fromCharCode(65 + index)}
-                  </span>
-                  <span className="font-mono">{option}</span>
-                  {selectedAnswer !== null && index === problem.correctIndex && (
-                    <CheckCircle className="w-5 h-5 text-green-400 ml-auto" />
-                  )}
-                  {selectedAnswer === index && index !== problem.correctIndex && (
-                    <XCircle className="w-5 h-5 text-red-400 ml-auto" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {selectedAnswer !== null && (
-            <div
-              className={`mt-6 p-4 rounded-lg ${
-                isCorrect
-                  ? 'bg-green-500/10 border border-green-500/30'
-                  : 'bg-red-500/10 border border-red-500/30'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                {isCorrect ? (
-                  <>
-                    <CheckCircle className="w-5 h-5 text-green-400" />
-                    <span className="text-green-300 font-semibold">Correct!</span>
-                  </>
-                ) : (
-                  <>
-                    <XCircle className="w-5 h-5 text-red-400" />
-                    <span className="text-red-300 font-semibold">Incorrect</span>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-
-          {showExplanation && (
-            <div className="mt-4">
-              <button
-                onClick={() => setShowExplanation(!showExplanation)}
-                className="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mb-2"
-              >
-                <ChevronUp className="w-4 h-4" />
-                Hide Solution
-              </button>
-
-              <div className="bg-slate-700/50 rounded-lg p-4">
-                <h4 className="text-white font-semibold mb-2">Solution:</h4>
-                <pre className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
-                  {problem.explanation}
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {selectedAnswer !== null && currentProblem < fixedProblems.length - 1 && (
-            <button
-              onClick={nextProblem}
-              className="mt-6 w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
-            >
-              Next Problem →
-            </button>
-          )}
-
-          {selectedAnswer !== null && currentProblem === fixedProblems.length - 1 && (
-            <div className="mt-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-6 border border-green-500/30 text-center">
-              <h3 className="text-xl font-bold text-white mb-2">Section Complete!</h3>
-              <p className="text-slate-300 mb-4">
-                You got {score.correct} out of {score.total} correct ({((score.correct / score.total) * 100).toFixed(0)}%)
-              </p>
-              <button
-                onClick={resetProblems}
-                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
-              >
-                Practice Again
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

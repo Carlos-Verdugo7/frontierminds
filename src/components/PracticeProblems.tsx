@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle, XCircle, Lightbulb, ChevronDown, ChevronUp, RefreshCw, Sparkles } from 'lucide-react';
+import { CheckCircle, XCircle, Lightbulb, ChevronDown, ChevronUp, RefreshCw, Sparkles, PenLine, Calculator } from 'lucide-react';
 import AITutor from './AITutor';
+import ExamCalculator from './ExamCalculator';
 
 interface Problem {
   id: number;
@@ -457,6 +458,633 @@ P(≥2 claims) = 1 - p₀ - p₁
       topic: 'Geometric Series',
     },
   ],
+  '1.2': [
+    {
+      id: 1,
+      question: `A state issues license plates consisting of 3 letters followed by 3 digits. How many different plates are possible if repetition is allowed?`,
+      options: ['15,600,000', '17,576,000', '11,232,000', '26,000,000', '17,576'],
+      correctIndex: 1,
+      explanation: `Using the Multiplication Principle:
+• 3 letters: 26 × 26 × 26 = 26³ = 17,576
+• 3 digits: 10 × 10 × 10 = 10³ = 1,000
+
+Total = 17,576 × 1,000 = 17,576,000 plates`,
+      hint: 'Use the Multiplication Principle. For each position, count the number of choices.',
+      topic: 'Multiplication Principle',
+    },
+    {
+      id: 2,
+      question: `How many permutations are there of the letters in the word "PROBABILITY"?`,
+      options: ['39,916,800', '19,958,400', '9,979,200', '4,989,600', '2,494,800'],
+      correctIndex: 2,
+      explanation: `"PROBABILITY" has 11 letters with repetitions:
+P-R-O-B-A-B-I-L-I-T-Y
+P(1), R(1), O(1), B(2), A(1), I(2), L(1), T(1), Y(1) = 11 letters
+
+Distinguishable permutations = 11! / (2! × 2!)
+= 39,916,800 / 4
+= 9,979,200`,
+      hint: 'Count repeated letters and use the formula for distinguishable permutations: n!/(n₁! × n₂! × ...)',
+      topic: 'Distinguishable Permutations',
+    },
+    {
+      id: 3,
+      question: `A committee of 5 is to be selected from a group of 6 men and 9 women. In how many ways can this be done if the committee must have exactly 3 women?`,
+      options: ['252', '1,260', '2,520', '3,780', '756'],
+      correctIndex: 1,
+      explanation: `We need exactly 3 women and 2 men.
+
+• Ways to choose 3 women from 9: C(9,3) = 84
+• Ways to choose 2 men from 6: C(6,2) = 15
+
+By Multiplication Principle:
+Total = 84 × 15 = 1,260`,
+      hint: 'Break into two independent selections: choose women, then choose men. Multiply the results.',
+      topic: 'Combinations',
+    },
+    {
+      id: 4,
+      question: `From a standard 52-card deck, how many 5-card hands contain exactly 2 aces?`,
+      options: ['103,776', '778,320', '2,598,960', '84,480', '1,098,240'],
+      correctIndex: 0,
+      explanation: `We need exactly 2 aces and 3 non-aces.
+
+• Ways to choose 2 aces from 4: C(4,2) = 6
+• Ways to choose 3 non-aces from 48: C(48,3) = 17,296
+
+Total = 6 × 17,296 = 103,776`,
+      hint: 'Select the aces first, then select the remaining cards from non-aces.',
+      topic: 'Combinations',
+    },
+    {
+      id: 5,
+      question: `In how many ways can 8 people be seated in a row if 2 specific people must sit next to each other?`,
+      options: ['5,040', '10,080', '20,160', '40,320', '80,640'],
+      correctIndex: 1,
+      explanation: `Treat the 2 people who must sit together as a single unit.
+
+• Now we have 7 "units" to arrange: 7! = 5,040
+• The 2 people in the unit can be arranged: 2! = 2
+
+Total = 7! × 2! = 5,040 × 2 = 10,080`,
+      hint: 'Treat the pair as a single unit, arrange all units, then arrange within the unit.',
+      topic: 'Permutations with Constraints',
+    },
+    {
+      id: 6,
+      question: `A pizza shop offers 10 toppings. How many different pizzas can be made with exactly 4 toppings?`,
+      options: ['5,040', '210', '10,000', '240', '151,200'],
+      correctIndex: 1,
+      explanation: `Since the order of toppings doesn't matter, this is a combination.
+
+C(10,4) = 10! / (4! × 6!)
+= (10 × 9 × 8 × 7) / (4 × 3 × 2 × 1)
+= 5,040 / 24
+= 210`,
+      hint: 'Does the order of toppings matter? If not, use combinations.',
+      topic: 'Combinations',
+    },
+    {
+      id: 7,
+      question: `How many different 4-letter "words" can be formed from the letters A, B, C, D, E if no letter can be repeated?`,
+      options: ['120', '625', '256', '24', '1,024'],
+      correctIndex: 0,
+      explanation: `This is a permutation problem (order matters in a word) without replacement.
+
+P(5,4) = 5! / (5-4)!
+= 5! / 1!
+= 5 × 4 × 3 × 2
+= 120`,
+      hint: 'Order matters in a word. How many choices for position 1? Then position 2? And so on...',
+      topic: 'Permutations',
+    },
+    {
+      id: 8,
+      question: `In a bridge hand (13 cards from a 52-card deck), what is the probability of getting all 4 aces?`,
+      options: ['0.00264', '0.00026', '0.01056', '0.00106', '0.10560'],
+      correctIndex: 0,
+      explanation: `Total bridge hands: C(52,13)
+
+Favorable: Choose all 4 aces, then 9 more from the remaining 48 cards.
+= C(4,4) × C(48,9) = 1 × C(48,9)
+
+P = C(48,9) / C(52,13)
+= 1,677,106,640 / 635,013,559,600
+≈ 0.00264`,
+      hint: 'Calculate favorable outcomes (must have all 4 aces) divided by total possible hands.',
+      topic: 'Combinations & Probability',
+    },
+  ],
+  '1.3': [
+    {
+      id: 1,
+      question: `An urn contains 4 red balls and 6 blue balls. Two balls are drawn without replacement. What is the probability that both balls are red?`,
+      options: ['0.133', '0.160', '0.200', '0.240', '0.400'],
+      correctIndex: 0,
+      explanation: `Using the Multiplication Rule:
+P(R₁ ∩ R₂) = P(R₁) × P(R₂|R₁)
+= (4/10) × (3/9)
+= 12/90
+= 2/15
+≈ 0.133`,
+      hint: 'After drawing the first red ball, how many red balls remain? How many total balls remain?',
+      topic: 'Multiplication Rule',
+    },
+    {
+      id: 2,
+      question: `If P(A) = 0.6, P(B) = 0.5, and P(A ∩ B) = 0.3, find P(A|B).`,
+      options: ['0.30', '0.50', '0.60', '0.75', '0.80'],
+      correctIndex: 2,
+      explanation: `Using the definition of conditional probability:
+P(A|B) = P(A ∩ B) / P(B)
+= 0.3 / 0.5
+= 0.6`,
+      hint: 'Use the formula P(A|B) = P(A ∩ B) / P(B)',
+      topic: 'Conditional Probability',
+    },
+    {
+      id: 3,
+      question: `A factory has two machines. Machine A produces 60% of items and has a 3% defect rate. Machine B produces 40% of items and has a 5% defect rate. What is the probability that a randomly selected item is defective?`,
+      options: ['0.032', '0.038', '0.040', '0.045', '0.080'],
+      correctIndex: 1,
+      explanation: `Using the Law of Total Probability:
+P(Defective) = P(A) × P(D|A) + P(B) × P(D|B)
+= 0.60 × 0.03 + 0.40 × 0.05
+= 0.018 + 0.020
+= 0.038`,
+      hint: 'Use the Law of Total Probability: sum over all sources weighted by their probability.',
+      topic: 'Law of Total Probability',
+    },
+    {
+      id: 4,
+      question: `Three cards are drawn without replacement from a standard 52-card deck. What is the probability that all three are hearts?`,
+      options: ['0.0129', '0.0156', '0.0166', '0.0183', '0.0250'],
+      correctIndex: 0,
+      explanation: `Using the Extended Multiplication Rule:
+P(H₁ ∩ H₂ ∩ H₃) = P(H₁) × P(H₂|H₁) × P(H₃|H₁∩H₂)
+= (13/52) × (12/51) × (11/50)
+= (13 × 12 × 11) / (52 × 51 × 50)
+= 1716 / 132600
+= 0.0129`,
+      hint: 'Apply the multiplication rule three times. After each heart is drawn, one fewer heart and one fewer card total.',
+      topic: 'Extended Multiplication Rule',
+    },
+    {
+      id: 5,
+      question: `P(A|B) = 0.4 and P(B) = 0.5. Find P(A ∩ B).`,
+      options: ['0.10', '0.20', '0.40', '0.50', '0.80'],
+      correctIndex: 1,
+      explanation: `From the definition of conditional probability:
+P(A|B) = P(A ∩ B) / P(B)
+
+Rearranging:
+P(A ∩ B) = P(A|B) × P(B)
+= 0.4 × 0.5
+= 0.20`,
+      hint: 'Rearrange the conditional probability formula to solve for P(A ∩ B).',
+      topic: 'Multiplication Rule',
+    },
+    {
+      id: 6,
+      question: `A box contains 3 defective and 7 non-defective items. Two items are drawn with replacement. What is the probability that at least one is defective?`,
+      options: ['0.30', '0.42', '0.49', '0.51', '0.58'],
+      correctIndex: 3,
+      explanation: `Use the complement rule:
+P(at least one defective) = 1 - P(none defective)
+
+With replacement, draws are independent:
+P(none defective) = P(ND₁) × P(ND₂)
+= (7/10) × (7/10)
+= 49/100 = 0.49
+
+P(at least one defective) = 1 - 0.49 = 0.51`,
+      hint: 'With replacement, draws are independent. Use P(at least one) = 1 - P(none).',
+      topic: 'Independence & Complement',
+    },
+    {
+      id: 7,
+      question: `If P(A) = 0.7, P(B|A) = 0.4, and P(B|A') = 0.2, find P(B).`,
+      options: ['0.28', '0.34', '0.40', '0.46', '0.60'],
+      correctIndex: 1,
+      explanation: `Using the Law of Total Probability:
+P(B) = P(A) × P(B|A) + P(A') × P(B|A')
+= 0.7 × 0.4 + 0.3 × 0.2
+= 0.28 + 0.06
+= 0.34`,
+      hint: 'A and A\' form a partition. Use the Law of Total Probability.',
+      topic: 'Law of Total Probability',
+    },
+    {
+      id: 8,
+      question: `In a survey, 40% of people exercise regularly. Of those who exercise, 70% report good health. Of those who don't exercise, 30% report good health. What is P(exercises | good health)?`,
+      options: ['0.280', '0.438', '0.467', '0.609', '0.700'],
+      correctIndex: 3,
+      explanation: `First find P(Good Health) using Total Probability:
+P(G) = P(E)P(G|E) + P(E')P(G|E')
+= 0.4 × 0.7 + 0.6 × 0.3
+= 0.28 + 0.18 = 0.46
+
+Then use Bayes' Theorem:
+P(E|G) = P(E)P(G|E) / P(G)
+= (0.4 × 0.7) / 0.46
+= 0.28 / 0.46
+≈ 0.609`,
+      hint: 'First find P(Good Health) using Total Probability, then apply Bayes\' Theorem.',
+      topic: 'Bayes\' Theorem Preview',
+    },
+  ],
+  '1.4': [
+    {
+      id: 1,
+      question: `If P(A) = 0.3 and P(B) = 0.4, and A and B are independent, find P(A ∩ B).`,
+      options: ['0.10', '0.12', '0.30', '0.40', '0.70'],
+      correctIndex: 1,
+      explanation: `For independent events:
+P(A ∩ B) = P(A) × P(B)
+= 0.3 × 0.4
+= 0.12`,
+      hint: 'Use the definition of independence: P(A ∩ B) = P(A) × P(B)',
+      topic: 'Independence Definition',
+    },
+    {
+      id: 2,
+      question: `A fair coin is flipped 4 times. What is the probability of getting at least one head?`,
+      options: ['0.0625', '0.5000', '0.7500', '0.9375', '1.0000'],
+      correctIndex: 3,
+      explanation: `Use the complement rule with independence:
+P(at least one H) = 1 - P(no heads)
+= 1 - P(T)⁴
+= 1 - (0.5)⁴
+= 1 - 0.0625
+= 0.9375`,
+      hint: 'P(at least one) = 1 - P(none). For independent events, multiply probabilities.',
+      topic: 'Independence & Complement',
+    },
+    {
+      id: 3,
+      question: `If A and B are independent with P(A) = 0.6 and P(B) = 0.5, find P(A ∪ B).`,
+      options: ['0.30', '0.55', '0.70', '0.80', '1.10'],
+      correctIndex: 3,
+      explanation: `Using the Addition Rule:
+P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+
+Since A and B are independent:
+P(A ∩ B) = P(A) × P(B) = 0.6 × 0.5 = 0.30
+
+P(A ∪ B) = 0.6 + 0.5 - 0.3 = 0.80`,
+      hint: 'Use Addition Rule: P(A∪B) = P(A) + P(B) - P(A∩B). Calculate P(A∩B) using independence.',
+      topic: 'Independence & Addition Rule',
+    },
+    {
+      id: 4,
+      question: `Events A and B are mutually exclusive with P(A) = 0.3 and P(B) = 0.4. Are they independent?`,
+      options: ['Yes, because P(A∩B) = 0', 'Yes, because P(A) + P(B) < 1', 'No, because P(A∩B) ≠ P(A)P(B)', 'No, because P(A∪B) = 0.7', 'Cannot be determined'],
+      correctIndex: 2,
+      explanation: `For independence, we need P(A ∩ B) = P(A) × P(B)
+
+Since A and B are mutually exclusive:
+P(A ∩ B) = 0
+
+But P(A) × P(B) = 0.3 × 0.4 = 0.12 ≠ 0
+
+Since 0 ≠ 0.12, A and B are NOT independent.
+
+Key insight: Mutually exclusive events with non-zero probabilities are NEVER independent!`,
+      hint: 'Check if P(A∩B) = P(A)×P(B). For mutually exclusive events, P(A∩B) = 0.',
+      topic: 'Independence vs Mutual Exclusivity',
+    },
+    {
+      id: 5,
+      question: `A system has 3 independent components. Each works with probability 0.9. What is the probability that at least one component works?`,
+      options: ['0.729', '0.810', '0.900', '0.972', '0.999'],
+      correctIndex: 4,
+      explanation: `P(at least one works) = 1 - P(none work)
+
+P(one fails) = 1 - 0.9 = 0.1
+
+P(all three fail) = 0.1 × 0.1 × 0.1 = 0.001
+
+P(at least one works) = 1 - 0.001 = 0.999`,
+      hint: 'Use complement: 1 - P(all fail). For independent events, P(all fail) = P(fail)³.',
+      topic: 'System Reliability',
+    },
+    {
+      id: 6,
+      question: `If P(A) = 0.5, P(B) = 0.6, and P(A|B) = 0.5, are A and B independent?`,
+      options: ['Yes', 'No', 'Cannot determine without P(A∩B)', 'Cannot determine without P(B|A)', 'Only if P(A∪B) = 0.8'],
+      correctIndex: 0,
+      explanation: `For independence: P(A|B) = P(A)
+
+Given: P(A|B) = 0.5 and P(A) = 0.5
+
+Since P(A|B) = P(A), events A and B ARE independent.
+
+We can verify: P(A∩B) = P(A|B)×P(B) = 0.5×0.6 = 0.30
+And P(A)×P(B) = 0.5×0.6 = 0.30 ✓`,
+      hint: 'Independence means P(A|B) = P(A). Compare the given values.',
+      topic: 'Testing Independence',
+    },
+    {
+      id: 7,
+      question: `A fair die is rolled twice. What is the probability that both rolls show the same number?`,
+      options: ['1/36', '1/12', '1/6', '1/3', '5/6'],
+      correctIndex: 2,
+      explanation: `The rolls are independent.
+
+P(same number) = P(both 1) + P(both 2) + ... + P(both 6)
+
+For each outcome k:
+P(both k) = P(first = k) × P(second = k) = (1/6) × (1/6) = 1/36
+
+P(same) = 6 × (1/36) = 6/36 = 1/6`,
+      hint: 'Sum the probabilities of (1,1), (2,2), (3,3), (4,4), (5,5), (6,6).',
+      topic: 'Independent Trials',
+    },
+    {
+      id: 8,
+      question: `If A and B are independent, and P(A) = 0.4, P(B) = 0.3, find P(A' ∩ B').`,
+      options: ['0.12', '0.30', '0.42', '0.58', '0.70'],
+      correctIndex: 2,
+      explanation: `If A and B are independent, then A' and B' are also independent.
+
+P(A') = 1 - P(A) = 1 - 0.4 = 0.6
+P(B') = 1 - P(B) = 1 - 0.3 = 0.7
+
+P(A' ∩ B') = P(A') × P(B')
+= 0.6 × 0.7
+= 0.42`,
+      hint: 'If A and B are independent, so are A\' and B\'. Use P(A\')×P(B\').',
+      topic: 'Independence of Complements',
+    },
+    {
+      id: 9,
+      question: `Let A and B be independent events with P(A) = 0.7 and P(B) = 0.2. Compute P(A' ∪ B').`,
+      options: ['0.14', '0.44', '0.56', '0.86', '0.94'],
+      correctIndex: 3,
+      explanation: `Method 1 - Using De Morgan's Law:
+P(A' ∪ B') = P((A ∩ B)') = 1 - P(A ∩ B)
+
+Since A and B are independent:
+P(A ∩ B) = P(A) × P(B) = 0.7 × 0.2 = 0.14
+
+P(A' ∪ B') = 1 - 0.14 = 0.86
+
+Method 2 - Direct calculation:
+P(A') = 0.3, P(B') = 0.8
+P(A' ∩ B') = 0.3 × 0.8 = 0.24
+
+P(A' ∪ B') = P(A') + P(B') - P(A' ∩ B')
+= 0.3 + 0.8 - 0.24 = 0.86`,
+      hint: 'Use De Morgan\'s Law: A\' ∪ B\' = (A ∩ B)\'. So P(A\' ∪ B\') = 1 - P(A ∩ B).',
+      topic: 'Independence & De Morgan',
+    },
+    {
+      id: 10,
+      question: `If P(A) = 0.8, P(B) = 0.5, and P(A ∪ B) = 0.9, are A and B independent events?`,
+      options: ['Yes, because P(A∩B) = P(A)P(B)', 'Yes, because P(A∪B) < 1', 'No, because P(A∩B) ≠ P(A)P(B)', 'No, because P(A∪B) ≠ 1', 'Cannot be determined'],
+      correctIndex: 0,
+      explanation: `First, find P(A ∩ B) using the Addition Rule:
+P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+0.9 = 0.8 + 0.5 - P(A ∩ B)
+P(A ∩ B) = 1.3 - 0.9 = 0.4
+
+Now check independence:
+P(A) × P(B) = 0.8 × 0.5 = 0.4
+
+Since P(A ∩ B) = P(A) × P(B), the events ARE independent!`,
+      hint: 'First find P(A ∩ B) from the Addition Rule, then compare with P(A) × P(B).',
+      topic: 'Testing Independence',
+    },
+    {
+      id: 11,
+      question: `Each of three football players will attempt to kick a field goal. Assume independence with P(A₁) = 0.5, P(A₂) = 0.7, P(A₃) = 0.6. What is the probability that exactly one player is successful?`,
+      options: ['0.17', '0.21', '0.25', '0.29', '0.33'],
+      correctIndex: 3,
+      explanation: `P(exactly one success) = P(A₁ ∩ A₂' ∩ A₃') + P(A₁' ∩ A₂ ∩ A₃') + P(A₁' ∩ A₂' ∩ A₃)
+
+Complements: P(A₁') = 0.5, P(A₂') = 0.3, P(A₃') = 0.4
+
+P(only A₁) = P(A₁)P(A₂')P(A₃') = (0.5)(0.3)(0.4) = 0.06
+P(only A₂) = P(A₁')P(A₂)P(A₃') = (0.5)(0.7)(0.4) = 0.14
+P(only A₃) = P(A₁')P(A₂')P(A₃) = (0.5)(0.3)(0.6) = 0.09
+
+Total = 0.06 + 0.14 + 0.09 = 0.29`,
+      hint: 'Sum three cases: only player 1 succeeds, only player 2 succeeds, only player 3 succeeds.',
+      topic: 'Multiple Independent Events',
+    },
+    {
+      id: 12,
+      question: `Each of three football players will attempt to kick a field goal. Assume independence with P(A₁) = 0.5, P(A₂) = 0.7, P(A₃) = 0.6. What is the probability that exactly two players make a field goal?`,
+      options: ['0.35', '0.38', '0.41', '0.44', '0.47'],
+      correctIndex: 3,
+      explanation: `P(exactly two successes) = P(A₁ ∩ A₂ ∩ A₃') + P(A₁ ∩ A₂' ∩ A₃) + P(A₁' ∩ A₂ ∩ A₃)
+
+Using independence:
+P(A₁') = 0.5, P(A₂') = 0.3, P(A₃') = 0.4
+
+P(A₁ ∩ A₂ ∩ A₃') = (0.5)(0.7)(0.4) = 0.14
+P(A₁ ∩ A₂' ∩ A₃) = (0.5)(0.3)(0.6) = 0.09
+P(A₁' ∩ A₂ ∩ A₃) = (0.5)(0.7)(0.6) = 0.21
+
+Total = 0.14 + 0.09 + 0.21 = 0.44`,
+      hint: 'Sum three cases: A₁ and A₂ succeed (A₃ fails), A₁ and A₃ succeed (A₂ fails), A₂ and A₃ succeed (A₁ fails).',
+      topic: 'Multiple Independent Events',
+    },
+    {
+      id: 13,
+      question: `Die A has orange on 1 face and blue on 5 faces. Die B has orange on 2 faces and blue on 4 faces. Die C has orange on 3 faces and blue on 3 faces. If the three dice are rolled, find the probability that exactly two dice come up orange.`,
+      options: ['5/36', '7/36', '8/36', '9/36', '11/36'],
+      correctIndex: 2,
+      explanation: `P(A=orange) = 1/6, P(A=blue) = 5/6
+P(B=orange) = 2/6 = 1/3, P(B=blue) = 4/6 = 2/3
+P(C=orange) = 3/6 = 1/2, P(C=blue) = 1/2
+
+P(exactly 2 orange) = P(A,B orange; C blue) + P(A,C orange; B blue) + P(B,C orange; A blue)
+
+= (1/6)(1/3)(1/2) + (1/6)(2/3)(1/2) + (5/6)(1/3)(1/2)
+= 1/36 + 2/36 + 5/36
+= 8/36 = 2/9`,
+      hint: 'Calculate three cases: A&B orange (C blue), A&C orange (B blue), B&C orange (A blue). Then add.',
+      topic: 'Multiple Independent Events',
+    },
+    {
+      id: 14,
+      question: `Suppose that A, B, and C are mutually independent events with P(A) = 0.5, P(B) = 0.8, and P(C) = 0.9. Find the probability that all three events occur.`,
+      options: ['0.25', '0.36', '0.40', '0.45', '0.72'],
+      correctIndex: 1,
+      explanation: `For mutually independent events:
+P(A ∩ B ∩ C) = P(A) × P(B) × P(C)
+
+= 0.5 × 0.8 × 0.9
+= 0.36`,
+      hint: 'For mutually independent events, multiply all probabilities together.',
+      topic: 'Mutual Independence',
+    },
+    {
+      id: 15,
+      question: `Suppose that A, B, and C are mutually independent events with P(A) = 0.5, P(B) = 0.8, and P(C) = 0.9. Find the probability that exactly two of the three events occur.`,
+      options: ['0.35', '0.41', '0.49', '0.53', '0.59'],
+      correctIndex: 2,
+      explanation: `P(exactly two) = P(A∩B∩C') + P(A∩B'∩C) + P(A'∩B∩C)
+
+Complements: P(A') = 0.5, P(B') = 0.2, P(C') = 0.1
+
+P(A∩B∩C') = (0.5)(0.8)(0.1) = 0.04
+P(A∩B'∩C) = (0.5)(0.2)(0.9) = 0.09
+P(A'∩B∩C) = (0.5)(0.8)(0.9) = 0.36
+
+Total = 0.04 + 0.09 + 0.36 = 0.49`,
+      hint: 'Sum three cases: A&B occur (C doesn\'t), A&C occur (B doesn\'t), B&C occur (A doesn\'t).',
+      topic: 'Mutual Independence',
+    },
+    {
+      id: 16,
+      question: `Flip an unbiased coin five independent times. Compute the probability of getting the sequence HHTHT.`,
+      options: ['1/16', '1/32', '1/64', '5/32', '10/32'],
+      correctIndex: 1,
+      explanation: `For independent flips, we multiply probabilities:
+
+P(HHTHT) = P(H) × P(H) × P(T) × P(H) × P(T)
+= (1/2)⁵
+= 1/32
+
+Note: ANY specific sequence of 5 flips has probability 1/32.`,
+      hint: 'For independent trials, multiply the probability of each outcome.',
+      topic: 'Independent Trials',
+    },
+    {
+      id: 17,
+      question: `Flip an unbiased coin five independent times. Compute the probability of three heads occurring in the five trials.`,
+      options: ['1/32', '5/32', '10/32', '15/32', '16/32'],
+      correctIndex: 2,
+      explanation: `This is a binomial probability problem.
+
+Number of ways to choose 3 positions for heads: C(5,3) = 10
+
+Each specific arrangement has probability: (1/2)⁵ = 1/32
+
+P(exactly 3 heads) = C(5,3) × (1/2)⁵
+= 10 × (1/32)
+= 10/32
+= 5/16`,
+      hint: 'Count the number of ways to arrange 3 heads in 5 positions, then multiply by the probability of each arrangement.',
+      topic: 'Binomial Probability',
+    },
+    {
+      id: 18,
+      question: `An urn contains two red balls and four white balls. Sample successively five times at random and WITH replacement. What is the probability of the sequence RWRWR (R=red, W=white)?`,
+      options: ['4/243', '8/243', '8/729', '16/729', '32/729'],
+      correctIndex: 0,
+      explanation: `With replacement, each draw is independent.
+
+P(R) = 2/6 = 1/3
+P(W) = 4/6 = 2/3
+
+P(RWRWR) = P(R) × P(W) × P(R) × P(W) × P(R)
+= (1/3)³ × (2/3)²
+= (1/27) × (4/9)
+= 4/243`,
+      hint: 'With replacement, draws are independent. Multiply the probabilities for each draw.',
+      topic: 'Sampling with Replacement',
+    },
+    {
+      id: 19,
+      question: `In a system with redundant components, the probability of failure for each component is p = 0.4. If components are independent and the system fails only when ALL components fail, what is the probability the system does NOT fail if there are 3 redundant components?`,
+      options: ['0.216', '0.352', '0.648', '0.784', '0.936'],
+      correctIndex: 4,
+      explanation: `The system fails only if all 3 components fail.
+
+P(one component fails) = 0.4
+P(all 3 fail) = (0.4)³ = 0.064
+
+P(system does NOT fail) = 1 - P(all fail)
+= 1 - 0.064
+= 0.936`,
+      hint: 'System works if at least one component works. Use: P(system works) = 1 - P(all fail).',
+      topic: 'System Reliability',
+    },
+    {
+      id: 20,
+      question: `Hunters A and B shoot at a target. A hits with probability 0.6, B hits with probability 0.5. Assuming independence, what is the probability of exactly one hit?`,
+      options: ['0.30', '0.38', '0.44', '0.50', '0.55'],
+      correctIndex: 3,
+      explanation: `P(exactly one hit) = P(A hits, B misses) + P(A misses, B hits)
+
+= P(A) × P(B') + P(A') × P(B)
+= (0.6)(0.5) + (0.4)(0.5)
+= 0.30 + 0.20
+= 0.50`,
+      hint: 'Two cases: A hits and B misses, OR A misses and B hits.',
+      topic: 'Independent Events',
+    },
+    {
+      id: 21,
+      question: `Let P(A) = 0.3 and P(B) = 0.6. Find P(A ∪ B) when A and B are independent.`,
+      options: ['0.18', '0.72', '0.90', '0.30', '0.60'],
+      correctIndex: 1,
+      explanation: `When A and B are independent:
+P(A ∩ B) = P(A) × P(B) = (0.3)(0.6) = 0.18
+
+Using the Addition Rule:
+P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+= 0.3 + 0.6 - 0.18
+= 0.72`,
+      hint: 'First find P(A ∩ B) using independence, then apply the Addition Rule.',
+      topic: 'Independence & Addition Rule',
+    },
+    {
+      id: 22,
+      question: `Let P(A) = 0.3 and P(B) = 0.6. Find P(A | B) when A and B are mutually exclusive.`,
+      options: ['0', '0.18', '0.30', '0.50', '0.60'],
+      correctIndex: 0,
+      explanation: `When A and B are mutually exclusive:
+P(A ∩ B) = 0 (they cannot both occur)
+
+Using the definition of conditional probability:
+P(A | B) = P(A ∩ B) / P(B)
+= 0 / 0.6
+= 0
+
+If B has occurred, A definitely did NOT occur (since they're mutually exclusive).`,
+      hint: 'For mutually exclusive events, P(A ∩ B) = 0. What does this mean for P(A|B)?',
+      topic: 'Mutual Exclusivity',
+    },
+    {
+      id: 23,
+      question: `Let A and B be independent events with P(A) = 1/4 and P(B) = 2/3. Compute P(A ∩ B').`,
+      options: ['1/12', '1/6', '1/4', '1/3', '1/2'],
+      correctIndex: 0,
+      explanation: `If A and B are independent, then A and B' are also independent.
+
+P(B') = 1 - P(B) = 1 - 2/3 = 1/3
+
+P(A ∩ B') = P(A) × P(B')
+= (1/4) × (1/3)
+= 1/12`,
+      hint: 'If A and B are independent, then A and B\' are also independent.',
+      topic: 'Independence of Complements',
+    },
+    {
+      id: 24,
+      question: `Let A and B be independent events with P(A) = 1/4 and P(B) = 2/3. Compute P[(A ∪ B)'].`,
+      options: ['1/12', '1/6', '1/4', '1/3', '5/12'],
+      correctIndex: 2,
+      explanation: `By De Morgan's Law:
+(A ∪ B)' = A' ∩ B'
+
+Since A and B are independent, A' and B' are also independent.
+
+P(A') = 1 - 1/4 = 3/4
+P(B') = 1 - 2/3 = 1/3
+
+P[(A ∪ B)'] = P(A' ∩ B')
+= P(A') × P(B')
+= (3/4) × (1/3)
+= 3/12 = 1/4`,
+      hint: 'Use De Morgan\'s Law: (A ∪ B)\' = A\' ∩ B\'. Then use independence of complements.',
+      topic: 'De Morgan & Independence',
+    },
+  ],
   '1.5': [
     {
       id: 1,
@@ -687,6 +1315,10 @@ export default function PracticeProblems({ section }: Props) {
   // Track answers for each problem: stores { selected: number, isCorrect: boolean } or undefined
   const [problemAnswers, setProblemAnswers] = useState<Record<number, { selected: number; isCorrect: boolean }>>({});
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  // Scratch work per problem
+  const [scratchWork, setScratchWork] = useState<Record<number, string>>({});
+  const [showScratch, setShowScratch] = useState(true);
 
   const sectionProblems = problems[section] || [];
   const problem = sectionProblems[currentProblem];
@@ -816,6 +1448,15 @@ export default function PracticeProblems({ section }: Props) {
                     Ask AI Tutor
                   </button>
                 )}
+                {!isCalculatorOpen && (
+                  <button
+                    onClick={() => setIsCalculatorOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    <Calculator className="w-4 h-4" />
+                    Calculator
+                  </button>
+                )}
               </div>
               <button
                 onClick={resetProblems}
@@ -891,6 +1532,26 @@ export default function PracticeProblems({ section }: Props) {
                 </button>
               );
             })}
+          </div>
+
+          {/* Scratch Work Area */}
+          <div className="mt-6">
+            <button
+              onClick={() => setShowScratch(!showScratch)}
+              className="flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-2"
+            >
+              <PenLine className="w-4 h-4" />
+              {showScratch ? 'Hide' : 'Show'} Scratch Work
+              {showScratch ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            {showScratch && (
+              <textarea
+                value={scratchWork[currentProblem] || ''}
+                onChange={(e) => setScratchWork(prev => ({ ...prev, [currentProblem]: e.target.value }))}
+                placeholder="Type your work here...&#10;&#10;Example:&#10;P(A) = 0.4&#10;P(B) = 0.3&#10;P(A ∩ B) = P(A) × P(B) = 0.12"
+                className="w-full h-40 p-4 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-200 font-mono text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-y"
+              />
+            )}
           </div>
 
           {/* Result */}
@@ -985,6 +1646,14 @@ export default function PracticeProblems({ section }: Props) {
           </div>
         )}
       </div>
+
+      {/* Floating Calculator - draggable, positions itself */}
+      {isCalculatorOpen && (
+        <ExamCalculator
+          isOpen={isCalculatorOpen}
+          onToggle={() => setIsCalculatorOpen(false)}
+        />
+      )}
     </div>
   );
 }
