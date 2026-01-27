@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Calculator, X, ChevronUp, ChevronDown, GripHorizontal, Minimize2, Maximize2 } from 'lucide-react';
+import { Calculator, X, ChevronUp, ChevronDown, GripHorizontal, Minimize2, Maximize2, Keyboard } from 'lucide-react';
 
 // Factorial function
 function factorial(n: number): number {
@@ -50,6 +50,7 @@ export default function ExamCalculator({ isOpen, onToggle }: ExamCalculatorProps
   const [waitingForOperand, setWaitingForOperand] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isCompact, setIsCompact] = useState(true); // Start in compact mode
+  const [parenStack, setParenStack] = useState<Array<{ previousValue: number | null; operation: string | null }>>([]);
 
   // Dragging state
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -141,6 +142,7 @@ export default function ExamCalculator({ isOpen, onToggle }: ExamCalculatorProps
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(false);
+    setParenStack([]);
   }, []);
 
   const clearEntry = useCallback(() => {
@@ -290,6 +292,106 @@ export default function ExamCalculator({ isOpen, onToggle }: ExamCalculatorProps
     }
   }, [display, memory]);
 
+  const openParen = useCallback(() => {
+    // Push current context onto the stack and reset for a new sub-expression
+    setParenStack(stack => [...stack, { previousValue, operation }]);
+    setPreviousValue(null);
+    setOperation(null);
+    setDisplay('0');
+    setWaitingForOperand(false);
+  }, [previousValue, operation]);
+
+  const closeParen = useCallback(() => {
+    if (parenStack.length === 0) return;
+
+    // First, evaluate the current pending operation inside the parens
+    let result = parseFloat(display);
+    if (operation && previousValue !== null) {
+      switch (operation) {
+        case '+': result = previousValue + result; break;
+        case '-': result = previousValue - result; break;
+        case '×': result = previousValue * result; break;
+        case '÷': result = previousValue / result; break;
+        case 'yˣ': result = Math.pow(previousValue, result); break;
+        case 'nCr': result = combination(previousValue, result); break;
+        case 'nPr': result = permutation(previousValue, result); break;
+      }
+    }
+
+    // Pop the outer context
+    const outer = parenStack[parenStack.length - 1];
+    setParenStack(stack => stack.slice(0, -1));
+    setPreviousValue(outer.previousValue);
+    setOperation(outer.operation);
+    setDisplay(String(result));
+    setWaitingForOperand(true);
+  }, [parenStack, display, operation, previousValue]);
+
+  const backspace = useCallback(() => {
+    if (waitingForOperand) return;
+    if (display.length === 1 || (display.length === 2 && display[0] === '-')) {
+      setDisplay('0');
+    } else {
+      setDisplay(display.slice(0, -1));
+    }
+  }, [display, waitingForOperand]);
+
+  // Keyboard support
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen || isMinimized) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const key = e.key;
+
+      if (key >= '0' && key <= '9') {
+        inputDigit(key);
+      } else if (key === '.') {
+        inputDecimal();
+      } else if (key === '+') {
+        performOperation('+');
+      } else if (key === '-') {
+        performOperation('-');
+      } else if (key === '*') {
+        performOperation('×');
+      } else if (key === '/') {
+        e.preventDefault();
+        performOperation('÷');
+      } else if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        calculate();
+      } else if (key === 'Backspace') {
+        e.preventDefault();
+        backspace();
+      } else if (key === 'Delete' || key === 'c') {
+        clear();
+      } else if (key === 'Escape') {
+        onToggle();
+      } else if (key === '^') {
+        performOperation('yˣ');
+      } else if (key === '!') {
+        unaryOperation('n!');
+      } else if (key === '%') {
+        unaryOperation('%');
+      } else if (key === '(') {
+        openParen();
+      } else if (key === ')') {
+        closeParen();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, isMinimized, inputDigit, inputDecimal, performOperation, calculate, backspace, clear, onToggle, unaryOperation, openParen, closeParen]);
+
+  // Auto-focus calculator container when opened
+  useEffect(() => {
+    if (isOpen && !isMinimized && containerRef.current) {
+      containerRef.current.focus();
+    }
+  }, [isOpen, isMinimized]);
+
   // Button styling - responsive to compact mode
   const numBtn = isCompact
     ? "bg-slate-600 hover:bg-slate-500 text-white font-semibold py-1.5 px-2 rounded transition-colors text-sm"
@@ -318,8 +420,12 @@ export default function ExamCalculator({ isOpen, onToggle }: ExamCalculatorProps
 
   return (
     <div
-      ref={dragRef}
-      className={`bg-slate-800 rounded-xl border border-slate-700 shadow-2xl overflow-hidden transition-all duration-200 ${isCompact ? 'w-52' : 'w-80'}`}
+      ref={(el) => {
+        (dragRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+        (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      }}
+      tabIndex={0}
+      className={`bg-slate-800 rounded-xl border border-slate-700 shadow-2xl overflow-hidden transition-all duration-200 outline-none ${isCompact ? 'w-52' : 'w-80'}`}
       style={{
         position: 'fixed',
         left: `${position.x}px`,
@@ -413,40 +519,52 @@ export default function ExamCalculator({ isOpen, onToggle }: ExamCalculatorProps
 
             {/* Main Calculator Grid */}
             <div className={`grid grid-cols-4 gap-1 ${isCompact ? 'mt-1' : 'mt-2'}`}>
-              {/* Row 1 */}
+              {/* Row 1: Parens + C + CE */}
+              <button onClick={openParen} className={funcBtn}>
+                ({parenStack.length > 0 && <span className="text-[8px] text-blue-300 ml-0.5">{parenStack.length}</span>}
+              </button>
+              <button onClick={closeParen} className={funcBtn}>)</button>
               <button onClick={clear} className={isCompact ? "bg-red-600 hover:bg-red-500 text-white font-semibold py-1.5 px-2 rounded text-sm" : "bg-red-600 hover:bg-red-500 text-white font-semibold py-3 px-4 rounded"}>C</button>
               <button onClick={clearEntry} className={isCompact ? "bg-red-500/70 hover:bg-red-400/70 text-white font-semibold py-1.5 px-2 rounded text-sm" : "bg-red-500/70 hover:bg-red-400/70 text-white font-semibold py-3 px-4 rounded"}>CE</button>
-              <button onClick={toggleSign} className={funcBtn}>±</button>
-              <button onClick={() => performOperation('÷')} className={opBtn}>÷</button>
 
-              {/* Row 2 */}
+              {/* Row 2: ± ⌫ ÷ × */}
+              <button onClick={toggleSign} className={funcBtn}>±</button>
+              <button onClick={backspace} className={funcBtn}>⌫</button>
+              <button onClick={() => performOperation('÷')} className={opBtn}>÷</button>
+              <button onClick={() => performOperation('×')} className={opBtn}>×</button>
+
+              {/* Row 3: 7 8 9 − */}
               <button onClick={() => inputDigit('7')} className={numBtn}>7</button>
               <button onClick={() => inputDigit('8')} className={numBtn}>8</button>
               <button onClick={() => inputDigit('9')} className={numBtn}>9</button>
-              <button onClick={() => performOperation('×')} className={opBtn}>×</button>
+              <button onClick={() => performOperation('-')} className={opBtn}>−</button>
 
-              {/* Row 3 */}
+              {/* Row 4: 4 5 6 + */}
               <button onClick={() => inputDigit('4')} className={numBtn}>4</button>
               <button onClick={() => inputDigit('5')} className={numBtn}>5</button>
               <button onClick={() => inputDigit('6')} className={numBtn}>6</button>
-              <button onClick={() => performOperation('-')} className={opBtn}>−</button>
+              <button onClick={() => performOperation('+')} className={opBtn}>+</button>
 
-              {/* Row 4 */}
+              {/* Row 5: 1 2 3 = */}
               <button onClick={() => inputDigit('1')} className={numBtn}>1</button>
               <button onClick={() => inputDigit('2')} className={numBtn}>2</button>
               <button onClick={() => inputDigit('3')} className={numBtn}>3</button>
-              <button onClick={() => performOperation('+')} className={opBtn}>+</button>
+              <button onClick={calculate} className={isCompact ? "bg-green-600 hover:bg-green-500 text-white font-bold py-1.5 px-2 rounded text-sm row-span-2" : "bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded row-span-2"}>=</button>
 
-              {/* Row 5 */}
+              {/* Row 6: 0 . */}
               <button onClick={() => inputDigit('0')} className={`${numBtn} col-span-2`}>0</button>
               <button onClick={inputDecimal} className={numBtn}>.</button>
-              <button onClick={calculate} className={isCompact ? "bg-green-600 hover:bg-green-500 text-white font-bold py-1.5 px-2 rounded text-sm" : "bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded"}>=</button>
             </div>
           </div>
 
           {/* Footer */}
           <div className={`bg-slate-900/50 text-center ${isCompact ? 'px-2 py-1' : 'px-3 py-2'}`}>
-            <p className={`text-slate-500 ${isCompact ? 'text-[9px]' : 'text-xs'}`}>Exam P Approved Style</p>
+            <div className={`flex items-center justify-center gap-1 text-slate-500 ${isCompact ? 'text-[9px]' : 'text-xs'}`}>
+              <Keyboard className={isCompact ? 'w-2.5 h-2.5' : 'w-3 h-3'} />
+              <span>Keyboard active</span>
+              <span className="mx-1">·</span>
+              <span>Exam P Approved Style</span>
+            </div>
           </div>
         </>
       )}

@@ -149,6 +149,7 @@ Use this to understand the current state of the project across AI sessions.
 | TreeDiagramSimulator | DONE | `/src/components/TreeDiagramSimulator.tsx` | Tree diagram for conditional prob |
 | IndependenceChecker | DONE | `/src/components/IndependenceChecker.tsx` | Tool to check event independence |
 | BayesCalculator | DONE | `/src/components/BayesCalculator.tsx` | Bayes' theorem calculator |
+| ExamCalculator | DONE | `/src/components/ExamCalculator.tsx` | Draggable TI-30X style scientific calculator with keyboard support, parentheses (stack-based), memory, nCr/nPr, factorial, ln, eˣ. Compact/expanded modes. |
 
 ---
 
@@ -170,4 +171,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Section 1.1 now has 21 problems from textbook exercises (Chapter_1.1_Exercises.pdf)*
+*Last Updated: Added keyboard support and parentheses to ExamCalculator (stack-based paren evaluation, backspace, all key bindings)*
