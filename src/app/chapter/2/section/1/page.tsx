@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import PMFExplorer from '@/components/PMFExplorer';
 import HypergeometricSimulator from '@/components/HypergeometricSimulator';
+import FrequencyExplorer from '@/components/FrequencyExplorer';
 import PracticeProblems from '@/components/PracticeProblems';
 
 type TabType = 'learn' | 'simulate' | 'practice';
@@ -260,6 +261,7 @@ function SimulateContent() {
     <div className="space-y-8 pb-20">
       <PMFExplorer />
       <HypergeometricSimulator />
+      <FrequencyExplorer />
     </div>
   );
 }

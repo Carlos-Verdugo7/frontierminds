@@ -1634,6 +1634,27 @@ Since k > 72, k = 78.`,
       hint: 'Set P(same color) = P(different color) = 1/2. Express P(same) using combinations and solve the quadratic.',
       topic: 'Hypergeometric',
     },
+    {
+      id: 20,
+      question: `(2.1-15) Five cards are dealt from a 52-card deck. X = number of face cards (12 total in deck). Forty observations gave:
+{2,1,2,1,0,0,1,0,1,1,0,2,0,2,3,0,1,1,0,3,1,2,0,2,0,2,0,1,0,1,1,2,1,0,1,1,2,1,1,0}
+
+What is the relative frequency of X = 1 from this data?`,
+      options: ['0.375', '0.425', '0.300', '0.250', '0.450'],
+      correctIndex: 0,
+      explanation: `Count occurrences of X = 1 in the data:
+{2,1,2,1,0,0,1,0,1,1,0,2,0,2,3,0,1,1,0,3,1,2,0,2,0,2,0,1,0,1,1,2,1,0,1,1,2,1,1,0}
+
+Count of 1s: 15 (positions 2,4,7,9,10,17,18,21,28,30,31,33,35,36,38,39)
+
+Relative frequency = 15/40 = 0.375
+
+Compare to theoretical: f(1) = C(12,1)·C(40,4)/C(52,5) = 703/1666 ≈ 0.422
+
+The observed 0.375 is close to the theoretical 0.422.`,
+      hint: 'Count how many times 1 appears in the 40 observations, then divide by 40. Use the Frequency Explorer simulator to verify!',
+      topic: 'Relative Frequency',
+    },
   ],
 };
 
