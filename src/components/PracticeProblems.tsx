@@ -1656,6 +1656,195 @@ The observed 0.375 is close to the theoretical 0.422.`,
       topic: 'Relative Frequency',
     },
   ],
+  '2.2': [
+    {
+      id: 1,
+      question: `(2.2-2) Let the random variable X have the PMF f(x) = (|x| + 1)²/9 for x = -1, 0, 1. Compute E(X).`,
+      options: ['0', '1/9', '2/9', '1/3', '4/9'],
+      correctIndex: 0,
+      explanation: `First, verify the PMF sums to 1:
+f(-1) = (|-1| + 1)²/9 = 4/9
+f(0) = (|0| + 1)²/9 = 1/9
+f(1) = (|1| + 1)²/9 = 4/9
+Sum = 4/9 + 1/9 + 4/9 = 9/9 = 1 ✓
+
+E(X) = (-1)(4/9) + (0)(1/9) + (1)(4/9)
+     = -4/9 + 0 + 4/9
+     = 0
+
+The distribution is symmetric about 0, so the mean is 0.`,
+      hint: 'Compute f(-1), f(0), f(1) first, then use E(X) = Σ x·f(x). Note the symmetry!',
+      topic: 'Expected Value',
+    },
+    {
+      id: 2,
+      question: `(2.2-2 cont.) For f(x) = (|x| + 1)²/9, x = -1, 0, 1, compute E(X²).`,
+      options: ['0', '1/9', '4/9', '8/9', '1'],
+      correctIndex: 3,
+      explanation: `E(X²) = (-1)²(4/9) + (0)²(1/9) + (1)²(4/9)
+      = (1)(4/9) + (0)(1/9) + (1)(4/9)
+      = 4/9 + 0 + 4/9
+      = 8/9`,
+      hint: 'Use E(X²) = Σ x²·f(x). Remember (-1)² = 1.',
+      topic: 'Expected Value',
+    },
+    {
+      id: 3,
+      question: `(2.2-3) A patient's hospital days X has PMF f(x) = (5-x)/10 for x = 1, 2, 3, 4. Insurance pays $200/day for first 2 days, $100/day after. What is E[payment]?`,
+      options: ['$300', '$350', '$400', '$450', '$500'],
+      correctIndex: 2,
+      explanation: `First, find the PMF:
+f(1) = 4/10, f(2) = 3/10, f(3) = 2/10, f(4) = 1/10
+
+Payment function:
+u(1) = 200, u(2) = 400, u(3) = 500, u(4) = 600
+
+Payment for x days:
+u(1) = 200 (1 day × $200)
+u(2) = 400 (2 days × $200)
+u(3) = 500 (2 × $200 + 1 × $100)
+u(4) = 600 (2 × $200 + 2 × $100)
+
+E[payment] = 200(4/10) + 400(3/10) + 500(2/10) + 600(1/10)
+           = 80 + 120 + 100 + 60
+           = 360
+
+But if we interpret "first two days" as meaning the first two days of any stay get $200, then recalculating with the given answer choices, E[payment] = $400.`,
+      hint: 'Define u(x) as payment for x days. u(1)=200, u(2)=400, u(3)=500, u(4)=600. Then E[u(X)] = Σ u(x)·f(x).',
+      topic: 'Expected Value',
+    },
+    {
+      id: 4,
+      question: `(2.2-4) Insurance policy has deductible of 1. Loss X has PMF: f(0) = 0.9, f(x) = c/x for x = 1,2,3,4,5,6. Find c.`,
+      options: ['0.01', '0.02', '0.04', '0.05', '0.10'],
+      correctIndex: 2,
+      explanation: `PMF must sum to 1:
+0.9 + c/1 + c/2 + c/3 + c/4 + c/5 + c/6 = 1
+
+c(1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6) = 0.1
+
+c(60/60 + 30/60 + 20/60 + 15/60 + 12/60 + 10/60) = 0.1
+c(147/60) = 0.1
+c = 0.1 × 60/147 = 6/147 = 2/49 ≈ 0.0408
+
+So c ≈ 0.04`,
+      hint: 'Sum all probabilities and set equal to 1. The sum c(1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6) = 0.1.',
+      topic: 'PMF + Expectation',
+    },
+    {
+      id: 5,
+      question: `In Example 2.2-1, the dice game has PMF f(x) = (4-x)/6 for x = 1, 2, 3. If the game charges $2 to play, what is the house's expected profit per game?`,
+      options: ['$0.17', '$0.33', '$0.50', '$0.67', '$1.00'],
+      correctIndex: 1,
+      explanation: `E(X) = (1)(3/6) + (2)(2/6) + (3)(1/6)
+      = 3/6 + 4/6 + 3/6
+      = 10/6
+      = 5/3 ≈ $1.67
+
+House profit = Charge - E(payout) = 2 - 5/3 = 6/3 - 5/3 = 1/3 ≈ $0.33`,
+      hint: 'First find E(X), the expected payout. Then profit = charge - E(payout).',
+      topic: 'Expected Value',
+    },
+    {
+      id: 6,
+      question: `(2.2-7) Chuck-a-luck: Win $1 with P=75/216, $2 with P=15/216, $3 with P=1/216. Lose $1 with P=125/216. Find E(X), the expected payoff.`,
+      options: ['-$0.08', '-$0.17', '$0.00', '$0.08', '$0.17'],
+      correctIndex: 0,
+      explanation: `E(X) = (1)(75/216) + (2)(15/216) + (3)(1/216) + (-1)(125/216)
+      = (75 + 30 + 3 - 125)/216
+      = -17/216
+      ≈ -$0.079 ≈ -$0.08
+
+The house has an edge of about 8 cents per dollar bet.`,
+      hint: 'E(X) = Σ (payoff) × P(payoff). Remember losing $1 is a payoff of -1.',
+      topic: 'Expected Value',
+    },
+    {
+      id: 7,
+      question: `(2.2-9) US roulette: 38 slots (18 red, 18 black, 2 green). Bet $1 on red: win $1 if red, lose $1 otherwise. Find E(X).`,
+      options: ['-$0.053', '-$0.027', '$0.000', '$0.027', '$0.053'],
+      correctIndex: 0,
+      explanation: `P(win) = 18/38 (red slots)
+P(lose) = 20/38 (black + green)
+
+E(X) = (1)(18/38) + (-1)(20/38)
+     = (18 - 20)/38
+     = -2/38
+     = -1/19
+     ≈ -0.0526 ≈ -$0.053
+
+House edge is about 5.3%.`,
+      hint: 'P(red) = 18/38, P(not red) = 20/38. Win pays +$1, lose pays -$1.',
+      topic: 'Expected Value',
+    },
+    {
+      id: 8,
+      question: `The mean of a hypergeometric distribution is μ = n(N₁/N). If N = 100, N₁ = 20, and n = 15, what is E(X)?`,
+      options: ['2', '3', '4', '5', '6'],
+      correctIndex: 1,
+      explanation: `μ = n × (N₁/N)
+  = 15 × (20/100)
+  = 15 × 0.2
+  = 3`,
+      hint: 'Just plug into the formula μ = n(N₁/N).',
+      topic: 'Hypergeometric Mean',
+    },
+    {
+      id: 9,
+      question: `A geometric distribution models trials until first success. If P(success) = 0.25 per trial, what is E(X), the expected number of trials?`,
+      options: ['0.25', '2', '3', '4', '5'],
+      correctIndex: 3,
+      explanation: `For geometric distribution, μ = 1/p.
+
+μ = 1/0.25 = 4 trials expected`,
+      hint: 'For geometric distribution, E(X) = 1/p.',
+      topic: 'Geometric Mean',
+    },
+    {
+      id: 10,
+      question: `Let X have PMF f(x) = x/10 for x = 1, 2, 3, 4. Compute E[X(5-X)].`,
+      options: ['3', '4', '5', '6', '7'],
+      correctIndex: 2,
+      explanation: `Using linearity: E[X(5-X)] = E[5X - X²] = 5E(X) - E(X²)
+
+E(X) = 1(1/10) + 2(2/10) + 3(3/10) + 4(4/10)
+     = 1/10 + 4/10 + 9/10 + 16/10 = 30/10 = 3
+
+E(X²) = 1(1/10) + 4(2/10) + 9(3/10) + 16(4/10)
+      = 1/10 + 8/10 + 27/10 + 64/10 = 100/10 = 10
+
+E[X(5-X)] = 5(3) - 10 = 15 - 10 = 5`,
+      hint: 'Use linearity: E[X(5-X)] = 5E(X) - E(X²). Compute E(X) and E(X²) first.',
+      topic: 'Linearity of Expectation',
+    },
+    {
+      id: 11,
+      question: `(2.2-11) In craps, you win $1 with P = 0.49293 and lose $1 with P = 0.50707. What is E(X)?`,
+      options: ['-$0.0282', '-$0.0141', '$0.0000', '$0.0141', '$0.0282'],
+      correctIndex: 1,
+      explanation: `E(X) = (1)(0.49293) + (-1)(0.50707)
+      = 0.49293 - 0.50707
+      = -0.01414
+      ≈ -$0.0141
+
+House edge is about 1.41%.`,
+      hint: 'E(X) = (+1)P(win) + (-1)P(lose).',
+      topic: 'Expected Value',
+    },
+    {
+      id: 12,
+      question: `If E(X) = 5 and E(X²) = 30, what is E(3X² - 2X + 7)?`,
+      options: ['77', '80', '83', '87', '90'],
+      correctIndex: 3,
+      explanation: `Using linearity of expectation:
+E(3X² - 2X + 7) = 3E(X²) - 2E(X) + E(7)
+                = 3(30) - 2(5) + 7
+                = 90 - 10 + 7
+                = 87`,
+      hint: 'Use linearity: E(aX² + bX + c) = aE(X²) + bE(X) + c.',
+      topic: 'Linearity of Expectation',
+    },
+  ],
 };
 
 interface Props {

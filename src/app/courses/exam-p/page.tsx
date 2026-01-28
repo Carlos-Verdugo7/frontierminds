@@ -21,7 +21,7 @@ const chapters = [
     sections: ['Discrete Random Variables', 'Mathematical Expectation', 'Binomial Distribution', 'Poisson Distribution'],
     examWeight: '20%',
     color: 'from-green-500 to-green-600',
-    problems: 20,
+    problems: 32,
   },
   {
     id: 3,

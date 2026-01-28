@@ -14,9 +14,9 @@ const sections = [
   {
     id: 2,
     title: '2.2 Mathematical Expectation',
-    description: 'Expected value, variance, and properties of expectation',
-    topics: ['E[X]', 'Variance', 'Properties of Expectation'],
-    status: 'coming-soon',
+    description: 'Expected value, mean, linearity of expectation, and distribution means',
+    topics: ['E[X]', 'E[u(X)]', 'Linearity', 'Hypergeometric Mean', 'Geometric Mean'],
+    status: 'available',
   },
   {
     id: 3,
@@ -81,11 +81,11 @@ export default function Chapter2Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">2</p>
+              <p className="text-2xl font-bold text-blue-400">4</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-purple-400">10</p>
+              <p className="text-2xl font-bold text-purple-400">32</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
@@ -98,22 +98,30 @@ export default function Chapter2Page() {
         {/* Key Formulas Preview */}
         <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-xl p-6 border border-green-500/20 mb-8">
           <h3 className="text-xl font-bold text-white mb-4">Key Formulas You'll Learn</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-green-400 font-mono text-sm mb-1">PMF Properties</p>
-              <p className="text-white font-mono">f(x) {'>'} 0, {'  '}{'  '}&Sigma; f(x) = 1</p>
+              <p className="text-white font-mono">f(x) {'>'} 0, &Sigma; f(x) = 1</p>
             </div>
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-green-400 font-mono text-sm mb-1">CDF Definition</p>
-              <p className="text-white font-mono">F(x) = P(X &le; x) = &Sigma; f(t), t &le; x</p>
-            </div>
-            <div className="bg-slate-800/80 rounded-lg p-4">
-              <p className="text-green-400 font-mono text-sm mb-1">Discrete Uniform</p>
-              <p className="text-white font-mono">f(x) = 1/m, x = 1, 2, &hellip;, m</p>
+              <p className="text-white font-mono">F(x) = P(X &le; x)</p>
             </div>
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-green-400 font-mono text-sm mb-1">Hypergeometric</p>
-              <p className="text-white font-mono">f(x) = C(N₁,x)C(N₂,n-x) / C(N,n)</p>
+              <p className="text-white font-mono">f(x) = C(N₁,x)C(N₂,n-x)/C(N,n)</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-yellow-400 font-mono text-sm mb-1">Expected Value</p>
+              <p className="text-white font-mono">E[u(X)] = &Sigma; u(x)f(x)</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-yellow-400 font-mono text-sm mb-1">Hypergeometric Mean</p>
+              <p className="text-white font-mono">&mu; = n(N₁/N)</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-yellow-400 font-mono text-sm mb-1">Geometric Mean</p>
+              <p className="text-white font-mono">&mu; = 1/p</p>
             </div>
           </div>
         </div>

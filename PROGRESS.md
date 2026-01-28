@@ -105,7 +105,7 @@ Use this to understand the current state of the project across AI sessions.
 - **Components**:
   - `PMFExplorer.tsx` - Interactive PMF builder with histogram, CDF step-function toggle, range calculator
   - `HypergeometricSimulator.tsx` - Hypergeometric distribution simulator with visual pool, draw animation, theoretical vs observed comparison
-  - `PracticeProblems.tsx` - 10 Exam P-style problems for section 2.1
+  - `FrequencyExplorer.tsx` - Data entry tool comparing observed frequencies vs theoretical PMF with overlaid histograms
 - **Topics Covered**:
   - What is a Random Variable (mapping outcomes to numbers)
   - Discrete vs Continuous random variables
@@ -114,14 +114,32 @@ Use this to understand the current state of the project across AI sessions.
   - Cumulative Distribution Function (CDF) — staircase function
   - Discrete Uniform Distribution
   - Hypergeometric Distribution (tagged fish example)
-- **Practice Problems** (10 total):
-  - PMF normalization constant, PMF construction (chip bowl), Hypergeometric (defective lot),
-  - Sum of two dice PMF, Min of two dice PMF, Tagged fish hypergeometric,
-  - Conditional probability with PMF, Exam questions hypergeometric,
-  - Face cards hypergeometric, CDF evaluation
+- **Practice Problems** (20 total):
+  - PMF normalization constant, PMF construction (chip bowl), Hypergeometric (defective lot)
+  - Sum of two dice PMF, Min of two dice PMF, Tagged fish hypergeometric
+  - Conditional probability with PMF, Exam questions hypergeometric, Face cards hypergeometric, CDF evaluation
+  - Textbook 2.1-10 through 2.1-17: defective lots, light bulbs, essay questions, underweight packages, Michigan Math Prize, ping-pong balls
+  - Face cards relative frequency from 40 observations (2.1-15)
+
+### Section 2.2: Mathematical Expectation
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/2/page.tsx`
+- **Components**:
+  - `ExpectationCalculator.tsx` - Interactive calculator for E[X], E[X²], E[u(X)] with step-by-step computation, function selector, preset distributions
+- **Topics Covered**:
+  - Definition of Mathematical Expectation E[u(X)] = Σ u(x)f(x)
+  - Mean of X: μ = E(X)
+  - Expected value of functions without finding PMF of Y = u(X)
+  - Properties of Expectation (Linearity): E(c)=c, E[cu(X)]=cE[u(X)], E[c₁u₁+c₂u₂]=c₁E[u₁]+c₂E[u₂]
+  - Mean minimizes E[(X-b)²]
+  - Mean of Hypergeometric: μ = n(N₁/N)
+  - Geometric distribution PMF and mean: μ = 1/p
+- **Practice Problems** (12 total):
+  - E(X), E(X²) computation, Hospital insurance payment, PMF constant determination
+  - Dice game profit, Chuck-a-luck expected value, US roulette expected value
+  - Hypergeometric mean, Geometric mean, Linearity of expectation, Craps expected value
 
 ### Remaining Sections (NOT STARTED):
-  - 2.2: Mathematical Expectation
   - 2.3: Special Mathematical Expectations
   - 2.4: Binomial Distribution
   - 2.5: Negative Binomial Distribution
@@ -173,6 +191,8 @@ Use this to understand the current state of the project across AI sessions.
 | ExamCalculator | DONE | `/src/components/ExamCalculator.tsx` | Draggable TI-30X style scientific calculator with keyboard support, parentheses (stack-based), memory, nCr/nPr, factorial, ln, eˣ. Compact/expanded modes. |
 | PMFExplorer | DONE | `/src/components/PMFExplorer.tsx` | Interactive PMF builder with presets, editable table, SVG histogram, CDF step-function, range calculator |
 | HypergeometricSimulator | DONE | `/src/components/HypergeometricSimulator.tsx` | Hypergeometric distribution simulator with parameter sliders, visual pool, draw sampling, theoretical vs observed overlay |
+| FrequencyExplorer | DONE | `/src/components/FrequencyExplorer.tsx` | Data entry tool comparing observed frequencies vs theoretical PMF with overlaid histograms |
+| ExpectationCalculator | DONE | `/src/components/ExpectationCalculator.tsx` | Interactive E[X], E[X²], E[u(X)] calculator with step-by-step computation, function selector, preset distributions |
 
 ---
 
@@ -194,4 +214,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added Chapter 2.1 — Random Variables of the Discrete Type (PMFExplorer, HypergeometricSimulator, 10 practice problems, 7 learn sections)*
+*Last Updated: Added Chapter 2.2 — Mathematical Expectation (ExpectationCalculator, 12 practice problems, 7 learn sections)*
