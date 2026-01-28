@@ -1300,6 +1300,180 @@ P(N|D) = P(N)P(D|N) / P(D)
       topic: 'Bayes\' Theorem',
     },
   ],
+  '2.1': [
+    {
+      id: 1,
+      question: `A discrete random variable X has PMF f(x) = cx for x = 1, 2, 3, 4. Find the value of the constant c.`,
+      options: ['1/4', '1/8', '1/10', '1/5', '1/16'],
+      correctIndex: 2,
+      explanation: `For a valid PMF, Σf(x) = 1.
+
+c(1) + c(2) + c(3) + c(4) = 1
+c(1 + 2 + 3 + 4) = 1
+10c = 1
+c = 1/10`,
+      hint: 'Sum f(x) over all x in the support and set it equal to 1.',
+      topic: 'PMF Properties',
+    },
+    {
+      id: 2,
+      question: `A bowl contains 6 white chips, 3 red chips, and 1 blue chip. A chip is drawn at random. Let X = 0 if white, X = 1 if red, X = 5 if blue. What is f(1), the PMF evaluated at x = 1?`,
+      options: ['0.1', '0.3', '0.5', '0.6', '1.0'],
+      correctIndex: 1,
+      explanation: `There are 6 + 3 + 1 = 10 chips total.
+
+f(1) = P(X = 1) = P(red chip) = 3/10 = 0.3
+
+The full PMF is:
+f(0) = 6/10 = 0.6
+f(1) = 3/10 = 0.3
+f(5) = 1/10 = 0.1`,
+      hint: 'X = 1 corresponds to drawing a red chip. Count the red chips and divide by the total.',
+      topic: 'PMF Construction',
+    },
+    {
+      id: 3,
+      question: `A lot contains 25 items, of which 5 are defective. A sample of 4 items is drawn without replacement. What is P(X = 1), where X is the number of defective items in the sample?`,
+      options: ['0.4506', '0.4825', '0.3795', '0.2373', '0.5000'],
+      correctIndex: 0,
+      explanation: `This is hypergeometric with N = 25, N₁ = 5 (defective), N₂ = 20, n = 4.
+
+P(X = 1) = C(5,1)·C(20,3) / C(25,4)
+
+C(5,1) = 5
+C(20,3) = 1140
+C(25,4) = 12650
+
+P(X = 1) = 5 × 1140 / 12650 = 5700 / 12650 ≈ 0.4506`,
+      hint: 'Use the hypergeometric PMF: f(x) = C(N₁,x)·C(N₂,n-x) / C(N,n).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 4,
+      question: `Two fair six-sided dice are rolled and X is their sum. What is P(X = 7)?`,
+      options: ['1/12', '5/36', '1/6', '7/36', '1/4'],
+      correctIndex: 2,
+      explanation: `The pairs that sum to 7 are:
+(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)
+
+That's 6 outcomes out of 36 total.
+
+P(X = 7) = 6/36 = 1/6`,
+      hint: 'List all (i, j) pairs where i + j = 7. How many are there out of 36 total outcomes?',
+      topic: 'PMF',
+    },
+    {
+      id: 5,
+      question: `Two fair six-sided dice are rolled and X = min(die 1, die 2). Find P(X ≤ 2).`,
+      options: ['11/36', '15/36', '20/36', '25/36', '8/36'],
+      correctIndex: 2,
+      explanation: `P(X ≤ 2) = P(min ≤ 2) = 1 - P(min ≥ 3)
+
+P(min ≥ 3) means both dice ≥ 3.
+Each die is ≥ 3 with prob 4/6 = 2/3.
+P(min ≥ 3) = (4/6)² = 16/36
+
+P(X ≤ 2) = 1 - 16/36 = 20/36`,
+      hint: 'Use the complement: P(min ≤ 2) = 1 - P(min ≥ 3). For the min to be ≥ 3, BOTH dice must be ≥ 3.',
+      topic: 'PMF Construction',
+    },
+    {
+      id: 6,
+      question: `A pond has 50 fish, 10 of which are tagged. You catch 7 fish (without replacement). What is the probability that exactly 2 are tagged?`,
+      options: ['0.2964', '0.3182', '0.2500', '0.1500', '0.3500'],
+      correctIndex: 0,
+      explanation: `Hypergeometric with N = 50, N₁ = 10 (tagged), N₂ = 40, n = 7.
+
+P(X = 2) = C(10,2)·C(40,5) / C(50,7)
+
+C(10,2) = 45
+C(40,5) = 658,008
+C(50,7) = 99,884,400
+
+P(X = 2) = 45 × 658,008 / 99,884,400
+         = 29,610,360 / 99,884,400
+         ≈ 0.2964`,
+      hint: 'This is hypergeometric: tagged fish are "successes." Use f(x) = C(10,x)·C(40,7-x) / C(50,7).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 7,
+      question: `A discrete RV X has PMF:
+f(1) = 0.2, f(2) = 0.3, f(3) = 0.3, f(4) = 0.2
+
+Find P(X ≥ 2 | X ≥ 1).`,
+      options: ['0.80', '1.00', '0.75', '0.50', '0.60'],
+      correctIndex: 1,
+      explanation: `P(X ≥ 2 | X ≥ 1) = P(X ≥ 2 AND X ≥ 1) / P(X ≥ 1)
+
+Since X ≥ 2 implies X ≥ 1:
+= P(X ≥ 2) / P(X ≥ 1)
+
+P(X ≥ 2) = f(2) + f(3) + f(4) = 0.3 + 0.3 + 0.2 = 0.8
+P(X ≥ 1) = f(1) + f(2) + f(3) + f(4) = 1.0
+
+P(X ≥ 2 | X ≥ 1) = 0.8 / 1.0 = 0.80
+
+Wait — the support is {1,2,3,4}, so P(X ≥ 1) = 1.
+
+Answer: 0.80`,
+      hint: 'Use the conditional probability definition. Note that X ≥ 2 is a subset of X ≥ 1 here.',
+      topic: 'Conditional + PMF',
+    },
+    {
+      id: 8,
+      question: `An exam has 10 questions. You studied 7 of them. The exam randomly picks 4 questions. What is the probability that all 4 questions are ones you studied?`,
+      options: ['1/6', '7/30', '1/3', '2/5', '7/10'],
+      correctIndex: 0,
+      explanation: `Hypergeometric with N = 10, N₁ = 7 (studied), N₂ = 3, n = 4.
+
+P(X = 4) = C(7,4)·C(3,0) / C(10,4)
+
+C(7,4) = 35
+C(3,0) = 1
+C(10,4) = 210
+
+P(X = 4) = 35/210 = 1/6`,
+      hint: 'All 4 must come from the 7 studied. Use hypergeometric with x = 4.',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 9,
+      question: `A standard 52-card deck has 12 face cards. You are dealt 5 cards. What is the probability of getting exactly 2 face cards?`,
+      options: ['0.2509', '0.2353', '0.3456', '0.1500', '0.3251'],
+      correctIndex: 0,
+      explanation: `Hypergeometric: N = 52, N₁ = 12 (face cards), N₂ = 40, n = 5.
+
+P(X = 2) = C(12,2)·C(40,3) / C(52,5)
+
+C(12,2) = 66
+C(40,3) = 9,880
+C(52,5) = 2,598,960
+
+P(X = 2) = 66 × 9,880 / 2,598,960
+         = 652,080 / 2,598,960
+         ≈ 0.2509`,
+      hint: 'Use the hypergeometric PMF with face cards as "successes." N=52, N₁=12, n=5, x=2.',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 10,
+      question: `A discrete RV X has PMF:
+f(0) = 0.1, f(1) = 0.3, f(2) = 0.3, f(3) = 0.2, f(4) = 0.1
+
+Find F(2) and P(1 < X ≤ 3).`,
+      options: ['F(2) = 0.7, P = 0.5', 'F(2) = 0.4, P = 0.8', 'F(2) = 0.7, P = 0.8', 'F(2) = 0.6, P = 0.5', 'F(2) = 0.7, P = 0.6'],
+      correctIndex: 0,
+      explanation: `F(2) = P(X ≤ 2) = f(0) + f(1) + f(2) = 0.1 + 0.3 + 0.3 = 0.7
+
+P(1 < X ≤ 3) = f(2) + f(3) = 0.3 + 0.2 = 0.5
+
+Note: 1 < X means X ≥ 2 (since X is discrete integer-valued).
+So we need X = 2, 3.`,
+      hint: 'F(2) = P(X ≤ 2) = sum of f(x) for x = 0, 1, 2. For P(1 < X ≤ 3), note "1 < X" means X ≥ 2 for integer X.',
+      topic: 'CDF',
+    },
+  ],
 };
 
 interface Props {

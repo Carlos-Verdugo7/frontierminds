@@ -97,9 +97,30 @@ Use this to understand the current state of the project across AI sessions.
 ---
 
 ## Chapter 2: Discrete Distributions (Exam Weight: ~20%)
-- **Status**: NOT STARTED
-- **Sections**:
-  - 2.1: Random Variables of the Discrete Type
+- **Status**: IN PROGRESS
+
+### Section 2.1: Random Variables of the Discrete Type
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/1/page.tsx`
+- **Components**:
+  - `PMFExplorer.tsx` - Interactive PMF builder with histogram, CDF step-function toggle, range calculator
+  - `HypergeometricSimulator.tsx` - Hypergeometric distribution simulator with visual pool, draw animation, theoretical vs observed comparison
+  - `PracticeProblems.tsx` - 10 Exam P-style problems for section 2.1
+- **Topics Covered**:
+  - What is a Random Variable (mapping outcomes to numbers)
+  - Discrete vs Continuous random variables
+  - Probability Mass Function (PMF) — definition & properties
+  - Building a PMF from scratch (max of two dice example)
+  - Cumulative Distribution Function (CDF) — staircase function
+  - Discrete Uniform Distribution
+  - Hypergeometric Distribution (tagged fish example)
+- **Practice Problems** (10 total):
+  - PMF normalization constant, PMF construction (chip bowl), Hypergeometric (defective lot),
+  - Sum of two dice PMF, Min of two dice PMF, Tagged fish hypergeometric,
+  - Conditional probability with PMF, Exam questions hypergeometric,
+  - Face cards hypergeometric, CDF evaluation
+
+### Remaining Sections (NOT STARTED):
   - 2.2: Mathematical Expectation
   - 2.3: Special Mathematical Expectations
   - 2.4: Binomial Distribution
@@ -150,6 +171,8 @@ Use this to understand the current state of the project across AI sessions.
 | IndependenceChecker | DONE | `/src/components/IndependenceChecker.tsx` | Tool to check event independence |
 | BayesCalculator | DONE | `/src/components/BayesCalculator.tsx` | Bayes' theorem calculator |
 | ExamCalculator | DONE | `/src/components/ExamCalculator.tsx` | Draggable TI-30X style scientific calculator with keyboard support, parentheses (stack-based), memory, nCr/nPr, factorial, ln, eˣ. Compact/expanded modes. |
+| PMFExplorer | DONE | `/src/components/PMFExplorer.tsx` | Interactive PMF builder with presets, editable table, SVG histogram, CDF step-function, range calculator |
+| HypergeometricSimulator | DONE | `/src/components/HypergeometricSimulator.tsx` | Hypergeometric distribution simulator with parameter sliders, visual pool, draw sampling, theoretical vs observed overlay |
 
 ---
 
@@ -171,4 +194,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added keyboard support and parentheses to ExamCalculator (stack-based paren evaluation, backspace, all key bindings)*
+*Last Updated: Added Chapter 2.1 — Random Variables of the Discrete Type (PMFExplorer, HypergeometricSimulator, 10 practice problems, 7 learn sections)*
