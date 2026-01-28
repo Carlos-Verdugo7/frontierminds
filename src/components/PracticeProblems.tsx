@@ -1410,13 +1410,9 @@ Since X ≥ 2 implies X ≥ 1:
 = P(X ≥ 2) / P(X ≥ 1)
 
 P(X ≥ 2) = f(2) + f(3) + f(4) = 0.3 + 0.3 + 0.2 = 0.8
-P(X ≥ 1) = f(1) + f(2) + f(3) + f(4) = 1.0
+P(X ≥ 1) = f(1) + f(2) + f(3) + f(4) = 1.0 (entire support)
 
-P(X ≥ 2 | X ≥ 1) = 0.8 / 1.0 = 0.80
-
-Wait — the support is {1,2,3,4}, so P(X ≥ 1) = 1.
-
-Answer: 0.80`,
+P(X ≥ 2 | X ≥ 1) = 0.8 / 1.0 = 0.80`,
       hint: 'Use the conditional probability definition. Note that X ≥ 2 is a subset of X ≥ 1 here.',
       topic: 'Conditional + PMF',
     },
@@ -1472,6 +1468,171 @@ Note: 1 < X means X ≥ 2 (since X is discrete integer-valued).
 So we need X = 2, 3.`,
       hint: 'F(2) = P(X ≤ 2) = sum of f(x) for x = 0, 1, 2. For P(1 < X ≤ 3), note "1 < X" means X ≥ 2 for integer X.',
       topic: 'CDF',
+    },
+    {
+      id: 11,
+      question: `(2.1-10a) A lot of 50 items contains 3 defective items. A sample of 10 is drawn without replacement. Let X = number of defective items. Find P(X = 1).`,
+      options: ['0.3980', '0.4313', '0.5041', '0.2500', '0.3500'],
+      correctIndex: 0,
+      explanation: `Hypergeometric: N = 50, N₁ = 3, N₂ = 47, n = 10.
+
+P(X = 1) = C(3,1)·C(47,9) / C(50,10)
+
+C(3,1) = 3
+C(47,9) = 1,362,649,145
+C(50,10) = 10,272,278,170
+
+P(X = 1) = 3 × 1,362,649,145 / 10,272,278,170
+         ≈ 0.3980`,
+      hint: 'Hypergeometric: f(x) = C(3,x)·C(47,10-x) / C(50,10).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 12,
+      question: `(2.1-10b) A lot of 50 items contains 3 defective items. A sample of 10 is drawn without replacement. Let X = number of defective items. Find P(X ≤ 1).`,
+      options: ['0.9020', '0.8600', '0.9500', '0.5041', '0.3980'],
+      correctIndex: 0,
+      explanation: `P(X ≤ 1) = P(X = 0) + P(X = 1)
+
+P(X = 0) = C(3,0)·C(47,10) / C(50,10) ≈ 0.5041
+P(X = 1) = C(3,1)·C(47,9) / C(50,10) ≈ 0.3980
+
+P(X ≤ 1) ≈ 0.5041 + 0.3980 = 0.9020`,
+      hint: 'P(X ≤ 1) = P(X = 0) + P(X = 1). Compute each using the hypergeometric PMF.',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 13,
+      question: `(2.1-11) A lot of 100 light bulbs contains 5 defective. An inspector checks 10 bulbs at random. Find the probability of finding at least one defective bulb.`,
+      options: ['0.4162', '0.5000', '0.3500', '0.5838', '0.6500'],
+      correctIndex: 0,
+      explanation: `Use complement: P(X ≥ 1) = 1 - P(X = 0)
+
+P(X = 0) = C(5,0)·C(95,10) / C(100,10)
+
+C(95,10) / C(100,10) = (95·94·93·92·91·90·89·88·87·86) / (100·99·98·97·96·95·94·93·92·91)
+
+This simplifies to:
+= (90·89·88·87·86) / (100·99·98·97·96)
+= 5,273,912,160 / 9,034,502,400
+≈ 0.5838
+
+P(X ≥ 1) = 1 - 0.5838 = 0.4162`,
+      hint: 'Use the complement: P(at least 1) = 1 - P(none defective). P(X=0) = C(95,10)/C(100,10).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 14,
+      question: `(2.1-13a) A professor gives 6 essay questions; the test will have 3. A student studies only 3 questions. What is the probability that at least one studied question appears on the test?`,
+      options: ['19/20', '1/2', '17/20', '9/10', '3/4'],
+      correctIndex: 0,
+      explanation: `Let X = number of studied questions on the test.
+Hypergeometric: N = 6, N₁ = 3 (studied), N₂ = 3, n = 3.
+
+P(X ≥ 1) = 1 - P(X = 0)
+
+P(X = 0) = C(3,0)·C(3,3) / C(6,3) = 1·1/20 = 1/20
+
+P(X ≥ 1) = 1 - 1/20 = 19/20`,
+      hint: 'Use complement: 1 - P(none of the studied questions are selected). This is hypergeometric with small numbers.',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 15,
+      question: `(2.1-13b) A professor gives 6 essay questions; the test will have 3. A student studies only 3 questions. What is the probability that all 3 studied questions are on the test?`,
+      options: ['1/20', '3/20', '1/6', '1/10', '3/10'],
+      correctIndex: 0,
+      explanation: `Hypergeometric: N = 6, N₁ = 3 (studied), N₂ = 3, n = 3.
+
+P(X = 3) = C(3,3)·C(3,0) / C(6,3) = 1·1/20 = 1/20`,
+      hint: 'All 3 test questions must come from the 3 studied. Use C(3,3)·C(3,0)/C(6,3).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 16,
+      question: `(2.1-13c) A professor gives 6 essay questions; the test will have 3. A student studies only 3 questions. What is the probability that exactly 2 studied questions are on the test?`,
+      options: ['9/20', '3/20', '6/20', '1/2', '3/10'],
+      correctIndex: 0,
+      explanation: `Hypergeometric: N = 6, N₁ = 3 (studied), N₂ = 3, n = 3.
+
+P(X = 2) = C(3,2)·C(3,1) / C(6,3)
+         = 3 × 3 / 20
+         = 9/20`,
+      hint: 'Choose 2 from the 3 studied AND 1 from the 3 not studied.',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 17,
+      question: `(2.1-14) There are 20 one-pound frozen turkey packages, 3 are underweight. A consumer buys 5 packages at random. What is the probability at least one is underweight?`,
+      options: ['0.6009', '0.3991', '0.2500', '0.7500', '0.5000'],
+      correctIndex: 0,
+      explanation: `Use complement: P(X ≥ 1) = 1 - P(X = 0)
+
+Hypergeometric: N = 20, N₁ = 3 (underweight), N₂ = 17, n = 5.
+
+P(X = 0) = C(3,0)·C(17,5) / C(20,5)
+         = 1 × 6188 / 15504
+         = 6188 / 15504
+         ≈ 0.3991
+
+P(X ≥ 1) = 1 - 0.3991 = 0.6009`,
+      hint: 'Complement method: 1 - P(all 5 packages are normal weight).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 18,
+      question: `(2.1-16a) From {1, 2, ..., 10}, select 6 distinct integers and arrange in order. What is P(2, 1, 6, 10) — the probability that the integer 2 is in position 1 (smallest)?`,
+      options: ['4/15', '1/6', '8/15', '1/5', '2/15'],
+      correctIndex: 0,
+      explanation: `P(i, r, k, n) = C(i-1, r-1)·C(n-i, k-r) / C(n, k)
+
+P(2, 1, 6, 10) = C(1, 0)·C(8, 5) / C(10, 6)
+
+For 2 to be the smallest (position 1):
+- 2 must be selected
+- 1 must NOT be selected
+- Remaining 5 chosen from {3, 4, ..., 10}: C(8, 5) = 56
+
+Total: C(10, 6) = 210
+
+P = 56/210 = 4/15`,
+      hint: 'For integer i to be in position r, there must be exactly r-1 integers less than i chosen. Use P(i,r,k,n) = C(i-1,r-1)·C(n-i,k-r)/C(n,k).',
+      topic: 'Hypergeometric',
+    },
+    {
+      id: 19,
+      question: `(2.1-17) A bag has 144 ping-pong balls. More than half are orange, the rest blue. Two balls drawn without replacement have equal probability of being same color vs different colors. How many orange balls?`,
+      options: ['84', '78', '80', '76', '72'],
+      correctIndex: 1,
+      explanation: `Let k = number of orange balls (k > 72).
+
+P(same color) = P(different color) = 1/2
+
+P(same) = C(k,2) + C(144-k,2)  all over  C(144,2)
+
+Setting P(same) = 1/2:
+
+C(k,2) + C(144-k,2) = C(144,2)/2
+
+k(k-1)/2 + (144-k)(143-k)/2 = 144·143/4
+
+k(k-1) + (144-k)(143-k) = 144·143/2 = 10296
+
+Expand:
+k² - k + 20592 - 287k + k² = 10296
+2k² - 288k + 20592 = 10296
+2k² - 288k + 10296 = 0
+k² - 144k + 5148 = 0
+
+k = (144 ± √(20736 - 20592)) / 2
+  = (144 ± √144) / 2
+  = (144 ± 12) / 2
+
+k = 78 or k = 66
+
+Since k > 72, k = 78.`,
+      hint: 'Set P(same color) = P(different color) = 1/2. Express P(same) using combinations and solve the quadratic.',
+      topic: 'Hypergeometric',
     },
   ],
 };
