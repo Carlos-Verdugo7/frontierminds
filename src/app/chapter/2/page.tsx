@@ -21,9 +21,9 @@ const sections = [
   {
     id: 3,
     title: '2.3 Special Mathematical Expectations',
-    description: 'Moment generating functions and special expectations',
-    topics: ['MGF', 'Moments', 'Variance Shortcut'],
-    status: 'coming-soon',
+    description: 'Variance, standard deviation, moments, and moment-generating functions',
+    topics: ['Variance', 'Standard Deviation', 'MGF', 'Moments', 'Factorial Moments', 'Geometric Variance'],
+    status: 'available',
   },
   {
     id: 4,
@@ -81,11 +81,11 @@ export default function Chapter2Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">4</p>
+              <p className="text-2xl font-bold text-blue-400">5</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-purple-400">32</p>
+              <p className="text-2xl font-bold text-purple-400">44</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
@@ -122,6 +122,18 @@ export default function Chapter2Page() {
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-yellow-400 font-mono text-sm mb-1">Geometric Mean</p>
               <p className="text-white font-mono">&mu; = 1/p</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-purple-400 font-mono text-sm mb-1">Variance Shortcut</p>
+              <p className="text-white font-mono">&sigma;&sup2; = E(X&sup2;) - &mu;&sup2;</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-purple-400 font-mono text-sm mb-1">MGF Definition</p>
+              <p className="text-white font-mono">M(t) = E(e<sup>tX</sup>)</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-purple-400 font-mono text-sm mb-1">Geometric Variance</p>
+              <p className="text-white font-mono">&sigma;&sup2; = q/p&sup2;</p>
             </div>
           </div>
         </div>

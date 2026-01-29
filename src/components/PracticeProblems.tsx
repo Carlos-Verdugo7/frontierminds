@@ -1845,6 +1845,182 @@ E(3X² - 2X + 7) = 3E(X²) - 2E(X) + E(7)
       topic: 'Linearity of Expectation',
     },
   ],
+  '2.3': [
+    {
+      id: 1,
+      question: `A discrete random variable X has the PMF f(x) = 1/5 for x = 5, 10, 15, 20, 25. What is the variance of X?`,
+      options: ['25', '50', '62.5', '75', '100'],
+      correctIndex: 1,
+      explanation: `μ = (5 + 10 + 15 + 20 + 25)/5 = 75/5 = 15
+
+E(X²) = (25 + 100 + 225 + 400 + 625)/5 = 1375/5 = 275
+
+σ² = E(X²) - μ² = 275 - 225 = 50`,
+      hint: 'Use the shortcut formula: σ² = E(X²) - μ². First find μ = E(X), then E(X²).',
+      topic: 'Variance Shortcut',
+    },
+    {
+      id: 2,
+      question: `Let X have PMF f(x) = (4 - x)/6 for x = 1, 2, 3. What is the variance of X?`,
+      options: ['1/9', '5/9', '2/3', '1', '4/9'],
+      correctIndex: 1,
+      explanation: `f(1) = 3/6, f(2) = 2/6, f(3) = 1/6
+
+μ = 1(3/6) + 2(2/6) + 3(1/6) = 10/6 = 5/3
+
+E(X²) = 1(3/6) + 4(2/6) + 9(1/6) = 20/6
+
+σ² = 20/6 - (5/3)² = 20/6 - 25/9 = (60 - 50)/18 = 10/18 = 5/9`,
+      hint: 'Compute μ = E(X), then E(X²), then use σ² = E(X²) - μ².',
+      topic: 'Variance Shortcut',
+    },
+    {
+      id: 3,
+      question: `For the distribution f(x) = [3!/(x!(3-x)!)](1/4)^x (3/4)^(3-x), x = 0, 1, 2, 3, find the variance using the factorial moment method: σ² = E[X(X-1)] + E(X) - μ².`,
+      options: ['3/16', '9/16', '3/4', '1/4', '3/8'],
+      correctIndex: 1,
+      explanation: `This is Binomial(n=3, p=1/4).
+
+PMF: f(0) = 27/64, f(1) = 27/64, f(2) = 9/64, f(3) = 1/64
+
+μ = E(X) = 0(27/64) + 1(27/64) + 2(9/64) + 3(1/64) = 48/64 = 3/4
+
+E[X(X-1)] = 0 + 0 + 2(1)(9/64) + 3(2)(1/64) = 18/64 + 6/64 = 24/64 = 3/8
+
+σ² = 3/8 + 3/4 - (3/4)² = 3/8 + 3/4 - 9/16 = 6/16 + 12/16 - 9/16 = 9/16`,
+      hint: 'Compute E(X), E[X(X-1)] = Σx(x-1)f(x), then σ² = E[X(X-1)] + E(X) - μ².',
+      topic: 'Factorial Moment',
+    },
+    {
+      id: 4,
+      question: `Given E(X + 4) = 10 and E[(X + 4)²] = 116, what is Var(X)?`,
+      options: ['4', '10', '16', '36', '100'],
+      correctIndex: 2,
+      explanation: `E(X + 4) = E(X) + 4 = 10, so E(X) = 6.
+
+Var(X + 4) = E[(X + 4)²] - [E(X + 4)]² = 116 - 100 = 16
+
+Since adding a constant doesn't change variance:
+Var(X + 4) = Var(X) = 16`,
+      hint: 'Recall Var(X + b) = Var(X) — adding a constant doesn\'t change variance. Also Var(Y) = E(Y²) - [E(Y)]².',
+      topic: 'Linear Transformation',
+    },
+    {
+      id: 5,
+      question: `Eight chips in a bowl: 3 with number 1, 2 with number 2, 3 with number 3. Each chip equally likely. What is the variance of X (the chip number)?`,
+      options: ['0.50', '0.75', '1.00', '1.25', '0.875'],
+      correctIndex: 1,
+      explanation: `PMF: f(1) = 3/8, f(2) = 2/8, f(3) = 3/8
+
+μ = 1(3/8) + 2(2/8) + 3(3/8) = (3 + 4 + 9)/8 = 16/8 = 2
+
+E(X²) = 1(3/8) + 4(2/8) + 9(3/8) = (3 + 8 + 27)/8 = 38/8 = 19/4
+
+σ² = 19/4 - 4 = 19/4 - 16/4 = 3/4 = 0.75`,
+      hint: 'The PMF is f(1) = 3/8, f(2) = 2/8, f(3) = 3/8. Use σ² = E(X²) - μ².',
+      topic: 'Variance Shortcut',
+    },
+    {
+      id: 6,
+      question: `Let X be uniform on {1, 2, ..., m}. Find the value of m for which E(X) = Var(X).`,
+      options: ['5', '6', '7', '9', '12'],
+      correctIndex: 2,
+      explanation: `For uniform on {1, ..., m}:
+μ = (m+1)/2 and σ² = (m²-1)/12
+
+Setting E(X) = Var(X):
+(m+1)/2 = (m²-1)/12
+6(m+1) = m²-1
+6m + 6 = m² - 1
+m² - 6m - 7 = 0
+(m-7)(m+1) = 0
+
+Since m > 0, m = 7.`,
+      hint: 'For uniform on {1, ..., m}: μ = (m+1)/2 and σ² = (m²-1)/12. Set them equal and solve the quadratic.',
+      topic: 'Discrete Uniform',
+    },
+    {
+      id: 7,
+      question: `The max of two fair 4-sided dice has PMF f(x) = (2x-1)/16, x = 1, 2, 3, 4. What is the standard deviation?`,
+      options: ['0.7500', '0.8594', '0.9270', '1.0000', '1.0625'],
+      correctIndex: 2,
+      explanation: `μ = 1(1/16) + 2(3/16) + 3(5/16) + 4(7/16)
+= (1 + 6 + 15 + 28)/16 = 50/16 = 3.125
+
+E(X²) = 1(1/16) + 4(3/16) + 9(5/16) + 16(7/16)
+= (1 + 12 + 45 + 112)/16 = 170/16 = 10.625
+
+σ² = 10.625 - 3.125² = 10.625 - 9.7656 = 0.8594
+σ = √0.8594 ≈ 0.9270`,
+      hint: 'Compute μ, E(X²), then σ² = E(X²) - μ², and σ = √σ².',
+      topic: 'Variance Shortcut',
+    },
+    {
+      id: 8,
+      question: `A warranty on a $10,000 product pays $8000 if failure in year 1, $6000 in year 2, $4000 in year 3, $2000 in year 4. P(fail year 1) = 0.1, and P(fail in any subsequent year | survived) = 0.1. What is the expected warranty payout?`,
+      options: ['$1200.00', '$1500.00', '$1809.80', '$2000.00', '$2500.00'],
+      correctIndex: 2,
+      explanation: `P(fail yr 1) = 0.1
+P(fail yr 2) = (0.9)(0.1) = 0.09
+P(fail yr 3) = (0.9)²(0.1) = 0.081
+P(fail yr 4) = (0.9)³(0.1) = 0.0729
+
+E(payout) = 8000(0.1) + 6000(0.09) + 4000(0.081) + 2000(0.0729)
+= 800 + 540 + 324 + 145.80 = $1809.80`,
+      hint: 'Find P(fail in year k) = (0.9)^(k-1)(0.1) for each year, then compute the weighted average payout.',
+      topic: 'Expected Value Application',
+    },
+    {
+      id: 9,
+      question: `If the moment-generating function of X is M(t) = (2/5)eᵗ + (1/5)e²ᵗ + (2/5)e³ᵗ, what is the variance of X?`,
+      options: ['0.4', '0.6', '0.8', '1.0', '1.2'],
+      correctIndex: 2,
+      explanation: `From the MGF, the PMF is: f(1) = 2/5, f(2) = 1/5, f(3) = 2/5.
+
+μ = M'(0) = 1(2/5) + 2(1/5) + 3(2/5) = (2 + 2 + 6)/5 = 10/5 = 2
+
+E(X²) = M''(0) = 1(2/5) + 4(1/5) + 9(2/5) = (2 + 4 + 18)/5 = 24/5 = 4.8
+
+σ² = 4.8 - 4 = 0.8`,
+      hint: 'Read the PMF from the MGF coefficients, then compute μ and σ² = E(X²) - μ².',
+      topic: 'Moment-Generating Function',
+    },
+    {
+      id: 10,
+      question: `On a multiple-choice test with 5 options per question, a student guesses randomly. What is the probability that the first correct answer is on question 4?`,
+      options: ['0.0640', '0.1024', '0.1280', '0.1500', '0.2000'],
+      correctIndex: 1,
+      explanation: `This is a geometric distribution with p = 1/5 = 0.2.
+
+P(X = 4) = (1 - p)³ · p = (0.8)³(0.2) = (0.512)(0.2) = 0.1024`,
+      hint: 'Geometric PMF: f(x) = (1-p)^(x-1) · p. Here p = 1/5.',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 11,
+      question: `A machine produces defective items with probability 0.01. Items are checked one by one. What is the probability that at least 100 items must be checked to find a defective one?`,
+      options: ['0.3697', '0.3340', '0.2650', '0.4012', '0.5000'],
+      correctIndex: 0,
+      explanation: `X = number of items until first defective is geometric with p = 0.01.
+
+P(X ≥ 100) = P(first 99 are not defective)
+= (1 - 0.01)⁹⁹ = 0.99⁹⁹ ≈ 0.3697`,
+      hint: 'P(X ≥ k) = q^(k-1) for a geometric random variable.',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 12,
+      question: `Apples are packaged in 3-pound bags. 4% of the time the bag weighs less than 3 pounds. You weigh bags until finding an underweight one. What is P(X ≥ 20)?`,
+      options: ['0.3600', '0.4200', '0.4604', '0.5000', '0.5400'],
+      correctIndex: 2,
+      explanation: `X is geometric with p = 0.04, q = 0.96.
+
+P(X ≥ 20) = P(first 19 are not underweight)
+= (0.96)¹⁹ ≈ 0.4604`,
+      hint: 'P(X ≥ k) = q^(k-1). Here q = 0.96 and k = 20.',
+      topic: 'Geometric Distribution',
+    },
+  ],
 };
 
 interface Props {

@@ -139,8 +139,29 @@ Use this to understand the current state of the project across AI sessions.
   - Dice game profit, Chuck-a-luck expected value, US roulette expected value
   - Hypergeometric mean, Geometric mean, Linearity of expectation, Craps expected value
 
+### Section 2.3: Special Mathematical Expectations
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/3/page.tsx`
+- **Components**:
+  - `VarianceCalculator.tsx` - Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display
+- **Topics Covered**:
+  - Variance definition: σ² = E[(X - μ)²]
+  - Variance shortcut: σ² = E(X²) - μ²
+  - Standard deviation σ = √σ²
+  - Standard deviation as measure of spread
+  - Linear transformation: Var(aX + b) = a²Var(X)
+  - Moments and factorial moments
+  - Moment-generating function (MGF): M(t) = E(e^tX)
+  - MGF uniqueness property
+  - Geometric distribution variance: σ² = q/p²
+  - Hypergeometric variance: σ² = np(1-p)(N-n)/(N-1)
+- **Practice Problems** (12 total):
+  - Variance computation (shortcut), PMF variance, factorial moment method
+  - Linear transformation (Var(X+4)=Var(X)), chip bowl variance
+  - Uniform E(X)=Var(X), max of dice σ, warranty expected value
+  - MGF to variance, geometric distribution P(X=k), P(X≥k) problems
+
 ### Remaining Sections (NOT STARTED):
-  - 2.3: Special Mathematical Expectations
   - 2.4: Binomial Distribution
   - 2.5: Negative Binomial Distribution
   - 2.6: Poisson Distribution
@@ -193,6 +214,7 @@ Use this to understand the current state of the project across AI sessions.
 | HypergeometricSimulator | DONE | `/src/components/HypergeometricSimulator.tsx` | Hypergeometric distribution simulator with parameter sliders, visual pool, draw sampling, theoretical vs observed overlay |
 | FrequencyExplorer | DONE | `/src/components/FrequencyExplorer.tsx` | Data entry tool comparing observed frequencies vs theoretical PMF with overlaid histograms |
 | ExpectationCalculator | DONE | `/src/components/ExpectationCalculator.tsx` | Interactive E[X], E[X²], E[u(X)] calculator with step-by-step computation, function selector, preset distributions |
+| VarianceCalculator | DONE | `/src/components/VarianceCalculator.tsx` | Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display |
 
 ---
 
@@ -214,4 +236,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added Chapter 2.2 — Mathematical Expectation (ExpectationCalculator, 12 practice problems, 7 learn sections)*
+*Last Updated: Added Chapter 2.3 — Special Mathematical Expectations (VarianceCalculator, 12 practice problems, 8 learn sections)*
