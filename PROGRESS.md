@@ -144,6 +144,7 @@ Use this to understand the current state of the project across AI sessions.
 - **Page**: `/src/app/chapter/2/section/3/page.tsx`
 - **Components**:
   - `VarianceCalculator.tsx` - Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display
+  - `DistributionComparator.tsx` - Side-by-side distribution comparison with editable PMFs, shared axis histograms, variance/σ ratios, 5 preset scenarios (safe vs risky, tight vs spread, peaked vs flat, shift test, scale test)
 - **Topics Covered**:
   - Variance definition: σ² = E[(X - μ)²]
   - Variance shortcut: σ² = E(X²) - μ²
@@ -215,6 +216,7 @@ Use this to understand the current state of the project across AI sessions.
 | FrequencyExplorer | DONE | `/src/components/FrequencyExplorer.tsx` | Data entry tool comparing observed frequencies vs theoretical PMF with overlaid histograms |
 | ExpectationCalculator | DONE | `/src/components/ExpectationCalculator.tsx` | Interactive E[X], E[X²], E[u(X)] calculator with step-by-step computation, function selector, preset distributions |
 | VarianceCalculator | DONE | `/src/components/VarianceCalculator.tsx` | Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display |
+| DistributionComparator | DONE | `/src/components/DistributionComparator.tsx` | Side-by-side distribution comparison with editable PMFs, shared axis, variance/σ ratios, 5 scenario presets |
 
 ---
 
