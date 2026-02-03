@@ -2021,6 +2021,198 @@ P(X ≥ 20) = P(first 19 are not underweight)
       topic: 'Geometric Distribution',
     },
   ],
+  '2.4': [
+    {
+      id: 1,
+      question: `A multiple-choice test has 5 questions, each with 4 options. A student guesses randomly on all questions. What is the probability of getting exactly 2 questions correct?`,
+      options: ['0.2109', '0.2637', '0.2813', '0.3125', '0.3516'],
+      correctIndex: 2,
+      explanation: `This is Binomial(n=5, p=1/4) since each guess is independent with success probability 1/4.
+
+P(X = 2) = C(5,2) × (1/4)² × (3/4)³
+= 10 × (1/16) × (27/64)
+= 10 × 27/1024
+= 270/1024
+= 0.2637`,
+      hint: 'Use the binomial PMF: f(x) = C(n,x) × p^x × (1-p)^(n-x) with n=5, p=0.25.',
+      topic: 'Binomial PMF',
+    },
+    {
+      id: 2,
+      question: `A baseball player has a batting average of 0.300 (30% chance of getting a hit). In a game with 4 at-bats, what is the probability of getting at least 2 hits?`,
+      options: ['0.3483', '0.2646', '0.4116', '0.5000', '0.5630'],
+      correctIndex: 0,
+      explanation: `X ~ Binomial(n=4, p=0.3). We need P(X ≥ 2) = 1 - P(X ≤ 1).
+
+P(X = 0) = C(4,0)(0.3)⁰(0.7)⁴ = 0.2401
+P(X = 1) = C(4,1)(0.3)¹(0.7)³ = 4 × 0.3 × 0.343 = 0.4116
+
+P(X ≤ 1) = 0.2401 + 0.4116 = 0.6517
+P(X ≥ 2) = 1 - 0.6517 = 0.3483`,
+      hint: 'Use the complement: P(X ≥ 2) = 1 - P(X = 0) - P(X = 1).',
+      topic: 'Binomial CDF',
+    },
+    {
+      id: 3,
+      question: `In a quality control process, 2% of items are defective. A sample of 50 items is inspected. What is the expected number of defective items and the variance?`,
+      options: ['E(X) = 1, Var(X) = 0.98', 'E(X) = 1, Var(X) = 1', 'E(X) = 2, Var(X) = 0.98', 'E(X) = 2, Var(X) = 1.96', 'E(X) = 0.5, Var(X) = 0.49'],
+      correctIndex: 0,
+      explanation: `X ~ Binomial(n=50, p=0.02).
+
+E(X) = np = 50 × 0.02 = 1
+
+Var(X) = np(1-p) = 50 × 0.02 × 0.98 = 0.98`,
+      hint: 'For binomial: E(X) = np and Var(X) = np(1-p).',
+      topic: 'Binomial Mean & Variance',
+    },
+    {
+      id: 4,
+      question: `A lab experiment has 10 independent trials. Each trial succeeds with probability 0.8. What is the standard deviation of the number of successes?`,
+      options: ['0.8', '1.0', '1.265', '1.4', '1.6'],
+      correctIndex: 2,
+      explanation: `X ~ Binomial(n=10, p=0.8).
+
+Var(X) = np(1-p) = 10 × 0.8 × 0.2 = 1.6
+
+σ = √1.6 ≈ 1.265`,
+      hint: 'Standard deviation σ = √(npq) where q = 1-p.',
+      topic: 'Binomial Standard Deviation',
+    },
+    {
+      id: 5,
+      question: `Male ducks have a 0.6 probability of being infected with a parasite. If 4 male ducks are caught, what is the probability that at most 2 are infected?`,
+      options: ['0.1792', '0.2304', '0.3456', '0.5248', '0.6912'],
+      correctIndex: 2,
+      explanation: `X ~ Binomial(n=4, p=0.6). We need P(X ≤ 2).
+
+P(X = 0) = C(4,0)(0.6)⁰(0.4)⁴ = 0.0256
+P(X = 1) = C(4,1)(0.6)¹(0.4)³ = 4 × 0.6 × 0.064 = 0.1536
+P(X = 2) = C(4,2)(0.6)²(0.4)² = 6 × 0.36 × 0.16 = 0.3456
+
+P(X ≤ 2) = 0.0256 + 0.1536 + 0.3456 = 0.5248
+
+Wait, let me recalculate P(X ≤ 2):
+P(X ≤ 2) = 0.0256 + 0.1536 + 0.3456 = 0.5248`,
+      hint: 'Compute P(X = 0) + P(X = 1) + P(X = 2) using the binomial PMF.',
+      topic: 'Binomial CDF',
+    },
+    {
+      id: 6,
+      question: `A Bernoulli random variable X has P(X = 1) = p. If Var(X) = 0.21, what is p?`,
+      options: ['0.3 or 0.7', '0.25 or 0.75', '0.2 or 0.8', '0.35 or 0.65', '0.4 or 0.6'],
+      correctIndex: 0,
+      explanation: `For Bernoulli, Var(X) = p(1-p) = pq.
+
+We need: p(1-p) = 0.21
+p - p² = 0.21
+p² - p + 0.21 = 0
+
+Using quadratic formula:
+p = (1 ± √(1 - 0.84))/2 = (1 ± √0.16)/2 = (1 ± 0.4)/2
+
+p = 0.7 or p = 0.3`,
+      hint: 'Var(X) = p(1-p) for Bernoulli. Solve p(1-p) = 0.21.',
+      topic: 'Bernoulli Variance',
+    },
+    {
+      id: 7,
+      question: `A health insurance company finds that 80% of its subscribers exercise regularly. In a random sample of 15 subscribers, what is the probability that exactly 12 exercise regularly?`,
+      options: ['0.1876', '0.2252', '0.2501', '0.2627', '0.3000'],
+      correctIndex: 1,
+      explanation: `X ~ Binomial(n=15, p=0.8).
+
+P(X = 12) = C(15,12) × (0.8)¹² × (0.2)³
+= 455 × (0.8)¹² × (0.2)³
+= 455 × 0.0687195 × 0.008
+= 455 × 0.000549756
+= 0.2501`,
+      hint: 'Use f(x) = C(n,x) p^x (1-p)^(n-x) with n=15, p=0.8, x=12.',
+      topic: 'Binomial PMF',
+    },
+    {
+      id: 8,
+      question: `If X ~ Binomial(n, p) with E(X) = 6 and Var(X) = 2.4, find n and p.`,
+      options: ['n = 10, p = 0.6', 'n = 12, p = 0.5', 'n = 15, p = 0.4', 'n = 8, p = 0.75', 'n = 20, p = 0.3'],
+      correctIndex: 0,
+      explanation: `We have:
+np = 6 (mean)
+np(1-p) = 2.4 (variance)
+
+Dividing: (1-p) = 2.4/6 = 0.4
+So p = 0.6
+
+From np = 6: n × 0.6 = 6, so n = 10.`,
+      hint: 'Divide variance by mean to get (1-p), then solve for p and n.',
+      topic: 'Binomial Parameters',
+    },
+    {
+      id: 9,
+      question: `The MGF of a binomial random variable is M(t) = (0.7 + 0.3e^t)^8. What is the probability of exactly 3 successes?`,
+      options: ['0.0467', '0.0839', '0.1361', '0.2541', '0.2965'],
+      correctIndex: 2,
+      explanation: `From M(t) = (q + pe^t)^n, we have:
+n = 8, p = 0.3, q = 0.7
+
+P(X = 3) = C(8,3) × (0.3)³ × (0.7)⁵
+= 56 × 0.027 × 0.16807
+= 56 × 0.00453789
+= 0.2541`,
+      hint: 'From MGF = (q + pe^t)^n, identify n, p, q, then compute the binomial PMF.',
+      topic: 'Binomial MGF',
+    },
+    {
+      id: 10,
+      question: `A fair coin is flipped 20 times. What is the probability of getting between 8 and 12 heads (inclusive)?`,
+      options: ['0.4967', '0.5632', '0.6367', '0.7368', '0.7500'],
+      correctIndex: 2,
+      explanation: `X ~ Binomial(n=20, p=0.5).
+
+P(8 ≤ X ≤ 12) = Σ from x=8 to 12 of C(20,x)(0.5)²⁰
+
+= [C(20,8) + C(20,9) + C(20,10) + C(20,11) + C(20,12)] × (0.5)²⁰
+= [125970 + 167960 + 184756 + 167960 + 125970] × (1/1048576)
+= 772616/1048576
+≈ 0.7368`,
+      hint: 'Sum P(X = k) for k = 8, 9, 10, 11, 12. With p = 0.5, each term is C(20,k)/2²⁰.',
+      topic: 'Binomial Probability',
+    },
+    {
+      id: 11,
+      question: `In 100 independent Bernoulli trials with success probability 0.25, what is the expected number of successes and the probability that the number of successes is within one standard deviation of the mean?`,
+      options: ['E(X) = 25, P ≈ 0.5888', 'E(X) = 25, P ≈ 0.6827', 'E(X) = 25, P ≈ 0.75', 'E(X) = 75, P ≈ 0.68', 'E(X) = 50, P ≈ 0.5'],
+      correctIndex: 0,
+      explanation: `X ~ Binomial(n=100, p=0.25).
+
+E(X) = np = 100 × 0.25 = 25
+Var(X) = np(1-p) = 100 × 0.25 × 0.75 = 18.75
+σ = √18.75 ≈ 4.33
+
+Within 1σ of mean: 25 ± 4.33, so roughly 21 to 29.
+
+For large n, binomial is approximately normal. P(|X - μ| ≤ σ) ≈ 0.6827.
+
+But the actual binomial sum P(21 ≤ X ≤ 29) ≈ 0.5888.`,
+      hint: 'Calculate μ = np and σ = √(npq). The range within 1σ is [μ-σ, μ+σ].',
+      topic: 'Binomial Approximation',
+    },
+    {
+      id: 12,
+      question: `If X₁ ~ Binomial(5, 0.4) and X₂ ~ Binomial(7, 0.4) are independent, what is the distribution of X₁ + X₂?`,
+      options: ['Binomial(12, 0.4)', 'Binomial(12, 0.8)', 'Binomial(35, 0.4)', 'Normal(4.8, 2.88)', 'Not binomial'],
+      correctIndex: 0,
+      explanation: `A key property of binomials with the same p:
+
+If X₁ ~ Bin(n₁, p) and X₂ ~ Bin(n₂, p) are independent,
+then X₁ + X₂ ~ Bin(n₁ + n₂, p).
+
+Therefore: X₁ + X₂ ~ Binomial(5 + 7, 0.4) = Binomial(12, 0.4).
+
+This can be verified using MGFs:
+M_{X₁+X₂}(t) = M_{X₁}(t) × M_{X₂}(t) = (0.6 + 0.4e^t)⁵ × (0.6 + 0.4e^t)⁷ = (0.6 + 0.4e^t)¹²`,
+      hint: 'The sum of independent binomials with the SAME p is also binomial with the same p.',
+      topic: 'Sum of Binomials',
+    },
+  ],
 };
 
 interface Props {

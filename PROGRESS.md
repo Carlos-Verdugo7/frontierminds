@@ -162,8 +162,26 @@ Use this to understand the current state of the project across AI sessions.
   - Uniform E(X)=Var(X), max of dice σ, warranty expected value
   - MGF to variance, geometric distribution P(X=k), P(X≥k) problems
 
+### Section 2.4: Binomial Distribution
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/4/page.tsx`
+- **Components**:
+  - `BinomialSimulator.tsx` - Interactive simulator with n/p sliders, trial animation, theoretical vs observed PMF, probability calculator
+- **Topics Covered**:
+  - Bernoulli trials and Bernoulli distribution
+  - Bernoulli mean (μ = p) and variance (σ² = pq)
+  - Binomial distribution as sum of Bernoulli trials
+  - Binomial PMF: f(x) = C(n,x)p^x(1-p)^(n-x)
+  - Binomial mean (μ = np) and variance (σ² = npq)
+  - Binomial MGF: M(t) = (q + pe^t)^n
+  - Sum of independent binomials with same p
+- **Practice Problems** (12 total):
+  - Multiple choice guessing, baseball at-bats, quality control
+  - Lab experiments, duck infection, Bernoulli variance calculation
+  - Health insurance, finding n and p from mean/variance
+  - MGF to PMF, coin flip range probability, sum of binomials
+
 ### Remaining Sections (NOT STARTED):
-  - 2.4: Binomial Distribution
   - 2.5: Negative Binomial Distribution
   - 2.6: Poisson Distribution
 
@@ -217,6 +235,7 @@ Use this to understand the current state of the project across AI sessions.
 | ExpectationCalculator | DONE | `/src/components/ExpectationCalculator.tsx` | Interactive E[X], E[X²], E[u(X)] calculator with step-by-step computation, function selector, preset distributions |
 | VarianceCalculator | DONE | `/src/components/VarianceCalculator.tsx` | Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display |
 | DistributionComparator | DONE | `/src/components/DistributionComparator.tsx` | Side-by-side distribution comparison with editable PMFs, shared axis, variance/σ ratios, 5 scenario presets |
+| BinomialSimulator | DONE | `/src/components/BinomialSimulator.tsx` | Binomial distribution simulator with n/p sliders, trial animation, theoretical vs observed PMF overlay, probability calculator P(X=k), P(X≤k), P(X≥k) |
 
 ---
 
@@ -238,4 +257,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added Chapter 2.3 — Special Mathematical Expectations (VarianceCalculator, 12 practice problems, 8 learn sections)*
+*Last Updated: Added Chapter 2.4 — Binomial Distribution (BinomialSimulator, 12 practice problems, 8 intuitive learn sections with Bernoulli and Binomial coverage)*

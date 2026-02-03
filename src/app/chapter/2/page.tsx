@@ -28,9 +28,9 @@ const sections = [
   {
     id: 4,
     title: '2.4 Binomial Distribution',
-    description: 'Bernoulli trials and the binomial distribution',
-    topics: ['Bernoulli Trials', 'Binomial PMF', 'Binomial Mean & Variance'],
-    status: 'coming-soon',
+    description: 'Bernoulli trials, binomial distribution, and its properties',
+    topics: ['Bernoulli Trials', 'Binomial PMF', 'Binomial Mean & Variance', 'Binomial MGF'],
+    status: 'available',
   },
   {
     id: 5,
@@ -81,11 +81,11 @@ export default function Chapter2Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">5</p>
+              <p className="text-2xl font-bold text-blue-400">6</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-purple-400">44</p>
+              <p className="text-2xl font-bold text-purple-400">56</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
@@ -134,6 +134,14 @@ export default function Chapter2Page() {
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-purple-400 font-mono text-sm mb-1">Geometric Variance</p>
               <p className="text-white font-mono">&sigma;&sup2; = q/p&sup2;</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-orange-400 font-mono text-sm mb-1">Binomial PMF</p>
+              <p className="text-white font-mono">f(x) = C(n,x)p<sup>x</sup>q<sup>n-x</sup></p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-orange-400 font-mono text-sm mb-1">Binomial Mean/Var</p>
+              <p className="text-white font-mono">&mu; = np, &sigma;&sup2; = npq</p>
             </div>
           </div>
         </div>
