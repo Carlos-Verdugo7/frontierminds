@@ -181,8 +181,28 @@ Use this to understand the current state of the project across AI sessions.
   - Health insurance, finding n and p from mean/variance
   - MGF to PMF, coin flip range probability, sum of binomials
 
+### Section 2.5: Negative Binomial Distribution
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/5/page.tsx`
+- **Components**:
+  - `NegativeBinomialSimulator.tsx` - Interactive simulator for Geometric (r=1) and Negative Binomial (r>1) with trial animation, theoretical vs observed PMF, probability calculator
+- **Topics Covered**:
+  - Geometric distribution: trials until first success
+  - Geometric PMF: f(x) = p·q^(x-1), x = 1, 2, 3, ...
+  - Geometric mean (μ = 1/p) and variance (σ² = q/p²)
+  - Geometric CDF shortcuts: P(X > k) = q^k, P(X ≤ k) = 1 - q^k
+  - Memoryless property: P(X > k+m | X > k) = P(X > m)
+  - Negative Binomial: trials until r successes
+  - Negative Binomial PMF: g(x) = C(x-1,r-1)p^r·q^(x-r), x = r, r+1, ...
+  - Negative Binomial mean (μ = r/p) and variance (σ² = rq/p²)
+  - Coupon Collector Problem application
+- **Practice Problems** (12 total):
+  - Die rolling until 6, free throw misses, coin flip heads
+  - Basketball free throws (negative binomial), metal detector
+  - Geometric mean/variance problems, company accidents
+  - Cereal prizes (Coupon Collector), memoryless property
+
 ### Remaining Sections (NOT STARTED):
-  - 2.5: Negative Binomial Distribution
   - 2.6: Poisson Distribution
 
 ---
@@ -236,6 +256,7 @@ Use this to understand the current state of the project across AI sessions.
 | VarianceCalculator | DONE | `/src/components/VarianceCalculator.tsx` | Interactive variance/σ²/σ calculator with definition & shortcut methods, SVG histogram with μ/σ markers, MGF display |
 | DistributionComparator | DONE | `/src/components/DistributionComparator.tsx` | Side-by-side distribution comparison with editable PMFs, shared axis, variance/σ ratios, 5 scenario presets |
 | BinomialSimulator | DONE | `/src/components/BinomialSimulator.tsx` | Binomial distribution simulator with n/p sliders, trial animation, theoretical vs observed PMF overlay, probability calculator P(X=k), P(X≤k), P(X≥k) |
+| NegativeBinomialSimulator | DONE | `/src/components/NegativeBinomialSimulator.tsx` | Geometric/Negative Binomial simulator with r/p sliders, trials-until-success animation, memoryless demonstration, P(X=k), P(X>k), P(X≤k) calculator |
 
 ---
 
@@ -257,4 +278,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added Chapter 2.4 — Binomial Distribution (BinomialSimulator, 12 practice problems, 8 intuitive learn sections with Bernoulli and Binomial coverage)*
+*Last Updated: Added Chapter 2.5 — Negative Binomial Distribution (NegativeBinomialSimulator, 12 practice problems, 9 intuitive learn sections covering Geometric and Negative Binomial distributions)*

@@ -35,9 +35,9 @@ const sections = [
   {
     id: 5,
     title: '2.5 Negative Binomial Distribution',
-    description: 'Geometric and negative binomial distributions',
-    topics: ['Geometric Distribution', 'Negative Binomial PMF'],
-    status: 'coming-soon',
+    description: 'Geometric distribution, negative binomial, and waiting for successes',
+    topics: ['Geometric Distribution', 'Negative Binomial PMF', 'Memoryless Property', 'Coupon Collector'],
+    status: 'available',
   },
   {
     id: 6,
@@ -81,11 +81,11 @@ export default function Chapter2Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">6</p>
+              <p className="text-2xl font-bold text-blue-400">7</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-purple-400">56</p>
+              <p className="text-2xl font-bold text-purple-400">68</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
@@ -142,6 +142,14 @@ export default function Chapter2Page() {
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-orange-400 font-mono text-sm mb-1">Binomial Mean/Var</p>
               <p className="text-white font-mono">&mu; = np, &sigma;&sup2; = npq</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-pink-400 font-mono text-sm mb-1">Geometric PMF</p>
+              <p className="text-white font-mono">f(x) = p·q<sup>x-1</sup></p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-pink-400 font-mono text-sm mb-1">Geometric Mean/Var</p>
+              <p className="text-white font-mono">&mu; = 1/p, &sigma;&sup2; = q/p&sup2;</p>
             </div>
           </div>
         </div>

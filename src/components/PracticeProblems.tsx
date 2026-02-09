@@ -2213,6 +2213,192 @@ M_{X₁+X₂}(t) = M_{X₁}(t) × M_{X₂}(t) = (0.6 + 0.4e^t)⁵ × (0.6 + 0.4e
       topic: 'Sum of Binomials',
     },
   ],
+  '2.5': [
+    {
+      id: 1,
+      question: `A fair six-sided die is rolled until a 6 appears. What is the probability that at least 4 rolls are needed?`,
+      options: ['0.4213', '0.5787', '0.6944', '0.8333', '0.1667'],
+      correctIndex: 2,
+      explanation: `This is geometric with p = 1/6, q = 5/6.
+
+"At least 4 rolls" means X ≥ 4, which equals P(X > 3).
+
+P(X > 3) = q³ = (5/6)³ = 125/216 ≈ 0.5787
+
+Wait, let me recalculate. P(X ≥ 4) = P(no 6 in first 3 rolls) = (5/6)³ = 0.5787.
+
+Actually P(X > k) = q^k, so P(X > 3) = (5/6)³ = 0.5787.
+
+But P(X ≥ 4) = P(X > 3) = q³ = (5/6)³ = 125/216 ≈ 0.5787.
+
+Hmm, let me check: P(X ≥ k) = q^(k-1). So P(X ≥ 4) = (5/6)³ = 0.5787.`,
+      hint: 'For geometric: P(X ≥ k) = q^(k-1) or equivalently P(X > k-1) = q^(k-1).',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 2,
+      question: `An excellent free-throw shooter makes 90% of their shots. What is the probability of having the first miss on the 13th attempt or later?`,
+      options: ['0.2824', '0.3138', '0.1074', '0.0282', '0.7176'],
+      correctIndex: 0,
+      explanation: `Here "success" = making the shot, but we want first MISS.
+So for misses: p = 0.1 (miss), q = 0.9 (make).
+
+P(first miss on 13th or later) = P(X ≥ 13)
+= P(no miss in first 12) = (0.9)¹² ≈ 0.2824`,
+      hint: 'Define success as a miss (p = 0.1). Then P(X ≥ 13) = q^12 where q = 0.9.',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 3,
+      question: `Show that 63/512 is the probability that the fifth head is observed on the tenth independent flip of a fair coin.`,
+      options: ['True - this is C(9,4)(0.5)^10', 'False - it should be C(10,5)(0.5)^10', 'True - this is C(10,5)(0.5)^10', 'False - it should be C(9,5)(0.5)^10', 'True - this is (0.5)^10'],
+      correctIndex: 0,
+      explanation: `This is negative binomial with r = 5, p = 0.5.
+For the 5th head on the 10th flip:
+
+P(X = 10) = C(10-1, 5-1) × (0.5)⁵ × (0.5)^(10-5)
+= C(9, 4) × (0.5)^10
+= 126 × (1/1024)
+= 126/1024 = 63/512 ✓`,
+      hint: 'Use negative binomial PMF: g(x) = C(x-1, r-1) × p^r × q^(x-r).',
+      topic: 'Negative Binomial PMF',
+    },
+    {
+      id: 4,
+      question: `A basketball player makes 60% of free throws. Let X be the minimum number of attempts to make 10 shots. Find E(X) and Var(X).`,
+      options: ['E(X) = 16.67, Var(X) = 11.11', 'E(X) = 10, Var(X) = 4', 'E(X) = 6, Var(X) = 2.4', 'E(X) = 25, Var(X) = 41.67', 'E(X) = 15, Var(X) = 10'],
+      correctIndex: 0,
+      explanation: `X ~ Negative Binomial(r = 10, p = 0.6).
+
+E(X) = r/p = 10/0.6 = 16.67
+
+Var(X) = rq/p² = 10(0.4)/(0.6)² = 4/0.36 = 11.11`,
+      hint: 'For negative binomial: μ = r/p and σ² = rq/p².',
+      topic: 'Negative Binomial Mean & Variance',
+    },
+    {
+      id: 5,
+      question: `An airport metal detector catches a person with metal 99% of the time (misses 1%). What is the probability that the first person missed is among the first 50 scanned?`,
+      options: ['0.3950', '0.5000', '0.6050', '0.9900', '0.0100'],
+      correctIndex: 0,
+      explanation: `"Success" = miss (p = 0.01), "failure" = detect (q = 0.99).
+
+P(first miss in first 50) = P(X ≤ 50)
+= 1 - P(X > 50)
+= 1 - q^50
+= 1 - (0.99)^50
+= 1 - 0.6050
+= 0.3950`,
+      hint: 'P(X ≤ k) = 1 - q^k for geometric. Here q = 0.99.',
+      topic: 'Geometric CDF',
+    },
+    {
+      id: 6,
+      question: `If X has a geometric distribution with mean 5, what is P(X = 3)?`,
+      options: ['0.1024', '0.128', '0.16', '0.2', '0.04'],
+      correctIndex: 1,
+      explanation: `Mean = 1/p = 5, so p = 0.2 and q = 0.8.
+
+P(X = 3) = q^(3-1) × p = (0.8)² × (0.2) = 0.64 × 0.2 = 0.128`,
+      hint: 'From μ = 1/p, find p. Then use PMF: f(x) = q^(x-1) × p.',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 7,
+      question: `The probability that a company has no accidents in a month is 0.7 (independent months). What is the probability that the third month with at least one accident is month 10?`,
+      options: ['0.0467', '0.0354', '0.0635', '0.0882', '0.1029'],
+      correctIndex: 2,
+      explanation: `"Success" = month with accident, p = 1 - 0.7 = 0.3, q = 0.7.
+This is negative binomial with r = 3.
+
+P(X = 10) = C(10-1, 3-1) × (0.3)³ × (0.7)^(10-3)
+= C(9, 2) × (0.3)³ × (0.7)⁷
+= 36 × 0.027 × 0.0824
+= 0.0801`,
+      hint: 'Use negative binomial with r = 3, p = 0.3 (accident probability).',
+      topic: 'Negative Binomial PMF',
+    },
+    {
+      id: 8,
+      question: `A cereal box contains one of 4 different prizes (equally likely). On average, how many boxes must be purchased to get at least one of each prize?`,
+      options: ['4', '6', '8', '8.33', '10'],
+      correctIndex: 2,
+      explanation: `This is the Coupon Collector Problem with n = 4.
+
+Expected boxes = sum of geometric means:
+- 1st new prize: 1 box (always new)
+- 2nd new prize: 4/3 boxes (p = 3/4)
+- 3rd new prize: 4/2 = 2 boxes (p = 2/4)
+- 4th new prize: 4/1 = 4 boxes (p = 1/4)
+
+Total = 1 + 4/3 + 2 + 4 = 1 + 1.33 + 2 + 4 = 8.33`,
+      hint: 'Use sum of geometric means: 1 + 4/3 + 4/2 + 4/1.',
+      topic: 'Coupon Collector Problem',
+    },
+    {
+      id: 9,
+      question: `For a geometric random variable X with p = 0.25, find P(X > 5 | X > 2).`,
+      options: ['0.1406', '0.3164', '0.4219', '0.5625', '0.75'],
+      correctIndex: 2,
+      explanation: `By the memoryless property:
+P(X > 5 | X > 2) = P(X > 3) = q³ = (0.75)³ = 0.4219
+
+This equals P(X > 5-2) = P(X > 3).`,
+      hint: 'Use memoryless property: P(X > k+m | X > k) = P(X > m).',
+      topic: 'Memoryless Property',
+    },
+    {
+      id: 10,
+      question: `If X ~ Geometric(p) and Var(X) = 12, what is E(X)?`,
+      options: ['2', '3', '4', '6', '12'],
+      correctIndex: 2,
+      explanation: `For geometric: Var(X) = q/p² = (1-p)/p² = 12.
+
+Also, E(X) = 1/p.
+
+From Var(X) = q/p² and E(X) = 1/p:
+Var(X) = (1-p)/p² = (1/p)(1-p)/p = E(X) × (1-p)/p
+
+So 12 = E(X) × (E(X) - 1)/E(X) = E(X) - 1... no wait.
+
+Let μ = 1/p, so p = 1/μ and q = 1 - 1/μ = (μ-1)/μ.
+Var(X) = q/p² = [(μ-1)/μ] × μ² = μ(μ-1) = 12
+μ² - μ - 12 = 0
+(μ - 4)(μ + 3) = 0
+μ = 4 (since μ > 0)`,
+      hint: 'Set up: if μ = 1/p, then Var = q/p² = μ(μ-1). Solve μ² - μ = 12.',
+      topic: 'Geometric Distribution',
+    },
+    {
+      id: 11,
+      question: `Fruit flies have a 1/4 probability of white eyes. What is P(X ≤ 4), where X is the number of flies checked until observing a white-eyed fly?`,
+      options: ['0.6836', '0.3164', '0.4219', '0.1055', '0.7627'],
+      correctIndex: 0,
+      explanation: `X ~ Geometric with p = 1/4, q = 3/4.
+
+P(X ≤ 4) = 1 - P(X > 4) = 1 - q⁴
+= 1 - (3/4)⁴
+= 1 - 81/256
+= 175/256
+= 0.6836`,
+      hint: 'P(X ≤ k) = 1 - q^k for geometric.',
+      topic: 'Geometric CDF',
+    },
+    {
+      id: 12,
+      question: `A basketball player makes 80% of free throws. What is P(X = 12) where X is the number of attempts needed to make exactly 10 shots?`,
+      options: ['0.2013', '0.2362', '0.1678', '0.3020', '0.1209'],
+      correctIndex: 1,
+      explanation: `X ~ Negative Binomial(r = 10, p = 0.8).
+
+P(X = 12) = C(12-1, 10-1) × (0.8)^10 × (0.2)^(12-10)
+= C(11, 9) × (0.8)^10 × (0.2)²
+= 55 × 0.1074 × 0.04
+= 0.2362`,
+      hint: 'Use g(x) = C(x-1, r-1) × p^r × q^(x-r) with r=10, p=0.8, x=12.',
+      topic: 'Negative Binomial PMF',
+    },
+  ],
 };
 
 interface Props {
