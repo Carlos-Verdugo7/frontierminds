@@ -43,8 +43,8 @@ const sections = [
     id: 6,
     title: '2.6 Poisson Distribution',
     description: 'Poisson process and the Poisson distribution',
-    topics: ['Poisson PMF', 'Poisson Approximation', 'Poisson Process'],
-    status: 'coming-soon',
+    topics: ['Poisson PMF', 'Mean=Variance=λ', 'Poisson Approximation', 'Poisson Process'],
+    status: 'available',
   },
 ];
 
@@ -81,11 +81,11 @@ export default function Chapter2Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">7</p>
+              <p className="text-2xl font-bold text-blue-400">8</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-purple-400">68</p>
+              <p className="text-2xl font-bold text-purple-400">80</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
@@ -150,6 +150,14 @@ export default function Chapter2Page() {
             <div className="bg-slate-800/80 rounded-lg p-4">
               <p className="text-pink-400 font-mono text-sm mb-1">Geometric Mean/Var</p>
               <p className="text-white font-mono">&mu; = 1/p, &sigma;&sup2; = q/p&sup2;</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-blue-400 font-mono text-sm mb-1">Poisson PMF</p>
+              <p className="text-white font-mono">f(x) = &lambda;<sup>x</sup>e<sup>-&lambda;</sup>/x!</p>
+            </div>
+            <div className="bg-slate-800/80 rounded-lg p-4">
+              <p className="text-blue-400 font-mono text-sm mb-1">Poisson Mean = Var</p>
+              <p className="text-white font-mono">&mu; = &sigma;&sup2; = &lambda;</p>
             </div>
           </div>
         </div>

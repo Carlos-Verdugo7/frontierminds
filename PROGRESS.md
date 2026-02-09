@@ -97,7 +97,7 @@ Use this to understand the current state of the project across AI sessions.
 ---
 
 ## Chapter 2: Discrete Distributions (Exam Weight: ~20%)
-- **Status**: IN PROGRESS
+- **Status**: COMPLETED
 
 ### Section 2.1: Random Variables of the Discrete Type
 - **Status**: COMPLETED
@@ -202,8 +202,33 @@ Use this to understand the current state of the project across AI sessions.
   - Geometric mean/variance problems, company accidents
   - Cereal prizes (Coupon Collector), memoryless property
 
-### Remaining Sections (NOT STARTED):
-  - 2.6: Poisson Distribution
+### Section 2.6: Poisson Distribution
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/2/section/6/page.tsx`
+- **Components**:
+  - `PoissonSimulator.tsx` - Interactive Poisson distribution simulator with λ slider, timeline visualization, theoretical vs observed PMF, probability calculator
+- **Topics Covered**:
+  - Poisson process: counting events in time/space
+  - Poisson PMF: f(x) = λ^x × e^(-λ) / x!
+  - Key property: Mean = Variance = λ
+  - Scaling for different intervals (λt)
+  - Sum of independent Poissons
+  - Poisson approximation to Binomial (n large, p small)
+  - Moment-generating function: M(t) = e^(λ(e^t - 1))
+- **Practice Problems** (12 total):
+  - Poisson PMF calculations, P(X=0), P(X≥1)
+  - Mean=Variance property problems
+  - Scaling for different time intervals
+  - Sum of Poisson random variables
+  - Poisson approximation to Binomial
+
+---
+
+## Chapter 2 Summary
+- **Status**: COMPLETED
+- **Total Sections**: 6
+- **Total Simulators**: 8 (PMFExplorer, HypergeometricSimulator, FrequencyExplorer, ExpectationCalculator, VarianceCalculator, DistributionComparator, BinomialSimulator, NegativeBinomialSimulator, PoissonSimulator)
+- **Total Practice Problems**: 80
 
 ---
 
@@ -257,6 +282,7 @@ Use this to understand the current state of the project across AI sessions.
 | DistributionComparator | DONE | `/src/components/DistributionComparator.tsx` | Side-by-side distribution comparison with editable PMFs, shared axis, variance/σ ratios, 5 scenario presets |
 | BinomialSimulator | DONE | `/src/components/BinomialSimulator.tsx` | Binomial distribution simulator with n/p sliders, trial animation, theoretical vs observed PMF overlay, probability calculator P(X=k), P(X≤k), P(X≥k) |
 | NegativeBinomialSimulator | DONE | `/src/components/NegativeBinomialSimulator.tsx` | Geometric/Negative Binomial simulator with r/p sliders, trials-until-success animation, memoryless demonstration, P(X=k), P(X>k), P(X≤k) calculator |
+| PoissonSimulator | DONE | `/src/components/PoissonSimulator.tsx` | Poisson distribution simulator with λ slider, timeline visualization, theoretical vs observed PMF histogram, P(X=k), P(X≤k), P(X>k) calculator |
 
 ---
 
@@ -278,4 +304,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Added Chapter 2.5 — Negative Binomial Distribution (NegativeBinomialSimulator, 12 practice problems, 9 intuitive learn sections covering Geometric and Negative Binomial distributions)*
+*Last Updated: Completed Chapter 2 — Added Section 2.6 Poisson Distribution (PoissonSimulator, 12 practice problems, 9 intuitive learn sections covering Poisson process, PMF, Mean=Variance=λ property, scaling, and Poisson approximation to Binomial)*

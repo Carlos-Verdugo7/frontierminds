@@ -2399,6 +2399,195 @@ P(X = 12) = C(12-1, 10-1) × (0.8)^10 × (0.2)^(12-10)
       topic: 'Negative Binomial PMF',
     },
   ],
+  '2.6': [
+    {
+      id: 1,
+      question: `A call center receives an average of 4 calls per hour. What is the probability of receiving exactly 6 calls in a given hour?`,
+      options: ['0.1042', '0.1221', '0.1339', '0.1563', '0.1954'],
+      correctIndex: 0,
+      explanation: `X ~ Poisson(λ = 4).
+
+P(X = 6) = λ⁶ × e^(-λ) / 6!
+= 4⁶ × e^(-4) / 720
+= 4096 × 0.01832 / 720
+≈ 0.1042`,
+      hint: 'Use the Poisson PMF: P(X = x) = λ^x × e^(-λ) / x!',
+      topic: 'Poisson PMF',
+    },
+    {
+      id: 2,
+      question: `Accidents occur at an intersection at an average rate of 3 per month. What is the probability of no accidents in a given month?`,
+      options: ['0.0498', '0.1494', '0.2240', '0.0821', '0.3679'],
+      correctIndex: 0,
+      explanation: `X ~ Poisson(λ = 3).
+
+P(X = 0) = λ⁰ × e^(-λ) / 0!
+= 1 × e^(-3) / 1
+= e^(-3)
+≈ 0.0498`,
+      hint: 'P(X = 0) = e^(-λ). Remember: 0! = 1 and λ⁰ = 1.',
+      topic: 'Poisson PMF',
+    },
+    {
+      id: 3,
+      question: `Emails arrive at a rate of 2 per minute. What is the probability of receiving at least 1 email in a minute?`,
+      options: ['0.8647', '0.7358', '0.5940', '0.9502', '0.1353'],
+      correctIndex: 0,
+      explanation: `X ~ Poisson(λ = 2).
+
+P(X ≥ 1) = 1 - P(X = 0)
+= 1 - e^(-2)
+= 1 - 0.1353
+= 0.8647`,
+      hint: 'Use the complement: P(at least 1) = 1 - P(none) = 1 - e^(-λ).',
+      topic: 'Poisson Complement',
+    },
+    {
+      id: 4,
+      question: `A Poisson random variable has mean 5. What is its variance?`,
+      options: ['2.236', '5', '10', '25', 'Cannot be determined'],
+      correctIndex: 1,
+      explanation: `For a Poisson distribution, a beautiful property is:
+
+Mean = Variance = λ
+
+Since μ = 5, we have σ² = 5.
+
+This is the signature property of the Poisson distribution!`,
+      hint: 'What is special about the Poisson distribution regarding mean and variance?',
+      topic: 'Poisson Properties',
+    },
+    {
+      id: 5,
+      question: `Customers arrive at a store at an average rate of 10 per hour. What is the probability of exactly 5 customers arriving in 30 minutes?`,
+      options: ['0.0378', '0.1755', '0.0631', '0.1251', '0.0668'],
+      correctIndex: 1,
+      explanation: `The rate is 10 per hour, so in 30 minutes (0.5 hours):
+λ = 10 × 0.5 = 5 customers.
+
+X ~ Poisson(λ = 5).
+
+P(X = 5) = 5⁵ × e^(-5) / 5!
+= 3125 × 0.00674 / 120
+= 21.06 / 120
+= 0.1755`,
+      hint: 'Scale the rate: if λ per hour, then λ/2 for 30 minutes.',
+      topic: 'Poisson Scaling',
+    },
+    {
+      id: 6,
+      question: `Typos occur in a book at a rate of 0.5 per page. In a chapter of 10 pages, what is the probability of exactly 3 typos?`,
+      options: ['0.1404', '0.1755', '0.0758', '0.2650', '0.1250'],
+      correctIndex: 0,
+      explanation: `For 10 pages, λ = 0.5 × 10 = 5.
+
+X ~ Poisson(λ = 5).
+
+P(X = 3) = 5³ × e^(-5) / 3!
+= 125 × 0.00674 / 6
+= 0.8425 / 6
+= 0.1404`,
+      hint: 'First scale λ for the 10-page interval: λ_total = 0.5 × 10 = 5.',
+      topic: 'Poisson Scaling',
+    },
+    {
+      id: 7,
+      question: `If X ~ Poisson(3) and Y ~ Poisson(4) are independent, what is E(X + Y)?`,
+      options: ['5', '7', '12', '3.5', '2.65'],
+      correctIndex: 1,
+      explanation: `For independent Poisson random variables:
+X + Y ~ Poisson(λ₁ + λ₂)
+
+So X + Y ~ Poisson(3 + 4) = Poisson(7).
+
+Therefore E(X + Y) = 7.
+
+(Alternatively: E(X + Y) = E(X) + E(Y) = 3 + 4 = 7)`,
+      hint: 'Sum of independent Poissons is Poisson with λ = λ₁ + λ₂.',
+      topic: 'Sum of Poissons',
+    },
+    {
+      id: 8,
+      question: `A rare disease affects 0.1% of the population. In a sample of 2000 people, approximate the probability that exactly 3 have the disease using the Poisson approximation.`,
+      options: ['0.1804', '0.2707', '0.0902', '0.3614', '0.1353'],
+      correctIndex: 0,
+      explanation: `This is Binomial(n = 2000, p = 0.001), but since n is large and p is small, we use Poisson approximation.
+
+λ = np = 2000 × 0.001 = 2.
+
+P(X = 3) = 2³ × e^(-2) / 3!
+= 8 × 0.1353 / 6
+= 1.0824 / 6
+= 0.1804`,
+      hint: 'For large n and small p, Binomial ≈ Poisson with λ = np.',
+      topic: 'Poisson Approximation',
+    },
+    {
+      id: 9,
+      question: `Machine breakdowns occur according to a Poisson process with rate 2 per day. What is the probability of at least 2 breakdowns in a day?`,
+      options: ['0.5940', '0.8647', '0.4060', '0.3233', '0.2707'],
+      correctIndex: 0,
+      explanation: `X ~ Poisson(λ = 2).
+
+P(X ≥ 2) = 1 - P(X ≤ 1)
+= 1 - [P(X = 0) + P(X = 1)]
+= 1 - [e^(-2) + 2e^(-2)]
+= 1 - 3e^(-2)
+= 1 - 3(0.1353)
+= 1 - 0.4060
+= 0.5940`,
+      hint: 'P(X ≥ 2) = 1 - P(X = 0) - P(X = 1).',
+      topic: 'Poisson Complement',
+    },
+    {
+      id: 10,
+      question: `Claims arrive at an insurance company at a rate of 6 per hour. What is P(X = 1) for the number of claims in 10 minutes?`,
+      options: ['0.3679', '0.5', '0.3033', '0.1839', '0.2707'],
+      correctIndex: 0,
+      explanation: `Rate is 6 per hour = 6/60 = 0.1 per minute.
+In 10 minutes: λ = 0.1 × 10 = 1.
+
+X ~ Poisson(λ = 1).
+
+P(X = 1) = 1¹ × e^(-1) / 1!
+= 1 × e^(-1) / 1
+= e^(-1)
+≈ 0.3679`,
+      hint: 'Convert rate to the right time unit: 6/hour = 1/10 minutes.',
+      topic: 'Poisson Scaling',
+    },
+    {
+      id: 11,
+      question: `If X has a Poisson distribution with σ² = 9, what is P(X ≤ 1)?`,
+      options: ['0.00123', '0.000123', '0.00041', '0.00045', '0.00037'],
+      correctIndex: 0,
+      explanation: `Since Var(X) = λ for Poisson, we have λ = 9.
+
+P(X ≤ 1) = P(X = 0) + P(X = 1)
+= e^(-9) + 9 × e^(-9)
+= 10 × e^(-9)
+= 10 × 0.0001234
+≈ 0.00123`,
+      hint: 'For Poisson, σ² = λ. Then P(X ≤ 1) = e^(-λ)(1 + λ).',
+      topic: 'Poisson Properties',
+    },
+    {
+      id: 12,
+      question: `Flaws occur in a wire at a rate of 1.5 flaws per meter. What is the probability of exactly 2 flaws in a 2-meter section?`,
+      options: ['0.2240', '0.1494', '0.2510', '0.1680', '0.0498'],
+      correctIndex: 0,
+      explanation: `For 2 meters: λ = 1.5 × 2 = 3.
+
+X ~ Poisson(λ = 3).
+
+P(X = 2) = 3² × e^(-3) / 2!
+= 9 × 0.0498 / 2
+= 0.449 / 2
+≈ 0.2240`,
+      hint: 'Scale λ for 2 meters: λ_total = 1.5 × 2 = 3. Then use PMF.',
+      topic: 'Poisson Scaling',
+    },
+  ],
 };
 
 interface Props {
