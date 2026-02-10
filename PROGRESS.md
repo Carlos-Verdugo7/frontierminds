@@ -233,11 +233,33 @@ Use this to understand the current state of the project across AI sessions.
 ---
 
 ## Chapter 3: Continuous Distributions (Exam Weight: ~25%)
-- **Status**: NOT STARTED
-- **Sections**:
-  - 3.1: Random Variables of the Continuous Type
-  - 3.2: Mathematical Expectation
-  - 3.3: Special Distributions (Uniform, Exponential, Gamma, Normal)
+- **Status**: IN PROGRESS
+
+### Section 3.1: Random Variables of the Continuous Type
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/3/section/1/page.tsx`
+- **Components**:
+  - `ContinuousPDFExplorer.tsx` - Interactive PDF/CDF visualizer with multiple distributions (Uniform, Triangular, Quadratic), probability calculator, and statistics display
+- **Topics Covered**:
+  - Continuous vs discrete random variables
+  - Probability Density Function (PDF) — definition & properties
+  - P(X = x) = 0 for continuous RVs
+  - Cumulative Distribution Function (CDF)
+  - PDF ↔ CDF relationship: f(x) = F'(x)
+  - Uniform distribution U(a, b)
+  - Mean, variance, MGF for continuous RVs
+  - Percentiles and quartiles
+- **Practice Problems** (12 total):
+  - Finding constant c for valid PDFs
+  - Uniform distribution calculations
+  - CDF from PDF
+  - Mean and variance calculations
+  - Percentile problems
+
+### Remaining Sections (NOT STARTED):
+  - 3.2: The Exponential, Gamma, and Chi-Square Distributions
+  - 3.3: The Normal Distribution
+  - 3.4: Additional Models
 
 ---
 
@@ -283,6 +305,7 @@ Use this to understand the current state of the project across AI sessions.
 | BinomialSimulator | DONE | `/src/components/BinomialSimulator.tsx` | Binomial distribution simulator with n/p sliders, trial animation, theoretical vs observed PMF overlay, probability calculator P(X=k), P(X≤k), P(X≥k) |
 | NegativeBinomialSimulator | DONE | `/src/components/NegativeBinomialSimulator.tsx` | Geometric/Negative Binomial simulator with r/p sliders, trials-until-success animation, memoryless demonstration, P(X=k), P(X>k), P(X≤k) calculator |
 | PoissonSimulator | DONE | `/src/components/PoissonSimulator.tsx` | Poisson distribution simulator with λ slider, timeline visualization, theoretical vs observed PMF histogram, P(X=k), P(X≤k), P(X>k) calculator |
+| ContinuousPDFExplorer | DONE | `/src/components/ContinuousPDFExplorer.tsx` | Interactive PDF/CDF visualizer with multiple distributions, probability calculator P(a<X<b), statistics display (mean, variance, std dev) |
 
 ---
 
@@ -304,4 +327,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Completed Chapter 2 — Added Section 2.6 Poisson Distribution (PoissonSimulator, 12 practice problems, 9 intuitive learn sections covering Poisson process, PMF, Mean=Variance=λ property, scaling, and Poisson approximation to Binomial)*
+*Last Updated: Started Chapter 3 — Added Section 3.1 Random Variables of the Continuous Type (ContinuousPDFExplorer, 12 practice problems, 9 intuitive learn sections covering PDFs, CDFs, Uniform distribution, mean/variance/percentiles for continuous RVs)*

@@ -2588,6 +2588,177 @@ P(X = 2) = 3² × e^(-3) / 2!
       topic: 'Poisson Scaling',
     },
   ],
+  '3.1': [
+    {
+      id: 1,
+      question: `Let X be a continuous random variable with pdf f(x) = cx² for 0 < x < 2, and f(x) = 0 elsewhere. Find the value of c.`,
+      options: ['1/8', '3/8', '1/4', '3/4', '1/2'],
+      correctIndex: 1,
+      explanation: `For f(x) to be a valid PDF, we need ∫f(x)dx = 1.
+
+∫₀² cx² dx = c[x³/3]₀² = c(8/3) = 1
+
+c = 3/8`,
+      hint: 'Integrate f(x) over the support and set equal to 1. Then solve for c.',
+      topic: 'PDF Properties',
+    },
+    {
+      id: 2,
+      question: `If X ~ U(2, 8), what is P(3 < X < 5)?`,
+      options: ['1/6', '1/3', '1/2', '2/3', '5/6'],
+      correctIndex: 1,
+      explanation: `For uniform U(a, b), P(c < X < d) = (d - c)/(b - a).
+
+P(3 < X < 5) = (5 - 3)/(8 - 2)
+= 2/6
+= 1/3`,
+      hint: 'For uniform distribution, probability is proportional to interval length.',
+      topic: 'Uniform Distribution',
+    },
+    {
+      id: 3,
+      question: `X has pdf f(x) = 2x for 0 < x < 1. Find the CDF F(x) for 0 ≤ x ≤ 1.`,
+      options: ['F(x) = x', 'F(x) = x²', 'F(x) = 2x', 'F(x) = 2x²', 'F(x) = x²/2'],
+      correctIndex: 1,
+      explanation: `F(x) = ∫₀ˣ f(t) dt = ∫₀ˣ 2t dt
+
+= 2[t²/2]₀ˣ
+= [t²]₀ˣ
+= x²`,
+      hint: 'Integrate the PDF from the lower bound of support to x.',
+      topic: 'CDF',
+    },
+    {
+      id: 4,
+      question: `If X ~ U(0, 10), find the variance of X.`,
+      options: ['10/12', '100/12', '10', '5', '25/3'],
+      correctIndex: 1,
+      explanation: `For uniform U(a, b):
+σ² = (b - a)²/12
+
+σ² = (10 - 0)²/12
+= 100/12
+≈ 8.33`,
+      hint: 'Use the uniform variance formula: σ² = (b-a)²/12.',
+      topic: 'Uniform Variance',
+    },
+    {
+      id: 5,
+      question: `X has pdf f(x) = 3x² for 0 < x < 1. Find E(X).`,
+      options: ['1/4', '1/2', '3/4', '2/3', '1/3'],
+      correctIndex: 2,
+      explanation: `E(X) = ∫₀¹ x·f(x) dx = ∫₀¹ x·3x² dx
+
+= ∫₀¹ 3x³ dx
+= 3[x⁴/4]₀¹
+= 3/4`,
+      hint: 'E(X) = ∫x·f(x)dx over the support.',
+      topic: 'Expected Value',
+    },
+    {
+      id: 6,
+      question: `A random variable X has CDF F(x) = x³ for 0 ≤ x ≤ 1. What is the median of X?`,
+      options: ['0.5', '0.794', '0.630', '0.707', '0.841'],
+      correctIndex: 1,
+      explanation: `The median m satisfies F(m) = 0.5.
+
+m³ = 0.5
+m = (0.5)^(1/3)
+m = ∛0.5
+≈ 0.794`,
+      hint: 'Set F(m) = 0.5 and solve for m.',
+      topic: 'Percentiles',
+    },
+    {
+      id: 7,
+      question: `If X ~ U(a, b) with mean 5 and variance 3, find the values of a and b.`,
+      options: ['a = 2, b = 8', 'a = 1, b = 9', 'a = 3, b = 7', 'a = 0, b = 10', 'a = 2, b = 10'],
+      correctIndex: 0,
+      explanation: `For uniform U(a, b):
+μ = (a + b)/2 = 5, so a + b = 10
+σ² = (b - a)²/12 = 3, so (b - a)² = 36, b - a = 6
+
+From a + b = 10 and b - a = 6:
+Adding: 2b = 16, so b = 8
+Then a = 10 - 8 = 2`,
+      hint: 'Set up two equations using the mean and variance formulas.',
+      topic: 'Uniform Distribution',
+    },
+    {
+      id: 8,
+      question: `Let f(x) = (1/2)e^(-|x|) for -∞ < x < ∞. Find P(X > 1).`,
+      options: ['e^(-1)/2', 'e^(-1)', '1 - e^(-1)', '1/2', '(1/2)(1 - e^(-1))'],
+      correctIndex: 0,
+      explanation: `For x > 0, f(x) = (1/2)e^(-x).
+
+P(X > 1) = ∫₁^∞ (1/2)e^(-x) dx
+= (1/2)[-e^(-x)]₁^∞
+= (1/2)(0 - (-e^(-1)))
+= e^(-1)/2
+≈ 0.184`,
+      hint: 'For x > 1, |x| = x. Integrate (1/2)e^(-x) from 1 to ∞.',
+      topic: 'PDF Integration',
+    },
+    {
+      id: 9,
+      question: `X has pdf f(x) = 2(1-x) for 0 < x < 1. Find Var(X).`,
+      options: ['1/18', '1/6', '1/9', '1/12', '1/3'],
+      correctIndex: 0,
+      explanation: `First find E(X):
+E(X) = ∫₀¹ x·2(1-x) dx = 2∫₀¹ (x - x²) dx
+= 2[x²/2 - x³/3]₀¹ = 2(1/2 - 1/3) = 2(1/6) = 1/3
+
+Next find E(X²):
+E(X²) = ∫₀¹ x²·2(1-x) dx = 2∫₀¹ (x² - x³) dx
+= 2[x³/3 - x⁴/4]₀¹ = 2(1/3 - 1/4) = 2(1/12) = 1/6
+
+Var(X) = E(X²) - [E(X)]² = 1/6 - (1/3)² = 1/6 - 1/9 = 1/18`,
+      hint: 'Use the shortcut: Var(X) = E(X²) - μ².',
+      topic: 'Variance',
+    },
+    {
+      id: 10,
+      question: `The time X (in hours) until a machine fails has pdf f(x) = 0.5e^(-0.5x) for x > 0. What is P(X > 2)?`,
+      options: ['e^(-1)', 'e^(-2)', '1 - e^(-1)', '0.5e^(-1)', '1 - e^(-2)'],
+      correctIndex: 0,
+      explanation: `This is an exponential distribution with λ = 0.5.
+
+P(X > 2) = ∫₂^∞ 0.5e^(-0.5x) dx
+= [-e^(-0.5x)]₂^∞
+= 0 - (-e^(-1))
+= e^(-1)
+≈ 0.368`,
+      hint: 'Integrate the PDF from 2 to ∞, or recognize this as exponential.',
+      topic: 'PDF Integration',
+    },
+    {
+      id: 11,
+      question: `X has pdf f(x) = 3/x⁴ for x > 1. Find E(X).`,
+      options: ['3/2', '3', '3/4', '2', '1'],
+      correctIndex: 0,
+      explanation: `E(X) = ∫₁^∞ x·(3/x⁴) dx = ∫₁^∞ 3/x³ dx
+
+= 3[-1/(2x²)]₁^∞
+= 3(0 - (-1/2))
+= 3/2`,
+      hint: 'Integrate x·f(x) = 3x^(-3) from 1 to ∞.',
+      topic: 'Expected Value',
+    },
+    {
+      id: 12,
+      question: `If X ~ U(0, 4), find the 75th percentile of X.`,
+      options: ['1', '2', '3', '3.5', '2.5'],
+      correctIndex: 2,
+      explanation: `For uniform U(0, 4), the CDF is F(x) = x/4.
+
+The 75th percentile π₀.₇₅ satisfies F(π₀.₇₅) = 0.75.
+
+π₀.₇₅/4 = 0.75
+π₀.₇₅ = 3`,
+      hint: 'Set F(x) = 0.75 and solve for x.',
+      topic: 'Percentiles',
+    },
+  ],
 };
 
 interface Props {

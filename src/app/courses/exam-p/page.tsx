@@ -30,7 +30,7 @@ const chapters = [
     sections: ['Continuous Random Variables', 'Exponential & Gamma', 'Normal Distribution'],
     examWeight: '25%',
     color: 'from-purple-500 to-purple-600',
-    locked: true,
+    problems: 12,
   },
   {
     id: 4,
@@ -64,7 +64,7 @@ export default function ExamPCoursePage() {
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm text-slate-400">Progress</p>
-              <p className="text-lg font-bold text-blue-400">1 / 5 Chapters</p>
+              <p className="text-lg font-bold text-blue-400">2 / 5 Chapters</p>
             </div>
           </div>
         </div>
