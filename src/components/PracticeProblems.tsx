@@ -2759,6 +2759,197 @@ The 75th percentile π₀.₇₅ satisfies F(π₀.₇₅) = 0.75.
       topic: 'Percentiles',
     },
   ],
+  '3.2': [
+    {
+      id: 1,
+      question: `The time (in minutes) until the next customer arrives at a bank follows an exponential distribution with mean 4 minutes.
+
+What is the probability that the next customer arrives within 3 minutes?`,
+      options: ['1 - e^(-3/4) ≈ 0.528', '1 - e^(-4/3) ≈ 0.736', 'e^(-3/4) ≈ 0.472', '3/4 = 0.750', '1 - e^(-3) ≈ 0.950'],
+      correctIndex: 0,
+      explanation: `X ~ Exp(θ = 4), so λ = 1/4.
+
+P(X ≤ 3) = F(3) = 1 - e^(-3/θ)
+= 1 - e^(-3/4)
+≈ 1 - 0.4724
+≈ 0.528`,
+      hint: 'For exponential with mean θ, the CDF is F(x) = 1 - e^(-x/θ). Here θ = 4.',
+      topic: 'Exponential Probability',
+    },
+    {
+      id: 2,
+      question: `A machine's lifetime X (in years) is exponentially distributed with rate λ = 0.5.
+
+Find the variance of X.`,
+      options: ['0.5', '1', '2', '4', '0.25'],
+      correctIndex: 3,
+      explanation: `For Exp(λ), variance = 1/λ².
+
+Var(X) = 1/(0.5)²
+= 1/0.25
+= 4`,
+      hint: 'For exponential with rate λ: mean = 1/λ and variance = 1/λ².',
+      topic: 'Exponential Mean/Variance',
+    },
+    {
+      id: 3,
+      question: `A component has an exponential lifetime with mean 100 hours. Given that the component has already survived 60 hours, what is the probability it survives at least 90 total hours?`,
+      options: ['e^(-90/100) ≈ 0.407', 'e^(-30/100) ≈ 0.741', 'e^(-60/100) ≈ 0.549', 'e^(-150/100) ≈ 0.223', '1 - e^(-30/100) ≈ 0.259'],
+      correctIndex: 1,
+      explanation: `By the memoryless property:
+P(X > 90 | X > 60) = P(X > 30)
+= e^(-30/100)
+= e^(-0.3)
+≈ 0.741
+
+We only need to survive 30 MORE hours. The past 60 hours don't matter!`,
+      hint: 'The exponential distribution is memoryless: P(X > s+t | X > s) = P(X > t). How many more hours does it need to survive?',
+      topic: 'Memoryless Property',
+    },
+    {
+      id: 4,
+      question: `Cars arrive at a toll booth according to a Poisson process at a rate of 6 per hour. What is the probability that the time between two successive arrivals exceeds 15 minutes?`,
+      options: ['e^(-1.5) ≈ 0.223', 'e^(-6) ≈ 0.002', '1 - e^(-1.5) ≈ 0.777', 'e^(-0.25) ≈ 0.779', '1 - e^(-6) ≈ 0.998'],
+      correctIndex: 0,
+      explanation: `If arrivals follow Poisson(λ = 6/hour), then interarrival times are Exp(θ = 1/6 hour = 10 min).
+
+15 minutes = 0.25 hours.
+
+P(X > 0.25) = e^(-0.25/θ) = e^(-0.25/(1/6))
+= e^(-0.25 × 6)
+= e^(-1.5)
+≈ 0.223`,
+      hint: 'Poisson interarrival times are exponential with θ = 1/rate. Convert 15 minutes to hours to match the rate units.',
+      topic: 'Poisson-Exponential Connection',
+    },
+    {
+      id: 5,
+      question: `Evaluate Γ(7/2).`,
+      options: ['15√π / 8', '5√π / 2', '3√π / 4', '15√π / 4', '35√π / 8'],
+      correctIndex: 0,
+      explanation: `Using Γ(α) = (α-1)·Γ(α-1) recursively:
+
+Γ(7/2) = (5/2) · Γ(5/2)
+= (5/2) · (3/2) · Γ(3/2)
+= (5/2) · (3/2) · (1/2) · Γ(1/2)
+= (5/2) · (3/2) · (1/2) · √π
+= (15/8) · √π
+= 15√π / 8`,
+      hint: 'Use Γ(α) = (α-1)·Γ(α-1) recursively down to Γ(1/2) = √π.',
+      topic: 'Gamma Function',
+    },
+    {
+      id: 6,
+      question: `X ~ Gamma(3, 2). Using the Poisson-Gamma relationship for integer α:
+
+P(X ≤ x) = 1 - Σ(k=0 to α-1) [e^(-x/β) · (x/β)^k / k!]
+
+Find P(X ≤ 4).`,
+      options: ['1 - e^(-2)(1 + 2) = 1 - 3e^(-2) ≈ 0.594', '1 - e^(-2) ≈ 0.865', '5e^(-2) ≈ 0.677', '1 - e^(-2)(1 + 2 + 2) = 1 - 5e^(-2) ≈ 0.323', 'e^(-2)(1 + 2 + 2) = 5e^(-2) ≈ 0.677'],
+      correctIndex: 3,
+      explanation: `For Gamma(α=3, β=2) with integer α:
+
+P(X ≤ 4) = 1 - Σ(k=0 to 2) [e^(-4/2) · (4/2)^k / k!]
+
+= 1 - e^(-2) · [2⁰/0! + 2¹/1! + 2²/2!]
+= 1 - e^(-2) · [1 + 2 + 2]
+= 1 - 5e^(-2)
+≈ 1 - 5(0.1353)
+≈ 0.323`,
+      hint: 'Substitute x=4, β=2 into the formula. You need terms for k=0, k=1, and k=2 (since α=3).',
+      topic: 'Gamma Probability',
+    },
+    {
+      id: 7,
+      question: `If X ~ Gamma(4, 3), find E(X) and Var(X).`,
+      options: ['E(X) = 12, Var(X) = 36', 'E(X) = 12, Var(X) = 9', 'E(X) = 7, Var(X) = 12', 'E(X) = 4/3, Var(X) = 4/9', 'E(X) = 3/4, Var(X) = 3/16'],
+      correctIndex: 0,
+      explanation: `For Gamma(α, β):
+E(X) = αβ = 4 × 3 = 12
+Var(X) = αβ² = 4 × 3² = 4 × 9 = 36`,
+      hint: 'For Gamma(α, β): mean = αβ and variance = αβ².',
+      topic: 'Gamma Mean/Variance',
+    },
+    {
+      id: 8,
+      question: `Five independent light bulbs each have an exponential lifetime with mean 1000 hours. They are used sequentially (one after another). Let T = total combined lifetime. What is the distribution of T?`,
+      options: ['Exp(θ = 5000)', 'Gamma(5, 1000)', 'Gamma(5, 200)', 'Gamma(1000, 5)', 'Normal(5000, 5000000)'],
+      correctIndex: 1,
+      explanation: `Each lifetime Xᵢ ~ Exp(θ = 1000).
+
+The sum of n independent Exp(θ) random variables follows Gamma(n, θ).
+
+T = X₁ + X₂ + ... + X₅ ~ Gamma(5, 1000)
+
+Check: E(T) = αβ = 5 × 1000 = 5000 hours ✓`,
+      hint: 'The sum of n independent Exp(θ) random variables has what distribution?',
+      topic: 'Sum of Exponentials',
+    },
+    {
+      id: 9,
+      question: `If X ~ χ²(12), find the mean and standard deviation of X.`,
+      options: ['μ = 12, σ = √24 ≈ 4.899', 'μ = 6, σ = √12 ≈ 3.464', 'μ = 12, σ = √12 ≈ 3.464', 'μ = 24, σ = √48 ≈ 6.928', 'μ = 12, σ = 24'],
+      correctIndex: 0,
+      explanation: `For χ²(r):
+E(X) = r = 12
+Var(X) = 2r = 2(12) = 24
+σ = √24 = 2√6 ≈ 4.899`,
+      hint: 'For chi-square with r degrees of freedom: mean = r, variance = 2r.',
+      topic: 'Chi-Square Properties',
+    },
+    {
+      id: 10,
+      question: `X₁ ~ χ²(5) and X₂ ~ χ²(9) are independent. What is the distribution of X₁ + X₂?`,
+      options: ['χ²(14)', 'χ²(45)', 'Gamma(7, 2)', 'χ²(4)', 'Normal(14, 28)'],
+      correctIndex: 0,
+      explanation: `By the additive property of chi-square:
+If X₁ ~ χ²(r₁) and X₂ ~ χ²(r₂) are independent, then
+X₁ + X₂ ~ χ²(r₁ + r₂)
+
+So X₁ + X₂ ~ χ²(5 + 9) = χ²(14)
+
+Note: χ²(14) = Gamma(7, 2), so option C is actually the same distribution — but the conventional answer uses chi-square notation.`,
+      hint: 'Independent chi-square random variables have an additive property. What happens to the degrees of freedom?',
+      topic: 'Chi-Square Additive Property',
+    },
+    {
+      id: 11,
+      question: `A random variable X has moment-generating function M(t) = (1 - 3t)^(-4) for t < 1/3.
+
+What is the distribution of X?`,
+      options: ['Gamma(4, 3)', 'Gamma(3, 4)', 'Exp(θ = 3)', 'χ²(8)', 'Gamma(4, 1/3)'],
+      correctIndex: 0,
+      explanation: `The Gamma(α, β) MGF is M(t) = (1 - βt)^(-α).
+
+Comparing (1 - 3t)^(-4) with (1 - βt)^(-α):
+β = 3, α = 4
+
+So X ~ Gamma(4, 3).
+
+Note: χ²(8) = Gamma(4, 2), which has β = 2 ≠ 3, so this is NOT chi-square.`,
+      hint: 'Compare the given MGF with the Gamma MGF: M(t) = (1 - βt)^(-α). Match the coefficients.',
+      topic: 'MGF Identification',
+    },
+    {
+      id: 12,
+      question: `A system has 3 components in series. Each component's lifetime is independently exponentially distributed with means 2, 3, and 5 years. The system fails when the FIRST component fails.
+
+What is the mean lifetime of the system?`,
+      options: ['10 years', '30/31 years ≈ 0.968', '2 years', '10/3 ≈ 3.333 years', '1/10 = 0.1 years'],
+      correctIndex: 1,
+      explanation: `The minimum of independent exponentials is also exponential.
+
+If Xᵢ ~ Exp(θᵢ), then min(X₁,...,Xₙ) ~ Exp with rate = sum of rates.
+
+Rates: λ₁ = 1/2, λ₂ = 1/3, λ₃ = 1/5
+Total rate = 1/2 + 1/3 + 1/5
+= 15/30 + 10/30 + 6/30 = 31/30
+
+Mean = 1/(31/30) = 30/31 ≈ 0.968 years`,
+      hint: 'For the minimum of independent exponentials, the individual rates ADD. What is the total rate?',
+      topic: 'Exponential Minimum',
+    },
+  ],
 };
 
 interface Props {

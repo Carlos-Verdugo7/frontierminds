@@ -16,7 +16,7 @@ const sections = [
     title: '3.2 Exponential, Gamma, and Chi-Square',
     description: 'Waiting times, the exponential distribution, and related distributions',
     topics: ['Exponential Distribution', 'Memoryless Property', 'Gamma Distribution', 'Chi-Square'],
-    status: 'coming-soon',
+    status: 'available',
   },
   {
     id: 3,
@@ -66,11 +66,11 @@ export default function Chapter3Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">1</p>
+              <p className="text-2xl font-bold text-blue-400">2</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-green-400">12</p>
+              <p className="text-2xl font-bold text-green-400">24</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
