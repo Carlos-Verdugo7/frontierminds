@@ -709,6 +709,316 @@ export async function generateChiSquareWorkbook() {
 }
 
 // ============================================================
+// NORMAL DISTRIBUTION WORKBOOK
+// ============================================================
+export async function generateNormalWorkbook() {
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'Exam P Trainer - FrontierMinds';
+  wb.created = new Date();
+
+  // ---- Sheet 1: Parameters & Key Formulas ----
+  const ws1 = wb.addWorksheet('Parameters', { properties: { tabColor: { argb: 'FFA855F7' } } });
+  ws1.columns = [
+    { width: 30 }, { width: 18 }, { width: 5 }, { width: 30 }, { width: 18 }, { width: 20 },
+  ];
+
+  addSectionHeader(ws1, 1, 'NORMAL DISTRIBUTION - Parameters & Key Formulas');
+
+  addLabel(ws1, 3, 1, 'INPUT PARAMETERS (edit yellow cells):');
+
+  addLabel(ws1, 4, 1, 'μ (mean) =');
+  const muCell = ws1.getCell('B4');
+  muCell.value = 0;
+  styleInputCell(muCell);
+  muCell.numFmt = '0.0000';
+
+  addLabel(ws1, 5, 1, 'σ (standard deviation) =');
+  const sigmaCell = ws1.getCell('B5');
+  sigmaCell.value = 1;
+  styleInputCell(sigmaCell);
+  sigmaCell.numFmt = '0.0000';
+
+  addLabel(ws1, 7, 1, 'COMPUTED VALUES:');
+
+  addLabel(ws1, 8, 1, 'Variance σ² =');
+  ws1.getCell('B8').value = { formula: 'B5^2' }; ws1.getCell('B8').numFmt = '0.0000';
+  styleResultCell(ws1.getCell('B8'));
+
+  addLabel(ws1, 9, 1, 'Median =');
+  ws1.getCell('B9').value = { formula: 'B4' }; ws1.getCell('B9').numFmt = '0.0000';
+  styleResultCell(ws1.getCell('B9'));
+
+  addLabel(ws1, 10, 1, 'Mode =');
+  ws1.getCell('B10').value = { formula: 'B4' }; ws1.getCell('B10').numFmt = '0.0000';
+  styleResultCell(ws1.getCell('B10'));
+
+  addLabel(ws1, 11, 1, 'Skewness =');
+  ws1.getCell('B11').value = 0; ws1.getCell('B11').numFmt = '0.0000';
+  styleResultCell(ws1.getCell('B11'));
+
+  addLabel(ws1, 12, 1, 'Excess Kurtosis =');
+  ws1.getCell('B12').value = 0; ws1.getCell('B12').numFmt = '0.0000';
+  styleResultCell(ws1.getCell('B12'));
+
+  addLabel(ws1, 13, 1, 'MGF M(t) = exp(μt + σ²t²/2)');
+
+  // Excel Function Reference
+  addSectionHeader(ws1, 15, 'EXCEL FUNCTION REFERENCE');
+  addLabel(ws1, 16, 1, 'Function');
+  addLabel(ws1, 16, 2, 'Formula');
+  addLabel(ws1, 16, 4, 'Description');
+
+  const funcs = [
+    ['PDF f(x)', '=NORM.DIST(x, μ, σ, FALSE)', 'Probability density at x'],
+    ['CDF F(x)', '=NORM.DIST(x, μ, σ, TRUE)', 'P(X ≤ x)'],
+    ['Std Normal CDF Φ(z)', '=NORM.S.DIST(z, TRUE)', 'P(Z ≤ z) for Z~N(0,1)'],
+    ['Inverse (percentile)', '=NORM.INV(p, μ, σ)', 'Value at percentile p'],
+    ['Std Normal Inverse', '=NORM.S.INV(p)', 'z such that Φ(z) = p'],
+    ['Random Sample', '=NORM.INV(RAND(), μ, σ)', 'Generate one sample'],
+  ];
+  funcs.forEach((f, i) => {
+    addLabel(ws1, 17 + i, 1, f[0]);
+    addFormulaNote(ws1, 17 + i, 2, f[1]);
+    ws1.getCell(17 + i, 4).value = f[2];
+    ws1.getCell(17 + i, 4).font = { size: 10, color: { argb: 'FF64748B' } };
+  });
+
+  // ---- Sheet 2: PDF & CDF Table ----
+  const ws2 = wb.addWorksheet('PDF & CDF Table', { properties: { tabColor: { argb: 'FF3B82F6' } } });
+  ws2.columns = [{ width: 10 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 22 }];
+
+  addSectionHeader(ws2, 1, 'PDF & CDF VALUES  (μ, σ from Parameters sheet)', 5);
+
+  ws2.getCell('A2').value = 'x'; ws2.getCell('A2').font = LABEL_FONT;
+  ws2.getCell('B2').value = 'PDF f(x)'; ws2.getCell('B2').font = LABEL_FONT;
+  ws2.getCell('C2').value = 'CDF F(x)'; ws2.getCell('C2').font = LABEL_FONT;
+  ws2.getCell('D2').value = 'P(X > x)'; ws2.getCell('D2').font = LABEL_FONT;
+  ws2.getCell('E2').value = 'Excel Formula Used'; ws2.getCell('E2').font = LABEL_FONT;
+
+  // x from μ-4σ to μ+4σ in 0.25σ steps (33 rows)
+  for (let i = 0; i <= 32; i++) {
+    const row = 3 + i;
+    // x = μ + (i-16)*0.25*σ = μ-4σ to μ+4σ
+    ws2.getCell(row, 1).value = { formula: `Parameters!B4 + (${i - 16}*0.25)*Parameters!B5` };
+    ws2.getCell(row, 1).numFmt = '0.00';
+    ws2.getCell(row, 2).value = { formula: `NORM.DIST(A${row},Parameters!B4,Parameters!B5,FALSE)` };
+    ws2.getCell(row, 2).numFmt = '0.000000';
+    ws2.getCell(row, 3).value = { formula: `NORM.DIST(A${row},Parameters!B4,Parameters!B5,TRUE)` };
+    ws2.getCell(row, 3).numFmt = '0.000000';
+    ws2.getCell(row, 4).value = { formula: `1-C${row}` };
+    ws2.getCell(row, 4).numFmt = '0.000000';
+    if (i === 0) {
+      ws2.getCell(row, 5).value = '=NORM.DIST(x, μ, σ, FALSE/TRUE)';
+      ws2.getCell(row, 5).font = FORMULA_FONT;
+    }
+    [1, 2, 3, 4].forEach(c => { ws2.getCell(row, c).border = THIN_BORDER; });
+  }
+
+  // ---- Sheet 3: Z-Score Calculator ----
+  const ws3 = wb.addWorksheet('Z-Score Calculator', { properties: { tabColor: { argb: 'FF22C55E' } } });
+  ws3.columns = [{ width: 12 }, { width: 16 }, { width: 5 }, { width: 30 }, { width: 18 }];
+
+  addSectionHeader(ws3, 1, 'Z-SCORE CALCULATOR & Z-TABLE', 5);
+
+  addLabel(ws3, 3, 4, 'Standardization Demo:');
+  addLabel(ws3, 4, 4, 'INPUT: X value =');
+  const xInputCell = ws3.getCell('E4');
+  xInputCell.value = 1.5;
+  styleInputCell(xInputCell);
+  xInputCell.numFmt = '0.00';
+
+  addLabel(ws3, 5, 4, 'Z = (X - μ) / σ =');
+  ws3.getCell('E5').value = { formula: '(E4 - Parameters!B4) / Parameters!B5' };
+  ws3.getCell('E5').numFmt = '0.0000';
+  styleResultCell(ws3.getCell('E5'));
+
+  addLabel(ws3, 6, 4, 'P(X ≤ x) = Φ(z) =');
+  ws3.getCell('E6').value = { formula: 'NORM.S.DIST(E5, TRUE)' };
+  ws3.getCell('E6').numFmt = '0.000000';
+  styleResultCell(ws3.getCell('E6'));
+
+  addLabel(ws3, 7, 4, 'P(X > x) =');
+  ws3.getCell('E7').value = { formula: '1 - E6' };
+  ws3.getCell('E7').numFmt = '0.000000';
+  styleResultCell(ws3.getCell('E7'));
+
+  // Inverse lookup
+  addLabel(ws3, 9, 4, 'Inverse Lookup:');
+  addLabel(ws3, 10, 4, 'INPUT: probability p =');
+  const pInputCell = ws3.getCell('E10');
+  pInputCell.value = 0.975;
+  styleInputCell(pInputCell);
+  pInputCell.numFmt = '0.0000';
+
+  addLabel(ws3, 11, 4, 'z = Φ⁻¹(p) =');
+  ws3.getCell('E11').value = { formula: 'NORM.S.INV(E10)' };
+  ws3.getCell('E11').numFmt = '0.0000';
+  styleResultCell(ws3.getCell('E11'));
+
+  addLabel(ws3, 12, 4, 'X = μ + zσ =');
+  ws3.getCell('E12').value = { formula: 'NORM.INV(E10, Parameters!B4, Parameters!B5)' };
+  ws3.getCell('E12').numFmt = '0.0000';
+  styleResultCell(ws3.getCell('E12'));
+
+  // Mini Z-table: z from -3.4 to 3.4 (rows) with hundredths 0.00-0.09 (cols)
+  addLabel(ws3, 3, 1, 'z');
+  for (let j = 0; j <= 9; j++) {
+    ws3.getCell(3, 2 + j - 1).value = `0.0${j}`;
+    ws3.getCell(3, 2 + j - 1).font = LABEL_FONT;
+  }
+  // Actually let's place the z-table starting at row 15 to not overlap
+  addSectionHeader(ws3, 14, 'STANDARD NORMAL Z-TABLE  Φ(z) = P(Z ≤ z)', 11);
+  ws3.getCell(15, 1).value = 'z'; ws3.getCell(15, 1).font = LABEL_FONT;
+  for (let j = 0; j <= 9; j++) {
+    ws3.getCell(15, 2 + j).value = j === 0 ? '0.00' : `0.0${j}`;
+    ws3.getCell(15, 2 + j).font = LABEL_FONT;
+  }
+
+  // z from -3.4 to 3.4 in steps of 0.1
+  for (let i = 0; i <= 68; i++) {
+    const zBase = -3.4 + i * 0.1;
+    const row = 16 + i;
+    ws3.getCell(row, 1).value = parseFloat(zBase.toFixed(1));
+    ws3.getCell(row, 1).numFmt = '0.0';
+    ws3.getCell(row, 1).font = LABEL_FONT;
+    for (let j = 0; j <= 9; j++) {
+      const z = zBase + j * 0.01;
+      ws3.getCell(row, 2 + j).value = { formula: `NORM.S.DIST(${z.toFixed(2)},TRUE)` };
+      ws3.getCell(row, 2 + j).numFmt = '0.0000';
+      ws3.getCell(row, 2 + j).border = THIN_BORDER;
+    }
+  }
+
+  // ---- Sheet 4: Monte Carlo Simulation ----
+  const ws4 = wb.addWorksheet('Monte Carlo Sim', { properties: { tabColor: { argb: 'FFF97316' } } });
+  ws4.columns = [{ width: 8 }, { width: 18 }, { width: 18 }, { width: 5 }, { width: 22 }, { width: 18 }];
+
+  addSectionHeader(ws4, 1, 'MONTE CARLO SIMULATION  (Press F9 to regenerate!)');
+
+  addLabel(ws4, 3, 1, '#');
+  addLabel(ws4, 3, 2, 'X ~ N(μ,σ²)');
+  addLabel(ws4, 3, 3, 'Z-score');
+
+  for (let i = 0; i < 1000; i++) {
+    const row = 4 + i;
+    ws4.getCell(row, 1).value = i + 1;
+    ws4.getCell(row, 2).value = { formula: `NORM.INV(RAND(),Parameters!B4,Parameters!B5)` };
+    ws4.getCell(row, 2).numFmt = '0.000';
+    ws4.getCell(row, 3).value = { formula: `(B${row}-Parameters!B4)/Parameters!B5` };
+    ws4.getCell(row, 3).numFmt = '0.000';
+  }
+
+  // Summary stats
+  addSectionHeader(ws4, 3, '', 3);
+  addLabel(ws4, 2, 5, 'Summary Statistics');
+  addLabel(ws4, 3, 5, 'Sample Mean');
+  ws4.getCell('F3').value = { formula: 'AVERAGE(B4:B1003)' }; ws4.getCell('F3').numFmt = '0.0000';
+  styleResultCell(ws4.getCell('F3'));
+
+  addLabel(ws4, 4, 5, 'Sample Variance');
+  ws4.getCell('F4').value = { formula: 'VAR.S(B4:B1003)' }; ws4.getCell('F4').numFmt = '0.0000';
+  styleResultCell(ws4.getCell('F4'));
+
+  addLabel(ws4, 5, 5, 'Sample Std Dev');
+  ws4.getCell('F5').value = { formula: 'STDEV.S(B4:B1003)' }; ws4.getCell('F5').numFmt = '0.0000';
+  styleResultCell(ws4.getCell('F5'));
+
+  addLabel(ws4, 7, 5, '% within 1σ');
+  ws4.getCell('F7').value = { formula: 'COUNTIFS(B4:B1003,">="&(Parameters!B4-Parameters!B5),B4:B1003,"<="&(Parameters!B4+Parameters!B5))/1000' };
+  ws4.getCell('F7').numFmt = '0.00%';
+  styleResultCell(ws4.getCell('F7'));
+
+  addLabel(ws4, 8, 5, '% within 2σ');
+  ws4.getCell('F8').value = { formula: 'COUNTIFS(B4:B1003,">="&(Parameters!B4-2*Parameters!B5),B4:B1003,"<="&(Parameters!B4+2*Parameters!B5))/1000' };
+  ws4.getCell('F8').numFmt = '0.00%';
+  styleResultCell(ws4.getCell('F8'));
+
+  addLabel(ws4, 9, 5, '% within 3σ');
+  ws4.getCell('F9').value = { formula: 'COUNTIFS(B4:B1003,">="&(Parameters!B4-3*Parameters!B5),B4:B1003,"<="&(Parameters!B4+3*Parameters!B5))/1000' };
+  ws4.getCell('F9').numFmt = '0.00%';
+  styleResultCell(ws4.getCell('F9'));
+
+  addLabel(ws4, 10, 5, 'Expected: 68.3%, 95.4%, 99.7%');
+  ws4.getCell(10, 5).font = { size: 10, color: { argb: 'FF64748B' }, italic: true };
+
+  // ---- Sheet 5: Normal Approximation to Binomial ----
+  const ws5 = wb.addWorksheet('Normal Approx Binomial', { properties: { tabColor: { argb: 'FFEF4444' } } });
+  ws5.columns = [{ width: 10 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 22 }];
+
+  addSectionHeader(ws5, 1, 'NORMAL APPROXIMATION TO BINOMIAL');
+
+  addLabel(ws5, 3, 1, 'INPUT:');
+  addLabel(ws5, 4, 1, 'n (trials) =');
+  const nCell = ws5.getCell('B4');
+  nCell.value = 100;
+  styleInputCell(nCell);
+
+  addLabel(ws5, 5, 1, 'p (probability) =');
+  const pCell = ws5.getCell('B5');
+  pCell.value = 0.4;
+  styleInputCell(pCell);
+  pCell.numFmt = '0.0000';
+
+  addLabel(ws5, 7, 1, 'COMPUTED:');
+  addLabel(ws5, 8, 1, 'μ = np =');
+  ws5.getCell('B8').value = { formula: 'B4*B5' }; ws5.getCell('B8').numFmt = '0.00';
+  styleResultCell(ws5.getCell('B8'));
+
+  addLabel(ws5, 9, 1, 'σ = √(npq) =');
+  ws5.getCell('B9').value = { formula: 'SQRT(B4*B5*(1-B5))' }; ws5.getCell('B9').numFmt = '0.0000';
+  styleResultCell(ws5.getCell('B9'));
+
+  addLabel(ws5, 10, 1, 'np =');
+  ws5.getCell('B10').value = { formula: 'B4*B5' }; ws5.getCell('B10').numFmt = '0.0';
+  addLabel(ws5, 10, 3, 'nq =');
+  ws5.getCell('D10').value = { formula: 'B4*(1-B5)' }; ws5.getCell('D10').numFmt = '0.0';
+  addLabel(ws5, 10, 5, 'Rule: np≥5 and nq≥5');
+
+  addLabel(ws5, 11, 1, 'Approx Valid?');
+  ws5.getCell('B11').value = { formula: 'IF(AND(B10>=5,D10>=5),"YES ✓","NO - use exact")' };
+  ws5.getCell('B11').font = { bold: true, color: { argb: 'FF16A34A' } };
+
+  // Comparison table
+  addSectionHeader(ws5, 13, 'EXACT BINOMIAL vs NORMAL APPROXIMATION', 6);
+  ws5.getCell('A14').value = 'k'; ws5.getCell('A14').font = LABEL_FONT;
+  ws5.getCell('B14').value = 'Exact P(X=k)'; ws5.getCell('B14').font = LABEL_FONT;
+  ws5.getCell('C14').value = 'Normal P(X=k)*'; ws5.getCell('C14').font = LABEL_FONT;
+  ws5.getCell('D14').value = 'Exact P(X≤k)'; ws5.getCell('D14').font = LABEL_FONT;
+  ws5.getCell('E14').value = 'Normal P(X≤k)*'; ws5.getCell('E14').font = LABEL_FONT;
+  ws5.getCell('F14').value = 'Error'; ws5.getCell('F14').font = LABEL_FONT;
+
+  // Show k values around μ (from μ-3σ to μ+3σ in steps of 1)
+  for (let i = 0; i < 30; i++) {
+    const row = 15 + i;
+    // k = np - 15 + i (centers around mean)
+    ws5.getCell(row, 1).value = { formula: `ROUND(B8,0)-15+${i}` };
+    // Exact P(X=k)
+    ws5.getCell(row, 2).value = { formula: `IF(AND(A${row}>=0,A${row}<=B4),BINOM.DIST(A${row},B4,B5,FALSE),0)` };
+    ws5.getCell(row, 2).numFmt = '0.000000';
+    // Normal approx P(X=k) with continuity correction: P(k-0.5 < Y < k+0.5)
+    ws5.getCell(row, 3).value = { formula: `NORM.DIST(A${row}+0.5,B8,B9,TRUE)-NORM.DIST(A${row}-0.5,B8,B9,TRUE)` };
+    ws5.getCell(row, 3).numFmt = '0.000000';
+    // Exact CDF P(X<=k)
+    ws5.getCell(row, 4).value = { formula: `IF(AND(A${row}>=0,A${row}<=B4),BINOM.DIST(A${row},B4,B5,TRUE),IF(A${row}<0,0,1))` };
+    ws5.getCell(row, 4).numFmt = '0.000000';
+    // Normal approx CDF with continuity correction: P(Y <= k+0.5)
+    ws5.getCell(row, 5).value = { formula: `NORM.DIST(A${row}+0.5,B8,B9,TRUE)` };
+    ws5.getCell(row, 5).numFmt = '0.000000';
+    // Error
+    ws5.getCell(row, 6).value = { formula: `ABS(D${row}-E${row})` };
+    ws5.getCell(row, 6).numFmt = '0.000000';
+    [1, 2, 3, 4, 5, 6].forEach(c => { ws5.getCell(row, c).border = THIN_BORDER; });
+  }
+
+  ws5.getCell(46, 1).value = '* with continuity correction';
+  ws5.getCell(46, 1).font = { size: 9, italic: true, color: { argb: 'FF64748B' } };
+
+  const buffer = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  saveAs(blob, 'ExamP_Normal_Distribution_Template.xlsx');
+}
+
+// ============================================================
 // EXPORT SAMPLES AS CSV
 // ============================================================
 export function exportSamplesCSV(samples: number[], distName: string) {
