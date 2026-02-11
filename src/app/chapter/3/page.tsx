@@ -30,7 +30,7 @@ const sections = [
     title: '3.4 Additional Models',
     description: 'Beta, Weibull, and other continuous distributions',
     topics: ['Beta Distribution', 'Weibull Distribution', 'Pareto Distribution'],
-    status: 'coming-soon',
+    status: 'available',
   },
 ];
 
@@ -66,11 +66,11 @@ export default function Chapter3Page() {
               <p className="text-sm text-slate-400">Sections</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-blue-400">3</p>
+              <p className="text-2xl font-bold text-blue-400">4</p>
               <p className="text-sm text-slate-400">Simulators</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">
-              <p className="text-2xl font-bold text-green-400">36</p>
+              <p className="text-2xl font-bold text-green-400">48</p>
               <p className="text-sm text-slate-400">Practice Problems</p>
             </div>
             <div className="bg-slate-700/50 rounded-lg p-4">

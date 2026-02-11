@@ -1019,6 +1019,216 @@ export async function generateNormalWorkbook() {
 }
 
 // ============================================================
+// ADDITIONAL MODELS (BETA, WEIBULL, PARETO) WORKBOOK
+// ============================================================
+export async function generateAdditionalModelsWorkbook() {
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'Exam P Trainer - FrontierMinds';
+  wb.created = new Date();
+
+  // ---- Sheet 1: Parameters ----
+  const ws1 = wb.addWorksheet('Parameters', { properties: { tabColor: { argb: 'FFA855F7' } } });
+  ws1.columns = [
+    { width: 30 }, { width: 18 }, { width: 5 }, { width: 30 }, { width: 18 }, { width: 20 },
+  ];
+
+  addSectionHeader(ws1, 1, 'ADDITIONAL MODELS - Parameters & Key Formulas');
+
+  // Beta panel
+  addSectionHeader(ws1, 3, 'BETA DISTRIBUTION  Beta(α, β)');
+  addLabel(ws1, 4, 1, 'α (shape 1) =');
+  const betaA = ws1.getCell('B4'); betaA.value = 2; styleInputCell(betaA); betaA.numFmt = '0.00';
+  addLabel(ws1, 5, 1, 'β (shape 2) =');
+  const betaB = ws1.getCell('B5'); betaB.value = 5; styleInputCell(betaB); betaB.numFmt = '0.00';
+
+  addLabel(ws1, 6, 1, 'Mean = α/(α+β)');
+  ws1.getCell('B6').value = { formula: 'B4/(B4+B5)' }; ws1.getCell('B6').numFmt = '0.000000'; styleResultCell(ws1.getCell('B6'));
+  addLabel(ws1, 7, 1, 'Variance = αβ/((α+β)²(α+β+1))');
+  ws1.getCell('B7').value = { formula: '(B4*B5)/((B4+B5)^2*(B4+B5+1))' }; ws1.getCell('B7').numFmt = '0.000000'; styleResultCell(ws1.getCell('B7'));
+  addLabel(ws1, 8, 1, 'Mode = (α-1)/(α+β-2)  (α,β>1)');
+  ws1.getCell('B8').value = { formula: 'IF(AND(B4>1,B5>1),(B4-1)/(B4+B5-2),"N/A")' }; ws1.getCell('B8').numFmt = '0.000000'; styleResultCell(ws1.getCell('B8'));
+
+  // Weibull panel
+  addSectionHeader(ws1, 10, 'WEIBULL DISTRIBUTION  Weibull(k, λ)');
+  addLabel(ws1, 11, 1, 'k (shape) =');
+  const weibK = ws1.getCell('B11'); weibK.value = 1.5; styleInputCell(weibK); weibK.numFmt = '0.00';
+  addLabel(ws1, 12, 1, 'λ (scale) =');
+  const weibL = ws1.getCell('B12'); weibL.value = 2; styleInputCell(weibL); weibL.numFmt = '0.00';
+
+  addLabel(ws1, 13, 1, 'Mean = λΓ(1 + 1/k)');
+  ws1.getCell('B13').value = { formula: 'B12*EXP(GAMMALN(1+1/B11))' }; ws1.getCell('B13').numFmt = '0.000000'; styleResultCell(ws1.getCell('B13'));
+  addLabel(ws1, 14, 1, 'Variance = λ²[Γ(1+2/k) - Γ(1+1/k)²]');
+  ws1.getCell('B14').value = { formula: 'B12^2*(EXP(GAMMALN(1+2/B11))-EXP(GAMMALN(1+1/B11))^2)' }; ws1.getCell('B14').numFmt = '0.000000'; styleResultCell(ws1.getCell('B14'));
+
+  // Pareto panel
+  addSectionHeader(ws1, 16, 'PARETO DISTRIBUTION (SOA)  Pareto(α, θ)');
+  addLabel(ws1, 17, 1, 'α (shape) =');
+  const parA = ws1.getCell('B17'); parA.value = 3; styleInputCell(parA); parA.numFmt = '0.00';
+  addLabel(ws1, 18, 1, 'θ (scale) =');
+  const parT = ws1.getCell('B18'); parT.value = 2000; styleInputCell(parT); parT.numFmt = '0.00';
+
+  addLabel(ws1, 19, 1, 'Mean = θ/(α-1)  (α>1)');
+  ws1.getCell('B19').value = { formula: 'IF(B17>1,B18/(B17-1),"undefined")' }; ws1.getCell('B19').numFmt = '0.000000'; styleResultCell(ws1.getCell('B19'));
+  addLabel(ws1, 20, 1, 'Variance = αθ²/((α-1)²(α-2))  (α>2)');
+  ws1.getCell('B20').value = { formula: 'IF(B17>2,(B17*B18^2)/((B17-1)^2*(B17-2)),"undefined")' }; ws1.getCell('B20').numFmt = '0.000000'; styleResultCell(ws1.getCell('B20'));
+
+  // Excel function reference
+  addSectionHeader(ws1, 22, 'EXCEL FUNCTION REFERENCE');
+  const funcRef = [
+    ['Beta PDF', '=BETA.DIST(x, α, β, FALSE)', 'Probability density at x'],
+    ['Beta CDF', '=BETA.DIST(x, α, β, TRUE)', 'P(X ≤ x)'],
+    ['Beta Inverse', '=BETA.INV(p, α, β)', 'Value at percentile p'],
+    ['Weibull PDF', '=WEIBULL.DIST(x, k, λ, FALSE)', 'Probability density at x'],
+    ['Weibull CDF', '=WEIBULL.DIST(x, k, λ, TRUE)', 'P(X ≤ x)'],
+    ['Pareto PDF', '=α*θ^α/(x+θ)^(α+1)', 'Manual formula (no built-in)'],
+    ['Pareto CDF', '=1-(θ/(x+θ))^α', 'Manual formula (no built-in)'],
+    ['Pareto Sample', '=θ*(RAND()^(-1/α)-1)', 'Inverse transform sampling'],
+  ];
+  addLabel(ws1, 23, 1, 'Function'); addLabel(ws1, 23, 2, 'Formula'); addLabel(ws1, 23, 4, 'Description');
+  funcRef.forEach((f, i) => {
+    addLabel(ws1, 24 + i, 1, f[0]);
+    addFormulaNote(ws1, 24 + i, 2, f[1]);
+    ws1.getCell(24 + i, 4).value = f[2];
+    ws1.getCell(24 + i, 4).font = { size: 10, color: { argb: 'FF64748B' } };
+  });
+
+  // ---- Sheet 2: Beta Distribution ----
+  const ws2 = wb.addWorksheet('Beta Distribution', { properties: { tabColor: { argb: 'FF22C55E' } } });
+  ws2.columns = [{ width: 10 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 22 }];
+
+  addSectionHeader(ws2, 1, 'BETA DISTRIBUTION  (α, β from Parameters sheet)', 5);
+  ws2.getCell('A2').value = 'x'; ws2.getCell('A2').font = LABEL_FONT;
+  ws2.getCell('B2').value = 'PDF f(x)'; ws2.getCell('B2').font = LABEL_FONT;
+  ws2.getCell('C2').value = 'CDF F(x)'; ws2.getCell('C2').font = LABEL_FONT;
+  ws2.getCell('D2').value = '1 - F(x)'; ws2.getCell('D2').font = LABEL_FONT;
+  ws2.getCell('E2').value = 'Excel Formula'; ws2.getCell('E2').font = LABEL_FONT;
+
+  for (let i = 0; i <= 20; i++) {
+    const row = 3 + i;
+    const x = i * 0.05;
+    ws2.getCell(row, 1).value = x; ws2.getCell(row, 1).numFmt = '0.00';
+    ws2.getCell(row, 2).value = { formula: `IF(AND(A${row}>0,A${row}<1),BETA.DIST(A${row},Parameters!B4,Parameters!B5,FALSE),0)` };
+    ws2.getCell(row, 2).numFmt = '0.000000';
+    ws2.getCell(row, 3).value = { formula: `BETA.DIST(A${row},Parameters!B4,Parameters!B5,TRUE)` };
+    ws2.getCell(row, 3).numFmt = '0.000000';
+    ws2.getCell(row, 4).value = { formula: `1-C${row}` }; ws2.getCell(row, 4).numFmt = '0.000000';
+    if (i === 0) { ws2.getCell(row, 5).value = '=BETA.DIST(x, α, β, FALSE/TRUE)'; ws2.getCell(row, 5).font = FORMULA_FONT; }
+    [1, 2, 3, 4].forEach(c => { ws2.getCell(row, c).border = THIN_BORDER; });
+  }
+
+  // Special cases reference
+  addSectionHeader(ws2, 25, 'SPECIAL CASES', 5);
+  addLabel(ws2, 26, 1, 'Beta(1,1)'); ws2.getCell('B26').value = '= Uniform(0,1)';
+  addLabel(ws2, 27, 1, 'Beta(½,½)'); ws2.getCell('B27').value = '= Arcsine distribution';
+  addLabel(ws2, 28, 1, 'Beta(α,β) with α=β'); ws2.getCell('B28').value = '= Symmetric about 0.5';
+
+  // ---- Sheet 3: Weibull Distribution ----
+  const ws3 = wb.addWorksheet('Weibull Distribution', { properties: { tabColor: { argb: 'FF3B82F6' } } });
+  ws3.columns = [{ width: 10 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 22 }];
+
+  addSectionHeader(ws3, 1, 'WEIBULL DISTRIBUTION  (k, λ from Parameters sheet)');
+  ws3.getCell('A2').value = 'x'; ws3.getCell('A2').font = LABEL_FONT;
+  ws3.getCell('B2').value = 'PDF f(x)'; ws3.getCell('B2').font = LABEL_FONT;
+  ws3.getCell('C2').value = 'CDF F(x)'; ws3.getCell('C2').font = LABEL_FONT;
+  ws3.getCell('D2').value = 'R(x)=1-F(x)'; ws3.getCell('D2').font = LABEL_FONT;
+  ws3.getCell('E2').value = 'h(x)=f(x)/R(x)'; ws3.getCell('E2').font = LABEL_FONT;
+  ws3.getCell('F2').value = 'Excel Formula'; ws3.getCell('F2').font = LABEL_FONT;
+
+  for (let i = 0; i <= 40; i++) {
+    const row = 3 + i;
+    const x = i * 0.25;
+    ws3.getCell(row, 1).value = x; ws3.getCell(row, 1).numFmt = '0.00';
+    ws3.getCell(row, 2).value = { formula: `IF(A${row}>0,WEIBULL.DIST(A${row},Parameters!B11,Parameters!B12,FALSE),0)` };
+    ws3.getCell(row, 2).numFmt = '0.000000';
+    ws3.getCell(row, 3).value = { formula: `WEIBULL.DIST(A${row},Parameters!B11,Parameters!B12,TRUE)` };
+    ws3.getCell(row, 3).numFmt = '0.000000';
+    ws3.getCell(row, 4).value = { formula: `1-C${row}` }; ws3.getCell(row, 4).numFmt = '0.000000';
+    ws3.getCell(row, 5).value = { formula: `IF(D${row}>0.0001,B${row}/D${row},0)` }; ws3.getCell(row, 5).numFmt = '0.000000';
+    if (i === 0) { ws3.getCell(row, 6).value = '=WEIBULL.DIST(x, k, λ, FALSE/TRUE)'; ws3.getCell(row, 6).font = FORMULA_FONT; }
+    [1, 2, 3, 4, 5].forEach(c => { ws3.getCell(row, c).border = THIN_BORDER; });
+  }
+
+  addSectionHeader(ws3, 45, 'FAILURE RATE INTERPRETATION');
+  addLabel(ws3, 46, 1, 'k < 1:'); ws3.getCell('B46').value = 'Decreasing failure rate (infant mortality)';
+  addLabel(ws3, 47, 1, 'k = 1:'); ws3.getCell('B47').value = 'Constant failure rate (Exponential)';
+  addLabel(ws3, 48, 1, 'k > 1:'); ws3.getCell('B48').value = 'Increasing failure rate (wear-out)';
+
+  // ---- Sheet 4: Pareto Distribution ----
+  const ws4 = wb.addWorksheet('Pareto Distribution', { properties: { tabColor: { argb: 'FFF97316' } } });
+  ws4.columns = [{ width: 12 }, { width: 18 }, { width: 18 }, { width: 18 }, { width: 22 }];
+
+  addSectionHeader(ws4, 1, 'PARETO DISTRIBUTION (SOA)  (α, θ from Parameters sheet)', 5);
+  addLabel(ws4, 2, 1, 'CDF: F(x) = 1 - (θ/(x+θ))^α  for x ≥ 0');
+
+  ws4.getCell('A3').value = 'x'; ws4.getCell('A3').font = LABEL_FONT;
+  ws4.getCell('B3').value = 'PDF f(x)'; ws4.getCell('B3').font = LABEL_FONT;
+  ws4.getCell('C3').value = 'CDF F(x)'; ws4.getCell('C3').font = LABEL_FONT;
+  ws4.getCell('D3').value = 'P(X > x)'; ws4.getCell('D3').font = LABEL_FONT;
+  ws4.getCell('E3').value = 'Formula Used'; ws4.getCell('E3').font = LABEL_FONT;
+
+  // x values from 0 outward in steps related to θ
+  for (let i = 0; i <= 30; i++) {
+    const row = 4 + i;
+    ws4.getCell(row, 1).value = { formula: `${i}*Parameters!B18/5` }; ws4.getCell(row, 1).numFmt = '0.00';
+    // PDF: α*θ^α/(x+θ)^(α+1)
+    ws4.getCell(row, 2).value = { formula: `Parameters!B17*Parameters!B18^Parameters!B17/(A${row}+Parameters!B18)^(Parameters!B17+1)` };
+    ws4.getCell(row, 2).numFmt = '0.00000000';
+    // CDF: 1 - (θ/(x+θ))^α
+    ws4.getCell(row, 3).value = { formula: `1-(Parameters!B18/(A${row}+Parameters!B18))^Parameters!B17` };
+    ws4.getCell(row, 3).numFmt = '0.000000';
+    ws4.getCell(row, 4).value = { formula: `1-C${row}` }; ws4.getCell(row, 4).numFmt = '0.000000';
+    if (i === 0) { ws4.getCell(row, 5).value = '=α*θ^α/(x+θ)^(α+1)'; ws4.getCell(row, 5).font = FORMULA_FONT; }
+    [1, 2, 3, 4].forEach(c => { ws4.getCell(row, c).border = THIN_BORDER; });
+  }
+
+  // Heavy tail demo
+  addSectionHeader(ws4, 36, 'HEAVY TAIL DEMONSTRATION', 5);
+  addLabel(ws4, 37, 1, 'P(X > 5θ) =');
+  ws4.getCell('B37').value = { formula: '(Parameters!B18/(5*Parameters!B18+Parameters!B18))^Parameters!B17' }; ws4.getCell('B37').numFmt = '0.000000'; styleResultCell(ws4.getCell('B37'));
+  addLabel(ws4, 38, 1, 'P(X > 10θ) =');
+  ws4.getCell('B38').value = { formula: '(Parameters!B18/(10*Parameters!B18+Parameters!B18))^Parameters!B17' }; ws4.getCell('B38').numFmt = '0.000000'; styleResultCell(ws4.getCell('B38'));
+  addLabel(ws4, 39, 1, 'P(X > 50θ) =');
+  ws4.getCell('B39').value = { formula: '(Parameters!B18/(50*Parameters!B18+Parameters!B18))^Parameters!B17' }; ws4.getCell('B39').numFmt = '0.000000'; styleResultCell(ws4.getCell('B39'));
+
+  // ---- Sheet 5: Monte Carlo Comparison ----
+  const ws5 = wb.addWorksheet('Monte Carlo Comparison', { properties: { tabColor: { argb: 'FFEF4444' } } });
+  ws5.columns = [{ width: 8 }, { width: 16 }, { width: 16 }, { width: 16 }, { width: 5 }, { width: 20 }, { width: 16 }];
+
+  addSectionHeader(ws5, 1, 'MONTE CARLO COMPARISON  (Press F9 to regenerate!)', 7);
+
+  ws5.getCell('A2').value = '#'; ws5.getCell('A2').font = LABEL_FONT;
+  ws5.getCell('B2').value = 'Beta Sample'; ws5.getCell('B2').font = LABEL_FONT;
+  ws5.getCell('C2').value = 'Weibull Sample'; ws5.getCell('C2').font = LABEL_FONT;
+  ws5.getCell('D2').value = 'Pareto Sample'; ws5.getCell('D2').font = LABEL_FONT;
+
+  for (let i = 1; i <= 1000; i++) {
+    const row = 2 + i;
+    ws5.getCell(row, 1).value = i;
+    // Beta sample via BETA.INV(RAND(), α, β)
+    ws5.getCell(row, 2).value = { formula: `BETA.INV(RAND(),Parameters!B4,Parameters!B5)` };
+    ws5.getCell(row, 2).numFmt = '0.000000';
+    // Weibull sample via inverse transform: λ*(-LN(RAND()))^(1/k)
+    ws5.getCell(row, 3).value = { formula: `Parameters!B12*(-LN(RAND()))^(1/Parameters!B11)` };
+    ws5.getCell(row, 3).numFmt = '0.000000';
+    // Pareto sample via inverse transform: θ*(RAND()^(-1/α)-1)
+    ws5.getCell(row, 4).value = { formula: `Parameters!B18*(RAND()^(-1/Parameters!B17)-1)` };
+    ws5.getCell(row, 4).numFmt = '0.000000';
+  }
+
+  // Summary stats
+  addLabel(ws5, 2, 6, 'Summary Statistics');
+  addLabel(ws5, 3, 6, 'Statistic'); addLabel(ws5, 3, 7, 'Beta');
+  addLabel(ws5, 4, 6, 'Sample Mean'); ws5.getCell('G4').value = { formula: 'AVERAGE(B3:B1002)' }; ws5.getCell('G4').numFmt = '0.000000';
+  addLabel(ws5, 5, 6, 'Sample Var'); ws5.getCell('G5').value = { formula: 'VAR.S(B3:B1002)' }; ws5.getCell('G5').numFmt = '0.000000';
+  addLabel(ws5, 6, 6, 'Theoretical Mean'); ws5.getCell('G6').value = { formula: 'Parameters!B6' }; ws5.getCell('G6').numFmt = '0.000000';
+  addLabel(ws5, 7, 6, 'Theoretical Var'); ws5.getCell('G7').value = { formula: 'Parameters!B7' }; ws5.getCell('G7').numFmt = '0.000000';
+
+  const buffer = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  saveAs(blob, 'ExamP_Additional_Models_Template.xlsx');
+}
+
+// ============================================================
 // EXPORT SAMPLES AS CSV
 // ============================================================
 export function exportSamplesCSV(samples: number[], distName: string) {

@@ -3192,6 +3192,271 @@ P(S > 52,000) = P(Z > (52,000 - 50,000)/1,200)
       topic: 'Sum of Independent Normals (Aggregate Claims)',
     },
   ],
+  '3.4': [
+    {
+      id: 1,
+      question: `X has a Beta distribution with α = 2 and β = 3. Calculate P(X < 0.6).`,
+      options: ['0.8208', '0.6480', '0.9130', '0.5760', '0.7200'],
+      correctIndex: 0,
+      explanation: `For Beta(2, 3), the CDF can be computed by integrating the PDF:
+
+f(x) = x^(2-1)(1-x)^(3-1) / B(2,3) = x(1-x)² / B(2,3)
+
+B(2,3) = Γ(2)Γ(3)/Γ(5) = 1·2/24 = 1/12
+
+So f(x) = 12x(1-x)²
+
+P(X < 0.6) = ∫₀^0.6 12x(1-x)² dx
+
+Expanding: 12x(1-2x+x²) = 12x - 24x² + 12x³
+
+∫₀^0.6 = 12(0.18) - 24(0.072) + 12(0.0324)
+= 2.16 - 1.728 + 0.3888 = 0.8208`,
+      hint: 'For integer parameters, integrate the Beta PDF directly: f(x) = [1/B(α,β)] · x^(α-1) · (1-x)^(β-1).',
+      topic: 'Beta CDF',
+    },
+    {
+      id: 2,
+      question: `A Beta distribution has mean 0.4 and variance 0.04. What are the parameters α and β?`,
+      options: ['α = 2, β = 3', 'α = 4, β = 6', 'α = 1.6, β = 2.4', 'α = 3, β = 2', 'α = 0.4, β = 0.6'],
+      correctIndex: 0,
+      explanation: `For Beta(α, β):
+Mean = α/(α+β) = 0.4, so α = 0.4(α+β), meaning β = 1.5α
+
+Variance = αβ/((α+β)²(α+β+1)) = 0.04
+
+Substituting β = 1.5α:
+α(1.5α)/((2.5α)²(2.5α+1)) = 0.04
+1.5α²/(6.25α²(2.5α+1)) = 0.04
+1.5/(6.25(2.5α+1)) = 0.04
+0.24/(2.5α+1) = 0.04
+2.5α+1 = 6
+α = 2, β = 3
+
+Check: Mean = 2/5 = 0.4 ✓
+Var = 2·3/(25·6) = 6/150 = 0.04 ✓`,
+      hint: 'Use the mean formula α/(α+β) to get a relationship between α and β, then substitute into the variance formula.',
+      topic: 'Beta Parameter Identification',
+    },
+    {
+      id: 3,
+      question: `Which of the following is true about the Beta(1, 1) distribution?`,
+      options: [
+        'It equals Uniform(0, 1)',
+        'Its PDF is x(1-x)',
+        'Its mean is 0',
+        'Its variance is 1',
+        'Its support is (-∞, ∞)',
+      ],
+      correctIndex: 0,
+      explanation: `For Beta(1, 1):
+f(x) = x^(1-1)(1-x)^(1-1) / B(1,1) = 1/B(1,1)
+
+B(1,1) = Γ(1)Γ(1)/Γ(2) = 1·1/1 = 1
+
+So f(x) = 1 for 0 < x < 1
+
+This is exactly the Uniform(0, 1) distribution!
+
+Mean = 1/(1+1) = 0.5
+Variance = 1·1/((2)²·3) = 1/12 ≈ 0.0833
+
+This matches Uniform(0,1): mean = 0.5, variance = 1/12.`,
+      hint: 'Substitute α = 1, β = 1 into the Beta PDF formula and simplify.',
+      topic: 'Beta Special Cases',
+    },
+    {
+      id: 4,
+      question: `A component has a Weibull lifetime with shape k = 2 and scale λ = 5 (years). What is the probability the component lasts more than 3 years?`,
+      options: ['0.6977', '0.3023', '0.5488', '0.4512', '0.8187'],
+      correctIndex: 0,
+      explanation: `For Weibull(k=2, λ=5):
+P(X > 3) = 1 - F(3) = exp(-(3/5)²)
+= exp(-(0.6)²)
+= exp(-0.36)
+= 0.6977
+
+The closed-form survival function R(t) = exp(-(t/λ)^k) makes this straightforward.`,
+      hint: 'Use the Weibull survival function: P(X > t) = exp(-(t/λ)^k).',
+      topic: 'Weibull Probability',
+    },
+    {
+      id: 5,
+      question: `A Weibull distribution has shape parameter k = 0.7. What can you say about the hazard rate h(t)?`,
+      options: [
+        'h(t) is decreasing in t',
+        'h(t) is increasing in t',
+        'h(t) is constant',
+        'h(t) first increases then decreases',
+        'Cannot determine without λ',
+      ],
+      correctIndex: 0,
+      explanation: `The Weibull hazard function is:
+h(t) = (k/λ)(t/λ)^(k-1)
+
+For k = 0.7:
+h(t) = (0.7/λ)(t/λ)^(-0.3) = (0.7/λ^0.7) · t^(-0.3)
+
+Since the exponent of t is -0.3 < 0, h(t) is a decreasing function of t.
+
+The rule is simple:
+• k < 1 → decreasing failure rate (DFR)
+• k = 1 → constant failure rate (Exponential)
+• k > 1 → increasing failure rate (IFR)
+
+k = 0.7 < 1, so the failure rate is decreasing ("infant mortality" — surviving the early period makes further survival more likely).`,
+      hint: 'The Weibull hazard rate is h(t) = (k/λ)(t/λ)^(k-1). Whether it increases or decreases depends only on whether k > 1 or k < 1.',
+      topic: 'Weibull Hazard Rate',
+    },
+    {
+      id: 6,
+      question: `For a Weibull distribution with k = 2 and λ = 3, calculate E[X].`,
+      options: ['2.6587', '3.0000', '1.5000', '4.2426', '2.1213'],
+      correctIndex: 0,
+      explanation: `For Weibull(k, λ), E[X] = λ · Γ(1 + 1/k).
+
+With k = 2, λ = 3:
+E[X] = 3 · Γ(1 + 1/2) = 3 · Γ(3/2)
+
+Γ(3/2) = (1/2)Γ(1/2) = (1/2)√π = √π/2 ≈ 0.8862
+
+E[X] = 3 × 0.8862 = 2.6587`,
+      hint: 'Use E[X] = λΓ(1 + 1/k). Remember Γ(3/2) = (√π)/2.',
+      topic: 'Weibull Mean',
+    },
+    {
+      id: 7,
+      question: `Losses follow a Pareto distribution (SOA parameterization) with α = 3 and θ = 1000. Calculate P(X > 2000).`,
+      options: ['0.0370', '0.1250', '0.2963', '0.0123', '0.3333'],
+      correctIndex: 0,
+      explanation: `For the SOA Pareto(α=3, θ=1000):
+P(X > 2000) = S(2000) = (θ/(x+θ))^α
+= (1000/(2000+1000))^3
+= (1000/3000)^3
+= (1/3)^3
+= 1/27
+≈ 0.0370
+
+This is the tail probability using the survival function.`,
+      hint: 'Use the survival function S(x) = (θ/(x+θ))^α for the SOA Pareto.',
+      topic: 'Pareto Tail Probability',
+    },
+    {
+      id: 8,
+      question: `Losses follow a Pareto distribution with α = 4 and θ = 500. An insurance policy has a deductible of 200. Calculate the mean excess loss E[X - 200 | X > 200].`,
+      options: ['233.33', '166.67', '125.00', '200.00', '500.00'],
+      correctIndex: 0,
+      explanation: `For the SOA Pareto, the mean excess loss (mean residual life) at d is:
+
+e(d) = E[X - d | X > d] = (d + θ)/(α - 1)
+
+With α = 4, θ = 500, d = 200:
+e(200) = (200 + 500)/(4 - 1)
+= 700/3
+= 233.33
+
+Note: the mean excess loss INCREASES with d, which is characteristic of heavy-tailed distributions. For a light-tailed distribution like the exponential, it stays constant (memoryless property).`,
+      hint: 'For the SOA Pareto, the mean excess loss at deductible d is e(d) = (d + θ)/(α - 1) for α > 1.',
+      topic: 'Pareto Excess Loss',
+    },
+    {
+      id: 9,
+      question: `For which values of α does the mean of a Pareto(α, θ) distribution (SOA parameterization) exist and is finite?`,
+      options: ['α > 1', 'α > 0', 'α > 2', 'All α > 0', 'α ≥ 1'],
+      correctIndex: 0,
+      explanation: `For the SOA Pareto(α, θ):
+E[X] = θ/(α - 1)
+
+This integral converges only when α > 1.
+
+When α ≤ 1, the integral ∫₀^∞ x · f(x) dx diverges because the tail is too heavy.
+
+More generally, the k-th moment E[X^k] exists only when α > k:
+• E[X] exists when α > 1
+• E[X²] exists when α > 2 (needed for variance)
+• Var(X) = αθ²/((α-1)²(α-2)) exists when α > 2
+
+This is a very commonly tested property on Exam P.`,
+      hint: 'For the Pareto distribution, E[X^k] exists only when α > k. What condition is needed for k = 1?',
+      topic: 'Pareto Moment Existence',
+    },
+    {
+      id: 10,
+      question: `A random variable X has MGF M(t) = (1 - t/3)^(-2) for t < 3. Which distribution does X follow?`,
+      options: [
+        'Gamma(α=2, β=1/3)',
+        'Weibull(k=2, λ=3)',
+        'Beta(2, 3)',
+        'Pareto(α=2, θ=3)',
+        'Exponential(λ=3)',
+      ],
+      correctIndex: 0,
+      explanation: `The MGF of a Gamma(α, β) distribution is:
+M(t) = (1 - βt)^(-α) for t < 1/β
+
+Comparing with M(t) = (1 - t/3)^(-2):
+• -α = -2, so α = 2
+• βt = t/3, so β = 1/3
+
+Therefore X ~ Gamma(α=2, β=1/3).
+
+Note: Neither the Weibull, Beta, nor Pareto have MGFs of this simple form.
+• Beta has a complex MGF (confluent hypergeometric function)
+• Weibull has no closed-form MGF (except when k=1, which is Exponential)
+• Pareto has no MGF (moments may not exist)`,
+      hint: 'Compare the given MGF to the form (1 - βt)^(-α), which is the Gamma MGF.',
+      topic: 'MGF Identification',
+    },
+    {
+      id: 11,
+      question: `An actuary is modeling the following scenario: "The proportion of total claims from auto policies that are due to collision damage." Which distribution is most appropriate?`,
+      options: [
+        'Beta distribution',
+        'Weibull distribution',
+        'Pareto distribution',
+        'Normal distribution',
+        'Exponential distribution',
+      ],
+      correctIndex: 0,
+      explanation: `The Beta distribution is the most appropriate because:
+
+1. The quantity is a PROPORTION — it must be between 0 and 1.
+2. The Beta distribution has support [0, 1], making it natural for proportions.
+3. The two shape parameters (α, β) allow flexible modeling of how the proportion is distributed.
+
+The Weibull models lifetimes/failure times, Pareto models heavy-tailed losses, Normal is unbounded (can be negative), and Exponential models waiting times. None of these naturally model proportions on [0, 1].
+
+Rule of thumb: If the data is a proportion, percentage, or probability — think Beta.`,
+      hint: 'Consider the support of each distribution. What kind of values can a "proportion" take?',
+      topic: 'Distribution Selection',
+    },
+    {
+      id: 12,
+      question: `Insurance losses follow a Pareto distribution with α = 3 and θ = 5000. A policy pays losses between a deductible of 1000 and a maximum covered loss of 10000 (i.e., the layer from 1000 to 10000). Calculate the expected payment per loss E[min(X, 10000) - min(X, 1000)].`,
+      options: ['1250.00', '1666.67', '2500.00', '833.33', '1500.00'],
+      correctIndex: 0,
+      explanation: `For the SOA Pareto, the limited expected value is:
+E[min(X, u)] = (θ/(α-1))[1 - (θ/(u+θ))^(α-1)]
+
+For u = 10000:
+E[min(X, 10000)] = (5000/2)[1 - (5000/15000)²]
+= 2500[1 - (1/3)²]
+= 2500[1 - 1/9]
+= 2500 · 8/9 = 2222.22
+
+For u = 1000:
+E[min(X, 1000)] = (5000/2)[1 - (5000/6000)²]
+= 2500[1 - (5/6)²]
+= 2500[1 - 25/36]
+= 2500 · 11/36 = 972.22
+
+Layer payment = 2222.22 - 972.22 = 1250.00
+
+This "layer pricing" technique is fundamental in reinsurance.`,
+      hint: 'Use E[min(X,u)] = (θ/(α-1))[1 - (θ/(u+θ))^(α-1)] and compute the difference between the two limits.',
+      topic: 'Insurance Layer Pricing',
+    },
+  ],
 };
 
 interface Props {
