@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Zap } from 'lucide-react';
+import { Play, Pause, RotateCcw, Zap, Download, FileSpreadsheet, FileText } from 'lucide-react';
+import { generateExponentialWorkbook, generateGammaWorkbook, generateChiSquareWorkbook, exportSamplesCSV } from '@/lib/excelTemplates';
 
 type DistributionType = 'exponential' | 'gamma' | 'chiSquare';
 
@@ -738,6 +739,15 @@ export default function ExponentialGammaSimulator() {
             <RotateCcw className="w-4 h-4" />
             Reset
           </button>
+          {samples.length > 0 && (
+            <button
+              onClick={() => exportSamplesCSV(samples, `${dist.name}_${params.join('_')}`)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-colors"
+            >
+              <FileText className="w-4 h-4" />
+              Export CSV
+            </button>
+          )}
           <label className="flex items-center gap-2 text-sm text-slate-400 ml-auto">
             <input
               type="checkbox"
@@ -950,6 +960,94 @@ export default function ExponentialGammaSimulator() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* ========== EXCEL TEMPLATES SECTION ========== */}
+      <div className="border-t border-slate-600 pt-8">
+        <h3 className="text-xl font-bold text-white mb-2">Excel Templates</h3>
+        <p className="text-slate-400 text-sm mb-6">
+          Download professionally-formatted Excel workbooks with formulas, Monte Carlo simulations,
+          and actuarial applications. Each template uses real Excel functions so you can learn
+          spreadsheet modeling alongside probability theory.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Exponential Template */}
+          <div className="bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <FileSpreadsheet className="w-6 h-6 text-green-400" />
+              <h4 className="text-white font-semibold">Exponential</h4>
+            </div>
+            <ul className="text-slate-400 text-xs space-y-1 mb-4">
+              <li>• Parameters & key formulas</li>
+              <li>• PDF/CDF table with EXPON.DIST</li>
+              <li>• Probability calculator</li>
+              <li>• Memoryless property demo</li>
+              <li>• 1,000-sample Monte Carlo</li>
+              <li>• Insurance claims application</li>
+            </ul>
+            <button
+              onClick={() => generateExponentialWorkbook()}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download .xlsx
+            </button>
+          </div>
+
+          {/* Gamma Template */}
+          <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <FileSpreadsheet className="w-6 h-6 text-blue-400" />
+              <h4 className="text-white font-semibold">Gamma</h4>
+            </div>
+            <ul className="text-slate-400 text-xs space-y-1 mb-4">
+              <li>• Parameters with GAMMALN</li>
+              <li>• PDF/CDF table with GAMMA.DIST</li>
+              <li>• Special cases reference</li>
+              <li>• 1,000-sample Monte Carlo</li>
+              <li>• Aggregate claims model</li>
+              <li>• Sensitivity analysis table</li>
+            </ul>
+            <button
+              onClick={() => generateGammaWorkbook()}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download .xlsx
+            </button>
+          </div>
+
+          {/* Chi-Square Template */}
+          <div className="bg-gradient-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/30 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <FileSpreadsheet className="w-6 h-6 text-orange-400" />
+              <h4 className="text-white font-semibold">Chi-Square</h4>
+            </div>
+            <ul className="text-slate-400 text-xs space-y-1 mb-4">
+              <li>• Parameters & Gamma connection</li>
+              <li>• PDF/CDF table with CHISQ.DIST</li>
+              <li>• Critical values table (df 1-30)</li>
+              <li>• 1,000-sample Monte Carlo</li>
+              <li>• Additive property demo</li>
+              <li>• 500-trial simulation proof</li>
+            </ul>
+            <button
+              onClick={() => generateChiSquareWorkbook()}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download .xlsx
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+          <p className="text-yellow-200 text-sm">
+            <strong>Tip:</strong> Open the workbooks in Excel (or Google Sheets) and press <strong>F9</strong> to
+            regenerate all Monte Carlo samples. Edit the yellow input cells to explore different parameter values.
+          </p>
+        </div>
       </div>
     </div>
   );

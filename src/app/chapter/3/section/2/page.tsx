@@ -549,7 +549,137 @@ export default function Section32Page() {
       ),
     },
 
-    // Section 9: Exam P Strategy
+    // Section 9: Excel Function Reference
+    {
+      title: 'Excel Functions for Actuarial Modeling',
+      content: (
+        <div className="space-y-6">
+          <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-6 border border-green-500/30">
+            <h3 className="text-xl font-bold text-white mb-4">Excel Function Reference</h3>
+            <p className="text-slate-300 mb-4">
+              Actuaries use Excel daily. Here are the key functions for working with these distributions.
+              Master these and you'll be able to build real models from day one.
+            </p>
+          </div>
+
+          {/* Exponential Excel Functions */}
+          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <h4 className="text-lg font-semibold text-green-400 mb-4">Exponential Distribution</h4>
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">PDF value at x</p>
+                  <p className="text-white font-mono text-sm">=EXPON.DIST(x, &lambda;, FALSE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">CDF P(X &le; x)</p>
+                  <p className="text-white font-mono text-sm">=EXPON.DIST(x, &lambda;, TRUE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Survival P(X &gt; x)</p>
+                  <p className="text-white font-mono text-sm">=1-EXPON.DIST(x, &lambda;, TRUE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Random sample</p>
+                  <p className="text-white font-mono text-sm">=-LN(RAND())/&lambda;</p>
+                </div>
+              </div>
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                <p className="text-yellow-200 text-xs">
+                  <strong>Note:</strong> Excel uses &lambda; (rate), not &theta; (mean). If given &theta;, use &lambda; = 1/&theta;.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Gamma Excel Functions */}
+          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <h4 className="text-lg font-semibold text-blue-400 mb-4">Gamma Distribution</h4>
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">PDF value at x</p>
+                  <p className="text-white font-mono text-sm">=GAMMA.DIST(x, &alpha;, &beta;, FALSE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">CDF P(X &le; x)</p>
+                  <p className="text-white font-mono text-sm">=GAMMA.DIST(x, &alpha;, &beta;, TRUE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Percentile / Inverse CDF</p>
+                  <p className="text-white font-mono text-sm">=GAMMA.INV(p, &alpha;, &beta;)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Gamma function &Gamma;(&alpha;)</p>
+                  <p className="text-white font-mono text-sm">=EXP(GAMMALN(&alpha;))</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Log-gamma ln &Gamma;(&alpha;)</p>
+                  <p className="text-white font-mono text-sm">=GAMMALN(&alpha;)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Random sample</p>
+                  <p className="text-white font-mono text-sm">=GAMMA.INV(RAND(), &alpha;, &beta;)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chi-Square Excel Functions */}
+          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <h4 className="text-lg font-semibold text-orange-400 mb-4">Chi-Square Distribution</h4>
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">PDF value at x</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.DIST(x, r, FALSE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">CDF P(X &le; x)</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.DIST(x, r, TRUE)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Right-tail P(X &gt; x)</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.DIST.RT(x, r)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Critical value</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.INV.RT(p, r)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Percentile / Inverse CDF</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.INV(p, r)</p>
+                </div>
+                <div className="bg-slate-900/80 rounded-lg p-3">
+                  <p className="text-slate-400 text-xs mb-1">Random sample</p>
+                  <p className="text-white font-mono text-sm">=CHISQ.INV(RAND(), r)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Pro Tips */}
+          <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+            <h4 className="text-green-300 font-semibold mb-2">Pro Tips for Excel Modeling</h4>
+            <ul className="text-green-200 text-sm space-y-1">
+              <li>• Press <strong>F9</strong> to recalculate RAND()-based formulas (regenerate samples)</li>
+              <li>• Use <strong>$</strong> signs to lock cell references: <code>$B$4</code> won't shift when copied</li>
+              <li>• Build a parameter cell (yellow background) and reference it — never hardcode values</li>
+              <li>• Use <strong>GAMMALN</strong> instead of computing &Gamma; directly (avoids overflow for large &alpha;)</li>
+            </ul>
+          </div>
+
+          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <p className="text-purple-200 text-sm">
+              <strong>Download ready-made templates</strong> from the Simulate tab — they include all these formulas
+              pre-built with color-coded input cells, Monte Carlo simulations, and actuarial applications.
+            </p>
+          </div>
+        </div>
+      ),
+    },
+
+    // Section 10: Exam P Strategy
     {
       title: 'Exam P Strategy: Section 3.2 Cheat Sheet',
       content: (

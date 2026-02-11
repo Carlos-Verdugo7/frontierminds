@@ -256,8 +256,32 @@ Use this to understand the current state of the project across AI sessions.
   - Mean and variance calculations
   - Percentile problems
 
+### Section 3.2: Exponential, Gamma, and Chi-Square Distributions
+- **Status**: COMPLETED
+- **Page**: `/src/app/chapter/3/section/2/page.tsx`
+- **Components**:
+  - `ExponentialGammaSimulator.tsx` - Interactive explorer for Exponential(λ), Gamma(α,β), and Chi-Square(r) with SVG PDF/CDF visualization, range probability calculator, key properties display
+- **Topics Covered**:
+  - Poisson-Exponential connection (interarrival times)
+  - Exponential PDF, CDF (both θ and λ parameterizations)
+  - Exponential mean (θ=1/λ), variance (θ²=1/λ²), MGF
+  - Survival function: P(X > x) = e^(-x/θ)
+  - Memoryless property: P(X > s+t | X > s) = P(X > t)
+  - Gamma function Γ(α): recursive property, Γ(n)=(n-1)!, Γ(1/2)=√π
+  - Gamma distribution PDF, parameters (α=shape, β=scale)
+  - Gamma mean (αβ), variance (αβ²), MGF, additive property
+  - Sum of independent exponentials → Gamma
+  - Chi-Square as Gamma(r/2, 2), mean (r), variance (2r)
+  - Chi-Square additive property, connection to squared normals
+- **Practice Problems** (12 total):
+  - Exponential CDF, variance, memoryless property
+  - Poisson-exponential interarrival times
+  - Gamma function evaluation, Gamma probability (Poisson-Gamma connection)
+  - Gamma mean/variance, sum of exponentials
+  - Chi-square properties, additive property
+  - MGF identification, minimum of exponentials (series system)
+
 ### Remaining Sections (NOT STARTED):
-  - 3.2: The Exponential, Gamma, and Chi-Square Distributions
   - 3.3: The Normal Distribution
   - 3.4: Additional Models
 
@@ -306,6 +330,7 @@ Use this to understand the current state of the project across AI sessions.
 | NegativeBinomialSimulator | DONE | `/src/components/NegativeBinomialSimulator.tsx` | Geometric/Negative Binomial simulator with r/p sliders, trials-until-success animation, memoryless demonstration, P(X=k), P(X>k), P(X≤k) calculator |
 | PoissonSimulator | DONE | `/src/components/PoissonSimulator.tsx` | Poisson distribution simulator with λ slider, timeline visualization, theoretical vs observed PMF histogram, P(X=k), P(X≤k), P(X>k) calculator |
 | ContinuousPDFExplorer | DONE | `/src/components/ContinuousPDFExplorer.tsx` | Interactive PDF/CDF visualizer with multiple distributions, probability calculator P(a<X<b), statistics display (mean, variance, std dev) |
+| ExponentialGammaSimulator | DONE | `/src/components/ExponentialGammaSimulator.tsx` | Interactive Exponential/Gamma/Chi-Square explorer with SVG PDF/CDF curves, range probability calculator, parameter sliders, key properties display |
 
 ---
 
@@ -327,4 +352,4 @@ Use this to understand the current state of the project across AI sessions.
 
 ---
 
-*Last Updated: Started Chapter 3 — Added Section 3.1 Random Variables of the Continuous Type (ContinuousPDFExplorer, 12 practice problems, 9 intuitive learn sections covering PDFs, CDFs, Uniform distribution, mean/variance/percentiles for continuous RVs)*
+*Last Updated: Chapter 3 in progress — Added Section 3.2 Exponential, Gamma, and Chi-Square Distributions (ExponentialGammaSimulator, 12 practice problems, 10 learn sections covering exponential/gamma/chi-square distributions, memoryless property, gamma function, additive properties)*
