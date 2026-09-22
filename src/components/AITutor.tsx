@@ -1,7 +1,15 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Loader2, Sparkles, Trash2 } from 'lucide-react';
+import type { CourseId } from '@/lib/learning/types';
+import {
+  MessageCircle,
+  Send,
+  X,
+  Loader2,
+  Sparkles,
+  Trash2,
+} from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -32,19 +40,34 @@ interface ProblemContext {
 }
 
 interface AITutorProps {
+  course?: CourseId;
   problemContext: ProblemContext;
   isOpen: boolean;
   onToggle: () => void;
 }
 
 const QUICK_PROMPTS = [
-  { label: 'Explain this', prompt: 'Can you explain what this problem is asking?' },
-  { label: 'Hint', prompt: 'Can you give me a hint without revealing the answer?' },
-  { label: 'Step-by-step', prompt: 'Walk me through the solution step by step.' },
+  {
+    label: 'Explain this',
+    prompt: 'Can you explain what this problem is asking?',
+  },
+  {
+    label: 'Hint',
+    prompt: 'Can you give me a hint without revealing the answer?',
+  },
+  {
+    label: 'Step-by-step',
+    prompt: 'Walk me through the solution step by step.',
+  },
   { label: 'Why wrong?', prompt: 'Why is my answer wrong? What did I miss?' },
 ];
 
-export default function AITutor({ problemContext, isOpen, onToggle }: AITutorProps) {
+export default function AITutor({
+  course = 'exam-p',
+  problemContext,
+  isOpen,
+  onToggle,
+}: AITutorProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +93,7 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
     if (!content.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: content.trim() };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
     setError(null);
@@ -80,11 +103,12 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...messages, userMessage].map(m => ({
+          messages: [...messages, userMessage].map((m) => ({
             role: m.role,
             content: m.content,
           })),
           problemContext,
+          course,
         }),
       });
 
@@ -101,7 +125,10 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
       // Debug: log raw response to see what OpenAI returns
       console.log('Raw API response:', JSON.stringify(data.reply));
 
-      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: data.reply },
+      ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
@@ -196,7 +223,9 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
                   }`}
                 >
                   {message.role === 'user' ? (
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.content}</p>
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                      {message.content}
+                    </p>
                   ) : (
                     <div className="prose prose-sm prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0">
                       <ReactMarkdown
@@ -248,7 +277,10 @@ export default function AITutor({ problemContext, isOpen, onToggle }: AITutorPro
       )}
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-slate-700 bg-slate-800/80">
+      <form
+        onSubmit={handleSubmit}
+        className="p-3 border-t border-slate-700 bg-slate-800/80"
+      >
         <div className="flex gap-2">
           <input
             ref={inputRef}
