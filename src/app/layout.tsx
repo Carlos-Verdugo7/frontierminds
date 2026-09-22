@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import ProgressTracker from "@/components/learning/ProgressTracker";
 
 const GA_MEASUREMENT_ID = "G-6CDFK61KQ8";
 
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "FrontierMinds | AI-Powered Interactive Learning",
-  description: "Transform complex textbooks into engaging, interactive learning experiences. Free courses in probability, financial mathematics, and more.",
+  description: "Transform complex textbooks into engaging, interactive learning experiences. Free interactive learning paths in probability and Salesforce.",
   keywords: ["learning", "education", "probability", "actuarial", "exam p", "interactive", "AI"],
   authors: [{ name: "Carlos Verdugo", url: "https://frontierminds.io" }],
   creator: "FrontierMinds LLC",
@@ -59,6 +60,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ProgressTracker />
         {children}
       </body>
     </html>

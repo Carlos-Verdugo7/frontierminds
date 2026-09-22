@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FrontierMinds
 
-## Getting Started
+Interactive learning paths for Actuarial Exam P and Salesforce Foundations, built with Next.js, TypeScript, and React. Snowflake is planned; financial mathematics is on hold.
 
-First, run the development server:
+## Run locally
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to enable the AI tutor. Lessons, simulations, and practice work without an AI key.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Validate
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm test
+npx tsc --noEmit
+npm run build
+```
 
-## Learn More
+The existing layout downloads Geist fonts during builds. In environments requiring system CA certificates, use `NEXT_TURBOPACK_EXPERIMENTAL_USE_SYSTEM_TLS_CERTS=1 npm run build`.
 
-To learn more about Next.js, take a look at the following resources:
+## Learning paths
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/courses/exam-p`: six chapters and an optional readiness refresher.
+- `/courses/exam-p/practice`: mixed sets and timed exam practice.
+- `/courses/exam-p/reference`: linked formula reference.
+- `/courses/salesforce`: six applied foundations lessons and a support-workflow capstone.
+- `/courses/{course}/study`: saved progress, topic accuracy, and mistake review.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Progress saves in the current browser, separately for each course. It does not sync between devices. Timed exams use a stored absolute deadline and keep running when the page is closed. This is a learning tool, not an official SOA exam or pass predictor. Salesforce labs are carried out manually in a practice org; the application does not connect to Salesforce.
 
-## Deploy on Vercel
+## Content structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`src/content/catalog.ts` connects course metadata and question banks. New lessons are data in `src/content/{course}/lessons.ts`; the original Exam P questions live in `src/content/exam-p/problems.ts`. Shared learning components are in `src/components/learning`. Existing Exam P lesson pages and simulators are preserved. Legacy `/chapter/...` URLs redirect to their course-specific equivalents.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [PROGRESS.md](PROGRESS.md) for current coverage, scope, and remaining work.

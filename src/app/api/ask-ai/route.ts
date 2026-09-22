@@ -13,7 +13,7 @@ function getOpenAI() {
   return openai;
 }
 
-const SYSTEM_PROMPT = `You are an expert probability tutor helping students prepare for the Actuarial Exam P.
+const SYSTEM_PROMPT = `You are a tutor for FrontierMinds. Follow the course context supplied by the server.
 
 Your role:
 - Provide clear, step-by-step explanations
@@ -40,19 +40,46 @@ Be encouraging but honest. If a student's approach is wrong, gently correct them
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages, problemContext } = await request.json();
+    const {
+      messages,
+      problemContext,
+      course = 'exam-p',
+    } = await request.json();
 
+    if (
+      !['exam-p', 'salesforce'].includes(course) ||
+      !Array.isArray(messages) ||
+      messages.length > 30 ||
+      messages.some(
+        (m: { role?: string; content?: unknown }) =>
+          !['user', 'assistant'].includes(m.role ?? '') ||
+          typeof m.content !== 'string' ||
+          m.content.length > 12000,
+      )
+    ) {
+      return NextResponse.json(
+        { error: 'Invalid course or messages' },
+        { status: 400 },
+      );
+    }
+    const courseContext =
+      course === 'salesforce'
+        ? 'Teach Salesforce applied foundations: data modeling, access, Flow, reporting, SOQL, and integrations. Labs use a Playground or sandbox. Do not claim to inspect or modify an org. Explain configuration assumptions.'
+        : 'Teach probability for Actuarial Exam P. Separate current syllabus preparation from optional enrichment such as MGF techniques. Explain assumptions and reasoning.';
     const client = getOpenAI();
     if (!client) {
       return NextResponse.json(
         { error: 'OpenAI API key not configured' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     // Build the messages array with context
     const systemMessages = [
-      { role: 'system' as const, content: SYSTEM_PROMPT },
+      {
+        role: 'system' as const,
+        content: SYSTEM_PROMPT + '\n\n' + courseContext,
+      },
     ];
 
     if (problemContext) {
@@ -84,14 +111,16 @@ ${problemContext.explanation}`,
       temperature: 0.7,
     });
 
-    const reply = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    const reply =
+      completion.choices[0]?.message?.content ||
+      'Sorry, I could not generate a response.';
 
     return NextResponse.json({ reply });
   } catch (error) {
     console.error('OpenAI API error:', error);
     return NextResponse.json(
       { error: 'Failed to get AI response' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
