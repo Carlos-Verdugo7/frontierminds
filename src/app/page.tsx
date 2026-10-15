@@ -69,12 +69,18 @@ export default function Home() {
       <nav className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-4 items-center justify-between">
           <FrontierMindsLogo size="md" />
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
               href="#courses"
               className="text-slate-400 hover:text-white text-sm transition-colors"
             >
               Courses
+            </Link>
+            <Link
+              href="/guides/ai-probability-actuarial-science"
+              className="text-slate-400 hover:text-white text-sm transition-colors"
+            >
+              AI Guide
             </Link>
             <Link
               href="#about"
@@ -101,7 +107,7 @@ export default function Home() {
               AI + Human Collaboration
             </span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
             Learn Complex Topics
             <br />
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -250,6 +256,20 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-10" aria-labelledby="ai-guide-title">
+        <div className="rounded-2xl border border-teal-700/60 bg-teal-950/30 p-8 md:p-10">
+          <p className="text-sm font-semibold tracking-widest text-teal-300">BEYOND THE ANSWER</p>
+          <h2 id="ai-guide-title" className="mt-3 text-2xl font-bold text-white">What does AI mean for learning probability?</h2>
+          <p className="mt-4 max-w-2xl text-slate-300">
+            Explore better study habits, check a convincing answer with Bayes’ theorem,
+            and consider the opportunities and responsibilities AI brings to actuarial work.
+          </p>
+          <Link href="/guides/ai-probability-actuarial-science" className="mt-6 inline-block font-semibold text-teal-300 underline underline-offset-4 hover:text-teal-100">
+            Read the AI & probability guide →
+          </Link>
         </div>
       </section>
 
