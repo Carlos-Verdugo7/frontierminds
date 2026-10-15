@@ -115,7 +115,7 @@ export default function CourseOverview({ course }: { course: CourseId }) {
               your exam score.
             </p>
           </section>
-          <div className="my-8 grid sm:grid-cols-3 gap-4">
+          <div className="my-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               [
                 'Calculus readiness',
@@ -131,6 +131,11 @@ export default function CourseOverview({ course }: { course: CourseId }) {
                 'Formula reference',
                 'Key formulas linked to lessons',
                 '/courses/exam-p/reference',
+              ],
+              [
+                'AI & probability',
+                'Study thoughtfully. Explore actuarial implications.',
+                '/guides/ai-probability-actuarial-science',
               ],
             ].map(([title, desc, href]) => (
               <Link
