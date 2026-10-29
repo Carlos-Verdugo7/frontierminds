@@ -2,6 +2,8 @@
 
 The Spanish-first `/comunidad` section sits alongside the existing courses. Homepage navigation and a community introduction link to it.
 
+The page follows four numbered sections: choose a resource, prepare with AI, read updates, and share feedback. Topic cards open one focused guide with steps, a preparation checklist, and agency contacts. Links such as `/comunidad#guia-escuela` select the corresponding guide and support browser back/forward navigation. The guide's AI action preselects that topic; changing the guide does not relabel an existing AI result. Longer program notes, AI explanations, and Analytics details sit in expandable disclosures.
+
 ## Publish guides and posts
 
 Edit `src/content/community.ts`. Each guide has steps, preparation items, official source links, a contact, and an explicit review date. Check the linked official pages before changing the review date. Add editorial updates to `communityPosts`; they appear on the community page after the normal website deployment. This first version uses GitHub for publishing and has no browser-based editor.
