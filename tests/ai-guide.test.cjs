@@ -8,6 +8,11 @@ const assert = require('node:assert/strict');
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 
+// CSS Modules affect presentation, not the links checked by server rendering.
+require.extensions['.css'] = function (module) {
+  module.exports = { __esModule: true, default: new Proxy({}, { get: (_, key) => String(key) }) };
+};
+
 const originalResolve = Module._resolveFilename;
 Module._resolveFilename = function (request, parent, ...rest) {
   return originalResolve.call(this, request.startsWith('@/')
@@ -65,3 +70,4 @@ test('guide is discoverable from home and Exam P without changing Salesforce res
   assert.ok(render(Overview, { course: 'exam-p' }).includes(href));
   assert.ok(!render(Overview, { course: 'salesforce' }).includes(href));
 });
+

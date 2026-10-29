@@ -17,22 +17,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FrontierMinds | AI-Powered Interactive Learning",
-  description: "Transform complex textbooks into engaging, interactive learning experiences. Free interactive learning paths in probability and Salesforce.",
-  keywords: ["learning", "education", "probability", "actuarial", "exam p", "interactive", "AI"],
+  title: "FrontierMinds | Learning & Community",
+  description: "Interactive learning paths in probability and Salesforce, alongside practical Spanish community guides for West Palm Beach families.",
+  keywords: ["learning", "education", "probability", "actuarial", "exam p", "Salesforce", "community", "West Palm Beach", "recursos en español"],
   authors: [{ name: "Carlos Verdugo", url: "https://frontierminds.io" }],
   creator: "FrontierMinds LLC",
   openGraph: {
-    title: "FrontierMinds | AI-Powered Interactive Learning",
-    description: "Transform complex textbooks into engaging, interactive learning experiences.",
+    title: "FrontierMinds | Learning & Community",
+    description: "Build a skill. Find your next step. Interactive courses and practical community guides in one place.",
     url: "https://frontierminds.io",
     siteName: "FrontierMinds",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "FrontierMinds | AI-Powered Interactive Learning",
-    description: "Transform complex textbooks into engaging, interactive learning experiences.",
+    title: "FrontierMinds | Learning & Community",
+    description: "Interactive learning paths and Spanish community resources for West Palm Beach families.",
   },
 };
 
@@ -66,3 +66,4 @@ export default function RootLayout({
     </html>
   );
 }
+

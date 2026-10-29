@@ -6,6 +6,8 @@ Interactive learning paths for Actuarial Exam P and Salesforce Foundations, buil
 
 `/comunidad` adds Spanish resource guides for West Palm Beach families, editorial posts, private email feedback, topic-level Analytics events, and AI-assisted preparation using reviewed guides. The existing courses remain available. See [COMMUNITY.md](COMMUNITY.md) for posting instructions, Analytics setup, email behavior, and AI deployment details.
 
+The homepage connects learning and community resources in a shared visual style. Its fair-coin example is interactive: choose one to six independent flips to explore the chance of at least one head. Course counts are computed from the catalog on the server; the homepage client receives only the summary numbers. Planned Snowflake content appears as a roadmap note, not an available course.
+
 ## Run locally
 
 ```sh
