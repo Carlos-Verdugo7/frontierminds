@@ -70,6 +70,9 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-4 items-center justify-between">
           <FrontierMindsLogo size="md" />
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link href="/comunidad" className="text-teal-300 hover:text-white text-sm transition-colors">
+              Comunidad · Español
+            </Link>
             <Link
               href="#courses"
               className="text-slate-400 hover:text-white text-sm transition-colors"
@@ -183,6 +186,14 @@ export default function Home() {
       </section>
 
       {/* Courses Section */}
+      <section className="max-w-6xl mx-auto px-6 py-10" aria-labelledby="community-title" lang="es">
+        <div className="rounded-2xl border border-teal-700/60 bg-teal-950/30 p-8 md:p-10">
+          <p className="text-sm font-semibold tracking-widest text-teal-300">COMUNIDAD · WEST PALM BEACH</p>
+          <h2 id="community-title" className="mt-3 text-2xl font-bold text-white">Un primer paso. Más cerca de la ayuda.</h2>
+          <p className="mt-4 max-w-2xl text-slate-300">Guías en español para encontrar ayuda con la luz, buscar trabajo, inscribir a tus hijos y aprender inglés. Prepara tu próximo paso con apoyo de IA y cuéntanos qué información necesitas.</p>
+          <Link href="/comunidad" className="mt-6 inline-block font-semibold text-teal-300 underline underline-offset-4 hover:text-teal-100">Explorar recursos para mi familia →</Link>
+        </div>
+      </section>
       <section id="courses" className="max-w-6xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-4">Learning Paths</h2>
@@ -378,3 +389,4 @@ export default function Home() {
     </div>
   );
 }
+
