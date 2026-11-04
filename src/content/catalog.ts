@@ -108,7 +108,7 @@ export const courses: Record<
     lessons: examLessons,
   },
   salesforce: {
-    title: 'Salesforce Foundations',
+    title: 'Salesforce & AI Development',
     description:
       'Learn Salesforce foundations, then build, test, validate, and release features with AI as your engineering partner.',
     chapters: [
