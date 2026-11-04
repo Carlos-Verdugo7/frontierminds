@@ -1,6 +1,6 @@
 # FrontierMinds
 
-Interactive learning paths for Actuarial Exam P and Salesforce Foundations, built with Next.js, TypeScript, and React. Snowflake is planned; financial mathematics is on hold.
+Interactive learning paths for Actuarial Exam P and Salesforce & AI Development, built with Next.js, TypeScript, and React. Snowflake is planned; financial mathematics is on hold.
 
 ## Comunidad
 
