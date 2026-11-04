@@ -179,7 +179,7 @@ test('Salesforce AI deployment chapter is navigable, complete, and practice-back
   assert.equal(courses.salesforce.lessons.length, 12);
   assert.equal(allQuestions('salesforce').length, 36);
   for (const lesson of chapters[1].lessons) {
-    assert.match(lesson.id, /^2\\.[1-6]$/);
+    assert.match(lesson.id, /^2\.[1-6]$/);
     const full = courses.salesforce.lessons.find((l) => l.id === lesson.id);
     assert.ok(full, lesson.id);
     assert.ok(full.blocks.length >= 3, lesson.id);
