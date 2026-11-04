@@ -90,6 +90,23 @@ export default function LessonPage({
                 </p>
               </section>
             ))}
+            {lesson.snippets && lesson.snippets.length > 0 && (
+              <section className="space-y-3" aria-label="Copyable code and AI prompt examples">
+                <h2 className="text-xl font-semibold">Implementation examples</h2>
+                <p className="text-sm text-slate-400">These are educational examples, not commands executed against your Salesforce org. Review and adapt them before use.</p>
+                {lesson.snippets.map((snippet) => (
+                  <details
+                    key={snippet.title}
+                    className="rounded-xl border border-slate-700 bg-slate-950 open:border-teal-700"
+                  >
+                    <summary className="cursor-pointer px-5 py-4 font-semibold text-teal-200">
+                      {snippet.title} <span className="text-xs text-slate-400 font-normal">({snippet.language})</span>
+                    </summary>
+                    <pre className="overflow-x-auto border-t border-slate-800 p-5 text-sm text-slate-200 whitespace-pre"><code>{snippet.code}</code></pre>
+                  </details>
+                ))}
+              </section>
+            )}
             {lesson.formula && (
               <p className="p-5 rounded-xl bg-slate-800 font-mono overflow-x-auto">
                 {lesson.formula}
