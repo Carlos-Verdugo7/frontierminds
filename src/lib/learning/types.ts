@@ -14,6 +14,8 @@ export interface Lesson {
   lab: string[];
   simulator?: 'joint' | 'sampling' | 'insurance' | 'salesforce';
   formula?: string;
+  /** Optional, read-only code/prompt examples for hands-on lessons. */
+  snippets?: { title: string; language: string; code: string }[];
   source?: { title: string; url: string };
   problems: Problem[];
 }
