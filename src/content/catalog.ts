@@ -7,6 +7,9 @@ import type {
 import { problems as originalProblems, type Problem } from './exam-p/problems';
 import { lessons as examLessons } from './exam-p/lessons';
 import { lessons as salesforceLessons } from './salesforce/lessons';
+import { aiDeploymentLessons } from './salesforce/ai-deployment-lessons';
+
+const salesforceCurriculum = [...salesforceLessons, ...aiDeploymentLessons];
 
 export const syllabus = {
   label: 'November 2026 SOA syllabus',
@@ -107,7 +110,7 @@ export const courses: Record<
   salesforce: {
     title: 'Salesforce Foundations',
     description:
-      'Build a customer-support workflow, from data model to automation and reporting.',
+      'Learn Salesforce foundations, then build, test, validate, and release features with AI as your engineering partner.',
     chapters: [
       {
         id: 1,
@@ -115,8 +118,14 @@ export const courses: Record<
         description: 'Six applied lessons and a practice-org capstone.',
         lessons: salesforceLessons.map((l) => ({ id: l.id, title: l.title })),
       },
+      {
+        id: 2,
+        title: 'Build & Deploy Salesforce with AI',
+        description: 'Six applied lessons: planning, Apex, tests, troubleshooting, Dev/UAT/Production releases, and smoke tests.',
+        lessons: aiDeploymentLessons.map((l) => ({ id: l.id, title: l.title })),
+      },
     ],
-    lessons: salesforceLessons,
+    lessons: salesforceCurriculum,
   },
 };
 export function isCourse(value: string): value is CourseId {
@@ -161,7 +170,7 @@ export const questionBank: Record<CourseId, Record<string, Problem[]>> = {
     ...Object.fromEntries(examLessons.map((l) => [l.id, l.problems])),
   },
   salesforce: Object.fromEntries(
-    salesforceLessons.map((l) => [l.id, l.problems]),
+    salesforceCurriculum.map((l) => [l.id, l.problems]),
   ),
 };
 export type BankQuestion = Problem & {
