@@ -170,3 +170,21 @@ test('progress persists across reads, isolates courses, and rejects late exam an
   saveExamAnswer(keys[0], 1);
   assert.equal(read('exam-p').exam.answers[keys[0]], 2);
 });
+
+test('Salesforce AI deployment chapter is navigable, complete, and practice-backed', () => {
+  const chapters = courses.salesforce.chapters;
+  assert.equal(chapters.length, 2);
+  assert.equal(chapters[0].lessons.length, 6);
+  assert.equal(chapters[1].lessons.length, 6);
+  assert.equal(courses.salesforce.lessons.length, 12);
+  assert.equal(allQuestions('salesforce').length, 36);
+  for (const lesson of chapters[1].lessons) {
+    assert.match(lesson.id, /^2\\.[1-6]$/);
+    const full = courses.salesforce.lessons.find((l) => l.id === lesson.id);
+    assert.ok(full, lesson.id);
+    assert.ok(full.blocks.length >= 3, lesson.id);
+    assert.ok(full.lab.length >= 3, lesson.id);
+    assert.ok(full.snippets?.length >= 1, lesson.id);
+    assert.equal(full.problems.length, 3, lesson.id);
+  }
+});
