@@ -1,6 +1,6 @@
 # FrontierMinds
 
-Interactive learning paths for Actuarial Exam P and Salesforce Foundations, built with Next.js, TypeScript, and React. Snowflake is planned; financial mathematics is on hold.
+Interactive learning paths for Actuarial Exam P and Salesforce & AI Development, built with Next.js, TypeScript, and React. Snowflake is planned; financial mathematics is on hold.
 
 ## Comunidad
 
@@ -32,10 +32,10 @@ The existing layout downloads Geist fonts during builds. In environments requiri
 - `/courses/exam-p`: six chapters and an optional readiness refresher.
 - `/courses/exam-p/practice`: mixed sets and timed exam practice.
 - `/courses/exam-p/reference`: linked formula reference.
-- `/courses/salesforce`: six applied foundations lessons and a support-workflow capstone.
+- `/courses/salesforce`: 12 lessons across two chapters: six applied foundations lessons and a six-lesson AI-assisted Salesforce development/deployment path. Includes sample Apex/HTTP mocks, Salesforce CLI validation examples, change inventories, practice labs, and release checklists.
 - `/courses/{course}/study`: saved progress, topic accuracy, and mistake review.
 
-Progress saves in the current browser, separately for each course. It does not sync between devices. Timed exams use a stored absolute deadline and keep running when the page is closed. This is a learning tool, not an official SOA exam or pass predictor. Salesforce labs are carried out manually in a practice org; the application does not connect to Salesforce.
+Progress saves in the current browser, separately for each course. It does not sync between devices. Timed exams use a stored absolute deadline and keep running when the page is closed. This is a learning tool, not an official SOA exam or pass predictor. Salesforce labs are carried out manually in a practice org; the application does not connect to Salesforce or deploy changes. Code snippets and CLI examples are educational and are not executed by the app.
 
 ## Content structure
 
