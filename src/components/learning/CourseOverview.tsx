@@ -151,10 +151,11 @@ export default function CourseOverview({ course }: { course: CourseId }) {
         </>
       ) : (
         <p className="mt-8 rounded-xl border border-blue-800 bg-blue-950/30 p-5 text-blue-100">
-          A practical foundations path, with six lessons and a support-workflow
-          capstone. Complete the labs in a Trailhead Playground or sandbox.
-          Developer specialization and certification-specific preparation can
-          follow this foundation.
+          Two hands-on chapters: six Salesforce foundations lessons and six AI-assisted
+          development and deployment lessons. Follow a realistic Dev → UAT → Production
+          release path using Apex tests, CLI validation, and post-deployment checks.
+          Run all labs in a Trailhead Playground or authorized sandbox with fictional data.
+          No Salesforce org is connected and none of the examples execute live deployments.
         </p>
       )}
       <section className="mt-10 space-y-5">
