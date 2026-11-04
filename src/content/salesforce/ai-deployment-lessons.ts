@@ -216,7 +216,7 @@ export const aiDeploymentLessons: Lesson[] = [
       },
       {
         "title": "Coverage is a minimum gate, not a quality measure",
-        "body": "Salesforce deployments involving Apex have coverage requirements, but a high number is not proof of correctness. Verify error handling, permission behavior, bulk limits, asynchronous boundaries, and expected record state. AI can propose tests; you must run them in the right org and review assertions."
+        "body": "For production Apex deployments, Salesforce requires at least 75% overall Apex coverage, passing tests, and some coverage for every trigger. This is a minimum gate, not evidence of correctness. Verify error handling, permission behavior, bulk limits, asynchronous boundaries, and expected record state. AI can propose tests; you must run them in the right org and review assertions."
       }
     ],
     "snippets": [
