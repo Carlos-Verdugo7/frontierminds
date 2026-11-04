@@ -1,6 +1,6 @@
 # FrontierMinds development status
 
-Updated September 18, 2026.
+Updated November 4, 2026.
 
 ## Product roadmap
 
@@ -25,8 +25,10 @@ Updated September 18, 2026.
 
 ## Salesforce
 
-- One foundations chapter with six lessons and 18 questions.
-- Topics: customer-support data model, access, Flow routing, reporting, SOQL/integration foundations, and capstone handoff.
+- Two chapters, 12 lessons, and 36 knowledge-check questions.
+- Chapter 1: customer-support data model, access, Flow routing, reporting, SOQL/integration foundations, and capstone handoff.
+- Chapter 2: AI-assisted implementation planning, Flow vs Apex/dependencies, HTTP callout mocks and unit tests, error diagnosis, Dev/UAT/Production deployment validation, and post-release verification.
+- Chapter 2 includes fictionalized Apex and AI prompts, real-world release checklists, Salesforce CLI examples, worked cases, and sandbox labs. Examples are not connected to a live Salesforce org.
 - A local routing lab illustrates `High priority OR VIP` and provides a four-case test matrix.
 - Hands-on activities use a Trailhead Playground or sandbox with fictional data. No Salesforce connection, org mutation, or automated lab verification is included.
 - The path is an applied foundation, not a complete certification preparation course.
@@ -55,4 +57,4 @@ Updated September 18, 2026.
 - Salesforce official learning references are linked from individual lessons.
 - Expand and independently review question difficulty and explanations before claiming comprehensive exam readiness. The original question bank was preserved, not fully re-audited.
 - Add account-backed progress only when sign-in and cross-device sync are needed.
-- Future Salesforce chapters can deepen Flow debugging, Apex/LWC, API integrations, and deployment practice. Snowflake follows afterward.
+- Future Salesforce chapters can deepen LWC, advanced Flow diagnostics, CI/CD, integration resilience, and certification practice. Snowflake follows afterward.
