@@ -1,6 +1,10 @@
+import { courseMetadata } from '@/lib/course-metadata';
 import Link from 'next/link';
 import CourseShell from '@/components/learning/CourseShell';
 import { courses, lessonHref } from '@/content/catalog';
+
+export const metadata = courseMetadata('/courses/exam-p/reference');
+
 const fundamentals = [
   ['1.1', 'Addition rule', 'P(A ∪ B) = P(A) + P(B) − P(A ∩ B)'],
   ['1.2', 'Counting', 'C(n,r)=n!/[r!(n−r)!]; P(n,r)=n!/(n−r)!'],

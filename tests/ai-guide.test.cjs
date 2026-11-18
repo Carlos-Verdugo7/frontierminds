@@ -170,3 +170,18 @@ test('search works as a GET form with labeled inputs and a recovery link for emp
   assert.match(spanish, /No encontramos coincidencias/);
   assert.match(spanish, /href="\/buscar"/);
 });
+
+test('course page titles match their indexed destinations, including classic Exam P bookmarks', () => {
+  const { courseMetadata } = require('../src/lib/course-metadata.ts');
+  for (const [path, title] of [
+    ['/courses/exam-p/chapter/1/section/5', 'Bayes’ Theorem · Exam P'],
+    ['/courses/exam-p/chapter/1', 'Probability Fundamentals · Exam P'],
+    ['/courses/salesforce', 'Salesforce & AI Development'],
+    ['/courses/salesforce/study', 'Salesforce & AI Development study desk'],
+  ]) {
+    const metadata = courseMetadata(path);
+    assert.equal(metadata.title, title + ' | FrontierMinds');
+    assert.equal(metadata.alternates.canonical, 'https://www.frontierminds.io' + path);
+  }
+  assert.deepEqual(courseMetadata('/courses/missing'), {});
+});
