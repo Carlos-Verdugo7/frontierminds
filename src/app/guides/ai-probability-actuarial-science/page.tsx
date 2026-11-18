@@ -47,27 +47,27 @@ const sections = [
   ['next', 'Build lasting skills'],
   ['sources', 'Sources & exam rules'],
 ];
-const linkStyle = 'text-teal-300 underline underline-offset-4 hover:text-teal-100';
-const headingStyle = 'text-2xl font-semibold text-slate-100';
+const linkStyle = 'text-[#203ead] underline underline-offset-4 hover:text-[#203ead]';
+const headingStyle = 'text-2xl font-semibold text-slate-950';
 
 export default function AIProbabilityGuide() {
   return (
     <CourseShell course="exam-p">
-      <article className="mx-auto max-w-3xl space-y-12 text-slate-300 leading-relaxed">
+      <article className="mx-auto max-w-3xl space-y-12 text-slate-700 leading-relaxed">
         <header>
-          <p className="text-sm font-semibold tracking-widest text-teal-300">FRONTIERMINDS FIELD GUIDE</p>
-          <h1 className="mt-3 text-4xl font-bold leading-tight text-white sm:text-5xl">{title}</h1>
+          <p className="text-sm font-semibold tracking-widest text-[#203ead]">FRONTIERMINDS FIELD GUIDE</p>
+          <h1 className="mt-3 text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">{title}</h1>
           <p className="mt-5 text-xl">Let AI support your learning. Keep the reasoning yours.</p>
           <p className="mt-4">
             AI can help you explore a difficult idea, but a convincing explanation is not proof.
             This guide connects probability study to questions about actuarial work—without
             predicting that every career will follow the same route.
           </p>
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="mt-4 text-sm text-slate-600">
             By FrontierMinds · Sources checked <time dateTime="2026-10-15">October 15, 2026</time>
             {' '}· Optional perspective, not an Exam P syllabus section
           </p>
-          <nav aria-label="On this page" className="mt-7 flex flex-wrap gap-x-5 gap-y-3 border-y border-slate-700 py-5 text-sm">
+          <nav aria-label="On this page" className="mt-7 flex flex-wrap gap-x-5 gap-y-3 border-y border-slate-300 py-5 text-sm">
             {sections.map(([id, label]) => <a key={id} href={`#${id}`} className={linkStyle}>{label}</a>)}
           </nav>
         </header>
@@ -80,8 +80,8 @@ export default function AIProbabilityGuide() {
             confidently produce false answers, faulty reasoning, and invented citations.
             {' '}<a href="#nist" className={linkStyle}>Read the risk profile</a>.
           </p>
-          <div className="rounded-2xl border border-teal-800 bg-teal-950/30 p-6">
-            <h3 className="font-semibold text-teal-200">Our suggested practice loop</h3>
+          <div className="rounded-2xl border border-indigo-200 bg-indigo-100 p-6">
+            <h3 className="font-semibold text-[#203ead]">Our suggested practice loop</h3>
             <ol className="mt-4 list-decimal space-y-3 pl-5">
               <li><strong>Attempt first.</strong> Define the events or random variable and write your assumptions.</li>
               <li><strong>Ask for one hint.</strong> Keep the next calculation yours.</li>
@@ -89,9 +89,9 @@ export default function AIProbabilityGuide() {
               <li><strong>Repeat without AI.</strong> Solve a fresh problem and explain why the method applies.</li>
             </ol>
           </div>
-          <details className="rounded-xl border border-slate-700 p-5">
-            <summary className="cursor-pointer font-semibold text-slate-100">Try a hint-first prompt</summary>
-            <blockquote className="mt-4 border-l-2 border-teal-400 pl-4">
+          <details className="rounded-xl border border-slate-300 p-5">
+            <summary className="cursor-pointer font-semibold text-slate-950">Try a hint-first prompt</summary>
+            <blockquote className="mt-4 border-l-2 border-indigo-500 pl-4">
               I am practicing conditional probability. Here is my attempt: [add your work].
               Ask me one question that helps me check my assumptions. Do not give the final
               answer yet. Point out any step that needs verification.
@@ -111,20 +111,20 @@ export default function AIProbabilityGuide() {
             These are different tasks. A chatbot sounding certain is not the same as a
             probability estimate validated against real outcomes.
           </p>
-          <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6">
-            <p className="text-sm font-semibold text-teal-300">TRY IT · A BASE-RATE TRAP</p>
-            <h3 className="mt-3 text-xl font-semibold text-white">Does a flag mean a 90% chance of a defect?</h3>
+          <div className="rounded-2xl border border-slate-300 bg-white p-6">
+            <p className="text-sm font-semibold text-[#203ead]">TRY IT · A BASE-RATE TRAP</p>
+            <h3 className="mt-3 text-xl font-semibold text-slate-950">Does a flag mean a 90% chance of a defect?</h3>
             <p className="mt-3">
               In a hypothetical batch, 1% of items are defective. A detector flags 90% of
               defective items and 5% of non-defective items. An item is flagged.
               What is the probability it is defective?
             </p>
             <p className="mt-3">Try a population of 10,000 items before opening the explanation.</p>
-            <details className="mt-5 border-t border-slate-700 pt-4">
-              <summary className="cursor-pointer font-semibold text-teal-200">Reveal the independent check</summary>
+            <details className="mt-5 border-t border-slate-300 pt-4">
+              <summary className="cursor-pointer font-semibold text-[#203ead]">Reveal the independent check</summary>
               <div className="mt-4 space-y-3">
                 <p>Of 100 defective items, 90 are flagged. Of 9,900 non-defective items, 495 are flagged.</p>
-                <p className="rounded-lg bg-slate-950 p-4 font-semibold text-white">
+                <p className="rounded-lg bg-slate-100 p-4 font-semibold text-slate-950">
                   P(defective | flagged) = 90 / (90 + 495) ≈ 15.38%
                 </p>
                 <p>
@@ -157,10 +157,10 @@ export default function AIProbabilityGuide() {
               ['Models and scenarios', 'AI could help brainstorm scenarios or draft simulation code.', 'Choose defensible assumptions. Examine rare losses, dependence, and sensitivity; generated scenarios are not observed evidence.'],
               ['Reports and communication', 'AI could produce a first summary of approved material.', 'Trace claims to sources, preserve uncertainty, and have a qualified person review the conclusions.'],
             ].map(([label, opportunity, responsibility]) => (
-              <div key={label} className="rounded-xl border border-slate-700 bg-slate-900 p-5">
-                <h3 className="font-semibold text-white">{label}</h3>
+              <div key={label} className="rounded-xl border border-slate-300 bg-white p-5">
+                <h3 className="font-semibold text-slate-950">{label}</h3>
                 <p className="mt-2">{opportunity}</p>
-                <p className="mt-3 text-teal-100"><strong>Your check:</strong> {responsibility}</p>
+                <p className="mt-3 text-[#203ead]"><strong>Your check:</strong> {responsibility}</p>
               </div>
             ))}
           </div>
@@ -171,7 +171,7 @@ export default function AIProbabilityGuide() {
             and review decisions. NIST highlights privacy, harmful bias, and overreliance among
             the risks to manage. <a href="#nist" className={linkStyle}>Source: NIST</a>.
           </p>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-600">
             These are general learning considerations, not jurisdiction-specific professional
             guidance. Applicable standards and obligations depend on your role and location.
           </p>
@@ -191,15 +191,15 @@ export default function AIProbabilityGuide() {
             it is not an actuarial credential. Snowflake remains a planned learning path.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/courses/exam-p/labs/deductible" className="rounded-lg bg-teal-300 px-5 py-3 font-semibold text-slate-950 hover:bg-teal-200">Train and check a payout model →</Link>
-            <Link href="/courses/exam-p/practice" className="rounded-lg border border-slate-600 px-5 py-3 text-white hover:border-teal-300">Practice probability →</Link>
-            <Link href="/courses/salesforce" className="rounded-lg border border-slate-600 px-5 py-3 text-white hover:border-teal-300">Explore Salesforce →</Link>
+            <Link href="/courses/exam-p/labs/deductible" className="rounded-lg bg-[#2548cc] px-5 py-3 font-semibold text-white hover:bg-blue-800">Train and check a payout model →</Link>
+            <Link href="/courses/exam-p/practice" className="rounded-lg border border-slate-400 px-5 py-3 text-slate-950 hover:border-indigo-600">Practice probability →</Link>
+            <Link href="/courses/salesforce" className="rounded-lg border border-slate-400 px-5 py-3 text-slate-950 hover:border-indigo-600">Explore Salesforce →</Link>
           </div>
         </section>
 
-        <section id="sources" className="scroll-mt-6 space-y-5 border-t border-slate-700 pt-8">
+        <section id="sources" className="scroll-mt-6 space-y-5 border-t border-slate-300 pt-8">
           <h2 className={headingStyle}>Sources & exam boundaries</h2>
-          <aside className="rounded-xl border border-amber-800 bg-amber-950/20 p-5 text-amber-100">
+          <aside className="rounded-xl border border-amber-400 bg-amber-100 p-5 text-amber-900">
             <h3 className="font-semibold">Study assistance is not exam permission</h3>
             <p className="mt-2">
               SOA rules prohibit giving or receiving assistance during an examination and using
@@ -212,11 +212,11 @@ export default function AIProbabilityGuide() {
             {sources.map((source) => (
               <li key={source.id} id={source.id} className="scroll-mt-6">
                 <a href={source.href} className={linkStyle}>{source.title} ↗</a>
-                <p className="mt-1 text-sm text-slate-400">{source.note}</p>
+                <p className="mt-1 text-sm text-slate-600">{source.note}</p>
               </li>
             ))}
           </ul>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-600">
             The practice loop and worked example are FrontierMinds teaching suggestions.
             This independent guide is not endorsed by the SOA or NIST. Tools and policies
             change; consult the linked primary sources for updates.

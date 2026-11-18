@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <CourseShell course="exam-p">
       <h1 className="text-4xl font-bold">Formula reference</h1>
-      <p className="mt-4 text-slate-400">
+      <p className="mt-4 text-slate-600">
         A study companion. Follow each link for the assumptions, worked
         examples, and practice. This is not an official exam exhibit.
       </p>
@@ -49,15 +49,15 @@ export default function Page() {
         {formulas.map(([id, title, formula]) => (
           <article
             key={id}
-            className="rounded-xl border border-slate-700 bg-slate-900 p-6"
+            className="rounded-xl border border-slate-300 bg-white p-6"
           >
             <h2 className="text-lg font-semibold">{title}</h2>
-            <p className="font-mono leading-relaxed my-4 break-words text-teal-100">
+            <p className="font-mono leading-relaxed my-4 break-words text-[#203ead]">
               {formula}
             </p>
             <Link
               href={lessonHref('exam-p', id)}
-              className="text-sm text-teal-300"
+              className="text-sm text-[#203ead]"
             >
               Lesson {id}: learn & practice →
             </Link>

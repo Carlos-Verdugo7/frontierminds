@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MapPin, MessageCircle, Sparkles, Zap } from 'lucide-react';
-import FrontierMindsLogo from '@/components/FrontierMindsLogo';
+import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MessageCircle, Sparkles, Zap } from 'lucide-react';
+import Image from 'next/image';
 import { communityGuides, communityPosts, communityTasks, guidePreparation, type CommunityTopic } from '@/content/community';
 import { trackCommunity } from '@/lib/community-analytics';
 import { schoolCall } from '@/content/activities';
@@ -102,36 +102,21 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
 
   return (
     <main lang="es" className={styles.hub}>
-      <a className={styles.skip} href="#recursos">Saltar a las guías</a>
-      <div className={styles.topline}>Información en español. Pasos para avanzar. <span>Empezamos en West Palm Beach.</span></div>
-      <nav className={styles.nav} aria-label="Navegación principal">
-        <Link href="/" className={styles.brand} aria-label="FrontierMinds, inicio"><FrontierMindsLogo size="sm" showText={false} /><span>FrontierMinds<small>COMUNIDAD</small></span></Link>
-        <div className={styles.navLinks}><a href="#recursos">Encontrar ayuda</a><a href="#asistente">{aiEnabled ? 'Prepararme con IA' : 'Preparar mi visita'}</a><a href="#novedades">Novedades</a></div>
-        <a href="#comentarios" className={styles.navContact}>Te escuchamos <ArrowUpRight size={15} aria-hidden="true" /></a>
-      </nav>
-
+      <div className="course-nav-wrap"><nav className="course-nav site-width" aria-label="En esta guía">
+        <a href="#recursos">Guías de ayuda</a><a href="#asistente">Preparar mi visita</a><a href="#novedades">Novedades</a><a href="#comentarios">Dar mi opinión</a>
+      </nav></div>
       <header className={styles.hero}>
         <div className={styles.heroCopy}>
-          <p className={styles.location}><MapPin size={14} aria-hidden="true" /> WEST PALM BEACH, FLORIDA</p>
-          <h1>La ayuda empieza<br />con <em>un primer paso.</em></h1>
-          <p className={styles.intro}>Encontrar apoyo para tu familia debería ser más sencillo. Aquí reunimos información en español para que sepas por dónde empezar.</p>
-          <div className={styles.actions}><a className={styles.primary} href="#recursos">¿Qué ayuda necesitas? <ArrowDown size={17} aria-hidden="true" /></a><a className={styles.textLink} href="#asistente">{aiEnabled ? 'Conoce el apoyo de IA' : 'Prepara tu llamada o visita'} <ArrowUpRight size={16} aria-hidden="true" /></a></div>
-          <p className={styles.heroNote}><Check size={15} aria-hidden="true" /> Guías abiertas, sin crear una cuenta.</p>
+          <p className={styles.location}>Comunidad en español</p>
+          <h1>Guías para familias de <em>West Palm Beach.</em></h1>
+          <p className={styles.intro}>Encuentra los pasos, documentos y contactos para pedir ayuda con la luz, buscar trabajo, inscribir a tus hijos o aprender inglés.</p>
+          <div className={styles.actions}><a className={styles.primary} href="#recursos">Elegir una guía <ArrowDown size={17} aria-hidden="true" /></a><Link className={styles.textLink} href={schoolCall.path}>Practicar una llamada a la escuela <ArrowUpRight size={16} aria-hidden="true" /></Link></div>
         </div>
-        <div className={styles.routeCard}>
-          <div className={styles.routeTop}><span className={styles.dot} /> UN POCO DE ORIENTACIÓN CAMBIA EL CAMINO</div>
-          <div className={styles.routeTitle}>No tienes que resolver<br />todo de una vez.</div>
-          <ol className={styles.routeSteps}>
-            <li><span>01</span><div><strong>Encuentra tu tema</strong><p>Empieza por lo que necesitas hoy.</p></div></li>
-            <li><span>02</span><div><strong>Prepara tu siguiente paso</strong><p>Revisa los documentos y las preguntas.</p></div></li>
-            <li><span>03</span><div><strong>Conecta con la organización</strong><p>Ve a la fuente que puede ayudarte.</p></div></li>
-          </ol>
-          <div className={styles.routeBottom}><MapPin size={16} aria-hidden="true" /><span>Palm Beach County <small>Recursos locales · orientación en español</small></span><ArrowUpRight size={20} aria-hidden="true" /></div>
-        </div>
+        <Image className={styles.coverPhoto} src="/field-guides/comunidad.webp" alt="" width={960} height={640} sizes="(max-width: 600px) 100vw, 40vw" loading="eager" />
       </header>
 
       <section id="recursos" className={styles.section} aria-labelledby="resources-title">
-        <div className={styles.sectionHeading}><div><p className={styles.eyebrow}><span>01</span> RECURSOS PARA TU FAMILIA</p><h2 id="resources-title">Empieza por lo que necesitas.</h2></div><p>Elige un tema para ver los pasos,<br />los documentos y el contacto.</p></div>
+        <div className={styles.sectionHeading}><h2 id="resources-title">¿Qué ayuda necesitas?</h2></div>
         <div className={styles.topics} aria-label="Temas de ayuda">
           {communityGuides.map(item => {
             const Icon = icons[item.id];
@@ -145,7 +130,7 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
         <div id="guia" className={styles.guideAnchor}>
           <article id={`guia-${topic}`} tabIndex={-1} className={styles.guide} aria-labelledby="guide-title">
             <div className={styles.guideHeading}><div className={styles.guideLabel}><GuideIcon size={17} aria-hidden="true" /> {guide.label}</div><span className={styles.reviewed}><span className={styles.dot} /> Revisado el {formatDate(guide.reviewed)}</span></div>
-            <div className={styles.guideIntro}><div><h3 id="guide-title">{guide.title}</h3><p>{guide.description}</p></div><span className={styles.guideIndex}>GUÍA {String(communityGuides.indexOf(guide) + 1).padStart(2, '0')} / 04</span></div>
+            <div className={styles.guideIntro}><div><h3 id="guide-title">{guide.title}</h3><p>{guide.description}</p></div></div>
             <div className={styles.guideColumns}>
               <div className={styles.steps}><h4>Así puedes empezar</h4><ol>{guide.steps.map((step, index) => <li key={step}><span aria-hidden="true">{index + 1}</span><p>{step}</p></li>)}</ol>
                 <div className={styles.guideAi}><Sparkles size={21} aria-hidden="true" /><div><strong>¿Te gustaría preparar esa llamada o visita?</strong><p>Prepara una lista o practica preguntas en inglés.</p><a href="#asistente">Prepararme sobre este tema <ArrowRight size={15} aria-hidden="true" /></a>
@@ -172,7 +157,7 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
       </section>
 
       <section id="asistente" className={styles.aiSection} aria-labelledby="ai-title">
-        <div className={styles.aiLayout}><div className={styles.aiCopy}><p className={styles.eyebrow}><span>02</span> DE LA INFORMACIÓN A LA ACCIÓN</p><span className={styles.aiMark}><Sparkles size={27} aria-hidden="true" /></span><h2 id="ai-title">Un poco de preparación.<br /><em>Más confianza para avanzar.</em></h2><p>Elige una guía para repasar los pasos, organizar lo que necesitas o preparar una conversación en inglés.</p><div className={styles.aiFootnote}><Check size={17} aria-hidden="true" /><p>No necesitas compartir datos personales. El asistente trabaja con las guías de esta página.</p></div><details className={styles.aiDisclosure}><summary>Cómo funciona este apoyo</summary><p>{aiEnabled ? 'Al pedir ayuda a la IA, enviamos a OpenAI el tema, la tarea y la guía. Si la IA no responde, verás la preparación de la guía.' : 'La preparación usa las guías de FrontierMinds y preguntas bilingües de práctica.'} Confirma los detalles con la organización.</p></details></div>
+        <div className={styles.aiLayout}><div className={styles.aiCopy}><h2 id="ai-title">Prepara tu llamada o visita.</h2><p>Elige una guía para repasar los pasos, organizar lo que necesitas o preparar una conversación en inglés.</p><div className={styles.aiFootnote}><Check size={17} aria-hidden="true" /><p>No necesitas compartir datos personales. El asistente trabaja con las guías de esta página.</p></div><details className={styles.aiDisclosure}><summary>Cómo funciona este apoyo</summary><p>{aiEnabled ? 'Al pedir ayuda a la IA, enviamos a OpenAI el tema, la tarea y la guía. Si la IA no responde, verás la preparación de la guía.' : 'La preparación usa las guías de FrontierMinds y preguntas bilingües de práctica.'} Confirma los detalles con la organización.</p></details></div>
           <form onSubmit={askAI} className={styles.aiForm}>
             <div className={styles.formHeading}><span>PREPARA TU PRÓXIMO PASO</span><Sparkles size={17} aria-hidden="true" /></div>
             <label htmlFor="ai-topic">¿Qué tema quieres preparar?</label><select id="ai-topic" value={topic} disabled={busy} onChange={event => { setTopic(event.target.value as CommunityTopic); setResult(null); setError(null); }}>{communityGuides.map(item => <option key={item.id} value={item.id}>{topicCopy[item.id].title}</option>)}</select>
@@ -183,10 +168,10 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
         </div>
       </section>
 
-      <section id="novedades" className={styles.section} aria-labelledby="posts-title"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}><span>03</span> PARA SEGUIR AVANZANDO</p><h2 id="posts-title">Desde nuestra comunidad.</h2></div><p>Ideas, orientación y novedades<br />para dar el próximo paso.</p></div><div className={styles.posts}>{communityPosts.map(post => <article key={post.id}><div className={styles.postTop}><span>COMUNIDAD</span><time dateTime={post.date}>{formatDate(post.date)}</time></div><h3>{post.title}</h3><p>{post.text}</p></article>)}</div></section>
+      <section id="novedades" className={styles.section} aria-labelledby="posts-title"><div className={styles.sectionHeading}><h2 id="posts-title">Novedades de la comunidad</h2></div><div className={styles.posts}>{communityPosts.map(post => <article key={post.id}><div className={styles.postTop}><span>COMUNIDAD</span><time dateTime={post.date}>{formatDate(post.date)}</time></div><h3>{post.title}</h3><p>{post.text}</p></article>)}</div></section>
 
       <section id="comentarios" className={styles.feedbackSection} aria-labelledby="feedback-title"><div className={styles.feedbackLayout}>
-        <div className={styles.feedbackCopy}><p className={styles.eyebrow}><span>04</span> ESTE ESPACIO TAMBIÉN ES TUYO</p><span className={styles.feedbackMark}><MessageCircle size={30} aria-hidden="true" /></span><h2 id="feedback-title">La próxima guía<br />puede empezar contigo.</h2><p>¿Qué información te hace falta? ¿En qué parte del proceso te quedaste? Cuéntanos para que podamos crear recursos más útiles.</p><a className={styles.emailLink} href="mailto:info@frontierminds.io"><Mail size={17} aria-hidden="true" /> info@frontierminds.io</a><div className={styles.privacy}><strong>Tu mensaje es privado.</strong><p>No se publica en el sitio. Evita incluir documentos, números de cuenta, información médica o datos de tus hijos.</p></div></div>
+        <div className={styles.feedbackCopy}><h2 id="feedback-title">¿Qué guía te hace falta?</h2><p>¿Qué información te hace falta? ¿En qué parte del proceso te quedaste? Cuéntanos para que podamos crear recursos más útiles.</p><a className={styles.emailLink} href="mailto:info@frontierminds.io"><Mail size={17} aria-hidden="true" /> info@frontierminds.io</a><div className={styles.privacy}><strong>Tu mensaje es privado.</strong><p>No se publica en el sitio. Evita incluir documentos, números de cuenta, información médica o datos de tus hijos.</p></div></div>
         <form onSubmit={prepareEmail} className={styles.feedbackForm}>
           <h3>Cuéntanos qué necesitas.</h3><p className={styles.small}>Prepara un mensaje para enviarlo desde tu correo.</p>
           <label htmlFor="feedback-email">Tu correo para responderte</label><input id="feedback-email" name="email" type="email" required maxLength={254} autoComplete="email" placeholder="tu@correo.com" />
@@ -196,7 +181,7 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
           <button className={styles.primary} type="submit">Continuar en mi correo<ArrowUpRight size={17} aria-hidden="true" /></button><p className={styles.formHint}>Abriremos tu aplicación de correo. Revisa el mensaje y pulsa Enviar allí. Si no se abre, escribe a info@frontierminds.io.</p><p role="status">{feedbackStatus}</p>
         </form>
       </div></section>
-      <footer className={styles.footer}><div><Link href="/" className={styles.footerBrand}>FrontierMinds <span>/ Comunidad</span></Link><p>Información que orienta. Pasos que acercan.</p></div><div><Link href="/">Explorar los cursos <ArrowUpRight size={14} aria-hidden="true" /></Link><p>Una guía independiente para Palm Beach County.<br />Las solicitudes se hacen con cada organización.</p></div><details className={styles.analyticsNote}><summary>Sobre el uso de esta página</summary><p>Usamos Google Analytics para entender qué temas y enlaces se consultan y qué guías ayudan. Nuestros eventos de comunidad no incluyen tu correo ni el texto de tus comentarios. El formulario no guarda información en este sitio.</p></details></footer>
+      <aside className={styles.disclosure}><p>Una guía independiente para Palm Beach County. Las solicitudes se hacen con cada organización.</p><details className={styles.analyticsNote}><summary>Sobre el uso de esta página</summary><p>Usamos Google Analytics para entender qué temas y enlaces se consultan y qué guías ayudan. Nuestros eventos de comunidad no incluyen tu correo ni el texto de tus comentarios. El formulario no guarda información en este sitio.</p></details></aside>
     </main>
   );
 }

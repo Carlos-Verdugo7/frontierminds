@@ -1,8 +1,9 @@
 'use client';
 
+import ClassicLesson from '@/components/learning/ClassicLesson';
+
 import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+
 import DistributionComparator from '@/components/DistributionComparator';
 import VarianceCalculator from '@/components/VarianceCalculator';
 import PracticeProblems from '@/components/PracticeProblems';
@@ -13,75 +14,18 @@ export default function Section2_3Page() {
   const [activeTab, setActiveTab] = useState<TabType>('learn');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/courses/exam-p/chapter/2" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <ArrowLeft className="w-5 h-5 text-slate-400" />
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold text-white">2.3 Special Mathematical Expectations</h1>
-              <p className="text-sm text-slate-400">Variance, standard deviation, moments, and MGFs</p>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex gap-2">
-            {(['learn', 'simulate', 'practice'] as TabType[]).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab
-                    ? 'bg-green-500 text-white'
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                }`}
-              >
-                {tab === 'learn' && '📚 Learn'}
-                {tab === 'simulate' && '🧮 Simulate'}
-                {tab === 'practice' && '✏️ Practice'}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {activeTab === 'learn' && <LearnContent />}
-        {activeTab === 'simulate' && <SimulateContent />}
-        {activeTab === 'practice' && <PracticeProblems section="2.3" />}
-      </main>
-
-      {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700 p-4">
-        <div className="max-w-6xl mx-auto flex justify-between">
-          <Link
-            href="/courses/exam-p/chapter/2/section/2"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            2.2 Expectation
-          </Link>
-          <Link
-            href="/courses/exam-p/chapter/2/section/4"
-            className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm transition-colors"
-          >
-            Next: 2.4 Binomial Distribution
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
+    <ClassicLesson id="2.3" title="Special Mathematical Expectations" description="Variance, standard deviation, moments, and MGFs" mode={activeTab} onChange={setActiveTab}>
+      {activeTab === 'learn' && <LearnContent />}
+      {activeTab === 'simulate' && <SimulateContent />}
+      {activeTab === 'practice' && <PracticeProblems section="2.3" />}
+    </ClassicLesson>
   );
 }
 
 /* ─── LEARN TAB ─── */
 function LearnContent() {
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-8">
 
       {/* 1. WHY WE NEED VARIANCE — the story hook */}
       <section className="bg-slate-800 rounded-xl p-6 border border-slate-700">
@@ -561,7 +505,7 @@ function LearnContent() {
 /* ─── SIMULATE TAB ─── */
 function SimulateContent() {
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-8">
       <DistributionComparator />
       <VarianceCalculator />
     </div>

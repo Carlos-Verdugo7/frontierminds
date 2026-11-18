@@ -1,0 +1,13 @@
+.heading>a, .adjacent a { display: inline-flex; align-items: center; gap: 8px; color: var(--blue); font-size: .88rem; }
+.heading>a:hover, .adjacent a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.id { margin-block: 21px 6px; font: .8rem var(--font-geist-mono),monospace; color: var(--muted); }
+.description { color: var(--muted); margin-top: 10px; max-width: 70ch; line-height: 1.6; }
+.modes { display: flex; flex-wrap: wrap; gap: 4px; border-block: 1px solid var(--line); margin: 22px 0; padding: 6px 0; }
+.modes button { display: inline-flex; align-items: center; gap: 7px; font-size: .91rem; min-height: 40px; padding: 6px 14px; border-radius: 4px; cursor: pointer; }
+.modes button[aria-pressed=true] { background: var(--blue); color: white; }
+.modes button:hover:not([aria-pressed=true]) { background: #eceef7; }
+.adjacent { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 21px; margin-top: 25px; border-top: 1px solid var(--line); }
+.adjacent a { max-width: 48%; }
+.adjacent a:last-child { text-align: right; }
+.adjacent svg { flex: none; }
+@media (max-width: 500px) { .modes button { padding-inline: 9px; } }

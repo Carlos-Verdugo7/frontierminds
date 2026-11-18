@@ -34,7 +34,7 @@ export default function PracticeProblems({
   const [chat, setChat] = useState(false);
   const [calculator, setCalculator] = useState(false);
   if (!problem)
-    return <p className="text-slate-300">No questions in this set yet.</p>;
+    return <p className="text-slate-700">No questions in this set yet.</p>;
   const key = `${section}:${problem.id}`;
   const attempt = progress.attempts[key];
   const answered =
@@ -67,15 +67,15 @@ export default function PracticeProblems({
     }));
   };
   return (
-    <div className="space-y-5 text-slate-200">
-      <div className="rounded-xl bg-slate-800 border border-slate-700 p-5">
+    <div className="practice-work space-y-5 text-slate-800">
+      <div className="rounded-xl bg-slate-100 border border-slate-300 p-5">
         <div className="flex flex-wrap justify-between gap-3 mb-4">
           <p>
             {graded.length}/{questions.length} answered · {correct} correct
           </p>
           <button
             onClick={() => retry(questions.map((q) => `${section}:${q.id}`))}
-            className="text-teal-300"
+            className="text-[#203ead]"
           >
             Retry this set
           </button>
@@ -89,7 +89,7 @@ export default function PracticeProblems({
                 aria-label={`Question ${i + 1}${a?.correct === true ? ', correct' : a?.correct === false ? ', incorrect' : ''}`}
                 aria-current={i === index ? 'step' : undefined}
                 onClick={() => change(i)}
-                className={`w-10 h-10 rounded-lg border ${i === index ? 'border-teal-300 bg-teal-900' : a?.correct === true ? 'border-green-600 bg-green-950' : a?.correct === false ? 'border-rose-600 bg-rose-950' : 'border-slate-600'}`}
+                className={`w-10 h-10 rounded-lg border ${i === index ? 'border-indigo-600 bg-indigo-100' : a?.correct === true ? 'border-green-600 bg-green-100' : a?.correct === false ? 'border-rose-600 bg-rose-100' : 'border-slate-400'}`}
               >
                 {i + 1}
               </button>
@@ -99,12 +99,12 @@ export default function PracticeProblems({
       </div>
       <div className="grid gap-5 lg:grid-cols-3">
         <div
-          className={`${chat ? 'lg:col-span-2' : 'lg:col-span-3'} rounded-xl bg-slate-800 border border-slate-700 p-5 md:p-7 space-y-5`}
+          className={`${chat ? 'lg:col-span-2' : 'lg:col-span-3'} rounded-xl bg-slate-100 border border-slate-300 p-5 md:p-7 space-y-5`}
         >
           <div className="flex flex-wrap gap-3 items-center">
-            <span className="text-sm text-teal-300">{problem.topic}</span>
+            <span className="text-sm text-[#203ead]">{problem.topic}</span>
             {problem.enrichment && (
-              <span className="text-xs text-amber-300">
+              <span className="text-xs text-amber-900">
                 Optional enrichment · excluded from timed exams
               </span>
             )}
@@ -120,7 +120,7 @@ export default function PracticeProblems({
                 onClick={() =>
                   recordAnswer(course, key, i, i === problem.correctIndex)
                 }
-                className={`w-full text-left p-4 rounded-lg border ${answered && i === problem.correctIndex ? 'border-green-400 bg-green-950' : answered && i === attempt.selected ? 'border-rose-400 bg-rose-950' : 'border-slate-600 hover:bg-slate-700'}`}
+                className={`w-full text-left p-4 rounded-lg border ${answered && i === problem.correctIndex ? 'border-green-400 bg-green-100' : answered && i === attempt.selected ? 'border-rose-400 bg-rose-100' : 'border-slate-400 hover:bg-slate-200'}`}
               >
                 <span className="mr-3 font-semibold">
                   {String.fromCharCode(65 + i)}.
@@ -140,11 +140,11 @@ export default function PracticeProblems({
           {answered ? (
             <div
               aria-live="polite"
-              className="bg-slate-950 rounded-xl p-5 space-y-3"
+              className="bg-slate-100 rounded-xl p-5 space-y-3"
             >
               <p
                 className={
-                  attempt.correct ? 'text-green-300' : 'text-amber-300'
+                  attempt.correct ? 'text-green-800' : 'text-amber-900'
                 }
               >
                 {attempt.correct
@@ -154,17 +154,17 @@ export default function PracticeProblems({
               <p className="whitespace-pre-wrap leading-relaxed">
                 {problem.explanation}
               </p>
-              <button className="text-teal-300" onClick={() => retry([key])}>
+              <button className="text-[#203ead]" onClick={() => retry([key])}>
                 Retry this question
               </button>
             </div>
           ) : (
             <>
-              <button className="text-amber-300" onClick={() => setHint(!hint)}>
+              <button className="text-amber-900" onClick={() => setHint(!hint)}>
                 {hint ? 'Hide hint' : 'Show hint'}
               </button>
               {hint && (
-                <p className="p-4 rounded bg-amber-950">{problem.hint}</p>
+                <p className="p-4 rounded bg-amber-100">{problem.hint}</p>
               )}
             </>
           )}
@@ -179,17 +179,17 @@ export default function PracticeProblems({
                   scratch: { ...p.scratch, [key]: e.target.value },
                 }))
               }
-              className="mt-2 w-full min-h-28 rounded-lg bg-slate-950 p-4 border border-slate-600"
+              className="mt-2 w-full min-h-28 rounded-lg bg-slate-100 p-4 border border-slate-400"
             />
           </label>
           <div className="flex flex-wrap gap-4">
-            {aiEnabled && <button onClick={() => setChat(!chat)} className="text-purple-300">
+            {aiEnabled && <button onClick={() => setChat(!chat)} className="text-violet-800">
               {chat ? 'Close tutor' : 'Ask AI tutor'}
             </button>}
             {course === 'exam-p' && (
               <button
                 onClick={() => setCalculator(!calculator)}
-                className="text-teal-300"
+                className="text-[#203ead]"
               >
                 Calculator
               </button>
@@ -210,7 +210,7 @@ export default function PracticeProblems({
             </button>
           </div>
           {graded.length === questions.length && (
-            <p className="border-t border-slate-600 pt-4">
+            <p className="border-t border-slate-400 pt-4">
               Set finished: {correct}/{questions.length} correct. Review missed
               questions before marking the lesson complete.
             </p>

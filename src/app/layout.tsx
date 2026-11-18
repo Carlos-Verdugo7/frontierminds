@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { SiteFooter, SiteHeader } from "@/components/site/SiteChrome";
 import ProgressTracker from "@/components/learning/ProgressTracker";
 import { TutorSettings } from "@/components/learning/TutorAvailability";
 
@@ -62,8 +63,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ProgressTracker />
-        <TutorSettings enabled={Boolean(process.env.OPENAI_API_KEY)}>{children}</TutorSettings>
+        <SiteHeader />
+        <div id="site-content" tabIndex={-1}>
+          <TutorSettings enabled={Boolean(process.env.OPENAI_API_KEY)}>{children}</TutorSettings>
+          <ProgressTracker />
+        </div>
+        <SiteFooter />
       </body>
     </html>
   );

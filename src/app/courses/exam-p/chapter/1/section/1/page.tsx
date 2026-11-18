@@ -1,8 +1,9 @@
 'use client';
 
+import ClassicLesson from '@/components/learning/ClassicLesson';
+
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Dices, RefreshCw, CheckCircle, XCircle, Lightbulb } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 import DiceSimulator from '@/components/DiceSimulator';
 import VennDiagram from '@/components/VennDiagram';
 import GeometricProbabilitySimulator from '@/components/GeometricProbabilitySimulator';
@@ -14,89 +15,17 @@ export default function Section1Page() {
   const [activeTab, setActiveTab] = useState<TabType>('learn');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/courses/exam-p/chapter/1" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-              <ArrowLeft className="w-5 h-5 text-slate-400" />
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold text-white">1.1 Properties of Probability</h1>
-              <p className="text-sm text-slate-400">Sample spaces, events, and probability rules</p>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setActiveTab('learn')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'learn'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
-            >
-              📚 Learn
-            </button>
-            <button
-              onClick={() => setActiveTab('simulate')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'simulate'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
-            >
-              🎲 Simulate
-            </button>
-            <button
-              onClick={() => setActiveTab('practice')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'practice'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }`}
-            >
-              ✏️ Practice
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {activeTab === 'learn' && <LearnContent />}
-        {activeTab === 'simulate' && <SimulateContent />}
-        {activeTab === 'practice' && <PracticeProblems section="1.1" />}
-      </main>
-
-      {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700 p-4">
-        <div className="max-w-6xl mx-auto flex justify-between">
-          <Link
-            href="/courses/exam-p/chapter/1"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Chapter 1
-          </Link>
-          <Link
-            href="/courses/exam-p/chapter/1/section/2"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors"
-          >
-            Next: 1.2 Enumeration
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
+    <ClassicLesson id="1.1" title="Properties of Probability" description="Sample spaces, events, and probability rules" mode={activeTab} onChange={setActiveTab}>
+      {activeTab === 'learn' && <LearnContent />}
+      {activeTab === 'simulate' && <SimulateContent />}
+      {activeTab === 'practice' && <PracticeProblems section="1.1" />}
+    </ClassicLesson>
   );
 }
 
 function LearnContent() {
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-8">
       {/* Concept 1: Sample Space */}
       <section className="bg-slate-800 rounded-xl p-6 border border-slate-700">
         <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -295,7 +224,7 @@ function LearnContent() {
 
 function SimulateContent() {
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-8">
       <DiceSimulator />
       <VennDiagram />
       <GeometricProbabilitySimulator />

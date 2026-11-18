@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
 import { jointStats, payment, moments } from '@/lib/learning/math';
-const panel = 'rounded-xl border border-slate-700 bg-slate-900 p-5 space-y-5';
-const control = 'rounded-lg border border-slate-600 bg-slate-950 p-2 w-full';
-const button = 'rounded-lg bg-teal-300 text-slate-950 px-4 py-2 font-semibold';
+const panel = 'rounded-xl border border-slate-300 bg-white p-5 space-y-5';
+const control = 'rounded-lg border border-slate-400 bg-slate-100 p-2 w-full';
+const button = 'rounded-lg bg-[#2548cc] text-white px-4 py-2 font-semibold';
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-slate-800 p-4">
-      <dt className="text-sm text-slate-400">{label}</dt>
-      <dd className="text-xl text-teal-200 mt-1">{value}</dd>
+    <div className="rounded-lg bg-slate-100 p-4">
+      <dt className="text-sm text-slate-600">{label}</dt>
+      <dd className="text-xl text-[#203ead] mt-1">{value}</dd>
     </div>
   );
 }
@@ -24,7 +24,7 @@ export function JointExplorer() {
   return (
     <section className={panel} aria-label="Joint probability explorer">
       <h3 className="text-2xl font-semibold">A table you can reason with</h3>
-      <p className="text-slate-300">
+      <p className="text-slate-700">
         Edit nonnegative weights. The explorer divides each weight by the total
         to create a probability table. Select a row and column to inspect an
         event.
@@ -37,7 +37,7 @@ export function JointExplorer() {
           [0, 1, 1, 0],
         ].map((preset, i) => (
           <button
-            className="border border-slate-600 rounded-lg px-3 py-2"
+            className="border border-slate-400 rounded-lg px-3 py-2"
             key={i}
             onClick={() => setWeights(preset)}
           >
@@ -51,7 +51,7 @@ export function JointExplorer() {
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-center">
-          <caption className="text-left text-sm text-slate-400 mb-3">
+          <caption className="text-left text-sm text-slate-600 mb-3">
             X labels rows; Y labels columns. Each cell shows its editable weight
             and normalized probability.
           </caption>
@@ -62,7 +62,7 @@ export function JointExplorer() {
                 <th scope="col" key={y}>
                   <button
                     aria-pressed={col === y}
-                    className={`p-3 rounded ${col === y ? 'bg-teal-950 text-teal-200' : ''}`}
+                    className={`p-3 rounded ${col === y ? 'bg-indigo-100 text-[#203ead]' : ''}`}
                     onClick={() => setCol(y)}
                   >
                     Y = {y}
@@ -79,7 +79,7 @@ export function JointExplorer() {
                   <button
                     aria-pressed={row === x}
                     onClick={() => setRow(x)}
-                    className={`p-3 rounded ${row === x ? 'bg-teal-950 text-teal-200' : ''}`}
+                    className={`p-3 rounded ${row === x ? 'bg-indigo-100 text-[#203ead]' : ''}`}
                   >
                     X = {x}
                   </button>
@@ -87,7 +87,7 @@ export function JointExplorer() {
                 {[0, 1].map((y) => (
                   <td
                     key={y}
-                    className={`p-3 border border-slate-700 ${x === row && y === col ? 'bg-teal-950' : 'bg-slate-800'}`}
+                    className={`p-3 border border-slate-300 ${x === row && y === col ? 'bg-indigo-100' : 'bg-slate-100'}`}
                   >
                     <input
                       type="number"
@@ -129,7 +129,7 @@ export function JointExplorer() {
         </table>
       </div>
       {!stats ? (
-        <p role="alert" className="text-amber-300">
+        <p role="alert" className="text-amber-900">
           At least one weight must be positive.
         </p>
       ) : (
@@ -174,7 +174,7 @@ export function JointExplorer() {
               }
             />
           </dl>
-          <p className="text-sm text-slate-300">
+          <p className="text-sm text-slate-700">
             Conditioning on Y={col}: divide the selected cell by the column
             total {stats.cols[col].toFixed(4)}. A zero column has no defined
             conditional distribution.
@@ -281,13 +281,13 @@ export function SamplingExplorer() {
           Simulate 1,000 samples
         </button>
         <button
-          className="border border-slate-600 rounded-lg px-4 py-2"
+          className="border border-slate-400 rounded-lg px-4 py-2"
           onClick={() => setSamples([])}
         >
           Clear samples
         </button>
       </div>
-      <p className="text-slate-400 text-sm">
+      <p className="text-slate-600 text-sm">
         Each sample draws {n} independent observations and records their {mode}.
         Up to 10,000 recent sample statistics are retained.
       </p>
@@ -295,7 +295,7 @@ export function SamplingExplorer() {
         viewBox="0 0 640 220"
         role="img"
         aria-label={`Histogram of ${samples.length} simulated sample ${mode} values`}
-        className="w-full bg-slate-950 rounded-xl"
+        className="w-full bg-slate-100 rounded-xl"
       >
         <line x1="30" y1="185" x2="620" y2="185" stroke="#64748b" />
         {bins.map((count, i) => (
@@ -305,21 +305,21 @@ export function SamplingExplorer() {
             y={185 - (155 * count) / max}
             width="26"
             height={(155 * count) / max}
-            fill="#5eead4"
+            fill="#2548cc"
           >
             <title>
               {count} samples in bin {i + 1}
             </title>
           </rect>
         ))}
-        <text x="30" y="208" fill="#cbd5e1">
+        <text x="30" y="208" fill="#334155">
           {low}
         </text>
-        <text x="580" y="208" fill="#cbd5e1">
+        <text x="580" y="208" fill="#334155">
           {high}
         </text>
         {!samples.length && (
-          <text x="150" y="90" fill="#94a3b8">
+          <text x="150" y="90" fill="#475569">
             Run a simulation to populate the histogram.
           </text>
         )}
@@ -348,7 +348,7 @@ export function SamplingExplorer() {
           </>
         )}
       </dl>
-      <p className="text-sm text-slate-400">
+      <p className="text-sm text-slate-600">
         Simulation estimates vary. They illustrate the formulas and do not
         replace exact calculations.
       </p>
@@ -378,7 +378,7 @@ export function InsuranceExplorer() {
   return (
     <section className={panel}>
       <h3 className="text-2xl font-semibold">From loss to payment</h3>
-      <p className="text-slate-300">
+      <p className="text-slate-700">
         Inflate the loss, subtract the fixed ordinary deductible, apply the
         insurer share, then cap the final payment. This calculator uses a
         maximum payment, not a maximum covered loss.
@@ -431,27 +431,27 @@ export function InsuranceExplorer() {
         viewBox="0 0 640 225"
         role="img"
         aria-label="Payment curve: original loss 0 to 3000 on horizontal axis, payment 0 to 3300 on vertical axis"
-        className="w-full bg-slate-950 rounded-xl"
+        className="w-full bg-slate-100 rounded-xl"
       >
         <path d="M30 25 V185 H600" stroke="#64748b" fill="none" />
         <polyline
           points={points}
           fill="none"
-          stroke="#5eead4"
+          stroke="#2548cc"
           strokeWidth="3"
         />
-        <text x="35" y="20" fill="#cbd5e1">
+        <text x="35" y="20" fill="#334155">
           Payment (0–3300)
         </text>
-        <text x="30" y="210" fill="#cbd5e1">
+        <text x="30" y="210" fill="#334155">
           0
         </text>
-        <text x="430" y="210" fill="#cbd5e1">
+        <text x="430" y="210" fill="#334155">
           Original loss → 3000
         </text>
       </svg>
       <h4 className="text-lg font-semibold">A small portfolio</h4>
-      <p className="text-sm text-slate-300">
+      <p className="text-sm text-slate-700">
         Original losses 0, 500, and 2,000 have probabilities 0.5, 0.3, and 0.2.
         The policy above produces payments{' '}
         {ys.map((y) => y.toFixed(2)).join(', ')}.
@@ -476,7 +476,7 @@ export function SalesforceExplorer() {
   return (
     <section className={panel}>
       <h3 className="text-2xl font-semibold">Case-routing decision lab</h3>
-      <p className="text-slate-300">
+      <p className="text-slate-700">
         Policy: route to Escalations when priority is High OR the customer is
         VIP. This is a local simulation; it does not connect to a Salesforce
         org.
@@ -502,14 +502,14 @@ export function SalesforceExplorer() {
           Customer is VIP
         </label>
       </div>
-      <div className="rounded-lg bg-slate-950 p-5" aria-live="polite">
+      <div className="rounded-lg bg-slate-100 p-5" aria-live="polite">
         <p>
           High priority: {String(high)} · VIP: {String(vip)}
         </p>
-        <p className="text-2xl text-teal-200 mt-3">
+        <p className="text-2xl text-[#203ead] mt-3">
           {escalate ? 'Escalations' : 'Standard Support'}
         </p>
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-600">
           {escalate
             ? 'At least one condition is true.'
             : 'Both conditions are false, so use the default outcome.'}
@@ -533,7 +533,7 @@ export function SalesforceExplorer() {
             [true, false],
             [true, true],
           ].map(([a, b], i) => (
-            <tr key={i} className="border-t border-slate-700">
+            <tr key={i} className="border-t border-slate-300">
               <td className="py-3">{String(a)}</td>
               <td>{String(b)}</td>
               <td>{a || b ? 'Escalations' : 'Standard Support'}</td>

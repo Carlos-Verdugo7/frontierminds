@@ -1,8 +1,9 @@
 'use client';
 
+import ClassicLesson from '@/components/learning/ClassicLesson';
+
 import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, BookOpen, Play, Target, ChevronRight, ChevronLeft } from 'lucide-react';
+import { BookOpen, Play, Target, ChevronRight, ChevronLeft } from 'lucide-react';
 import NormalDistributionSimulator from '@/components/NormalDistributionSimulator';
 import PracticeProblems from '@/components/PracticeProblems';
 
@@ -717,44 +718,8 @@ export default function Section33Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-          <Link href="/courses/exam-p/chapter/3" className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
-            <ArrowLeft className="w-5 h-5 text-slate-400" />
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold text-white">3.3 The Normal Distribution</h1>
-            <p className="text-sm text-slate-400">The bell curve, standard normal, z-scores, and approximations</p>
-          </div>
-        </div>
-
-        {/* Tab Bar */}
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex border-b border-slate-700">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors border-b-2 ${
-                  activeTab === tab.id
-                    ? 'border-purple-500 text-purple-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {/* Learn Tab */}
-        {activeTab === 'learn' && (
+    <ClassicLesson id="3.3" title="The Normal Distribution" description="The bell curve, standard normal, z-scores, and approximations" mode={activeTab} onChange={setActiveTab}>
+      {activeTab === 'learn' && (
           <div className="space-y-8">
             {/* Progress indicator */}
             <div className="flex items-center justify-between mb-6">
@@ -762,6 +727,8 @@ export default function Section33Page() {
                 {learnSections.map((_, idx) => (
                   <button
                     key={idx}
+                    aria-label={`Learning step ${idx + 1}`}
+                    aria-pressed={idx === learnSection}
                     onClick={() => setLearnSection(idx)}
                     className={`w-3 h-3 rounded-full transition-colors ${
                       idx === learnSection ? 'bg-purple-500' : idx < learnSection ? 'bg-purple-500/50' : 'bg-slate-600'
@@ -801,9 +768,7 @@ export default function Section33Page() {
             </div>
           </div>
         )}
-
-        {/* Simulate Tab */}
-        {activeTab === 'simulate' && (
+      {activeTab === 'simulate' && (
           <div className="space-y-8">
             <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
               <h2 className="text-2xl font-bold text-white mb-4">Normal Distribution Explorer</h2>
@@ -824,9 +789,7 @@ export default function Section33Page() {
             </div>
           </div>
         )}
-
-        {/* Practice Tab */}
-        {activeTab === 'practice' && (
+      {activeTab === 'practice' && (
           <div className="space-y-8">
             <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
               <h2 className="text-2xl font-bold text-white mb-4">Practice Problems</h2>
@@ -839,7 +802,6 @@ export default function Section33Page() {
             <PracticeProblems section="3.3" />
           </div>
         )}
-      </main>
-    </div>
+    </ClassicLesson>
   );
 }
