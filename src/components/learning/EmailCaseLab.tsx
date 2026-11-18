@@ -8,7 +8,7 @@ import { trackActivity } from '@/lib/site-analytics';
 
 const selectStyle = 'mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 p-3 text-base text-slate-100';
 
-export default function EmailCaseLab() {
+export default function EmailCaseLab({ aiEnabled }: { aiEnabled: boolean }) {
   const [rules, setRules] = useState<LabRules>(initialLabRules);
   const [run, setRun] = useState<ReturnType<typeof runEmailCases> | null>(null);
   const [coach, setCoach] = useState(false);
@@ -79,6 +79,10 @@ export default function EmailCaseLab() {
           </h3>
           <p className="mt-2 text-sm text-slate-300">Expected {row.expected.length} {row.expected.length === 1 ? 'reply to ' + row.expected[0] : 'replies and an explicit skip'}. Actual <strong>{row.recipients.length} {row.recipients.length === 1 ? 'reply' : 'replies'}</strong>.</p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-300">{row.trace.map(line => <li key={line}>{line}</li>)}</ul>
+          {!row.passed && <details className="mt-3 rounded-lg bg-slate-950 p-3">
+            <summary className="cursor-pointer font-semibold text-teal-200">Hint for this case</summary>
+            <p className="mt-2 text-slate-200">{row.hint}</p>
+          </details>}
         </article>)}
       </section>
       <section aria-labelledby="lab-coach" className="rounded-xl border border-teal-800 bg-teal-950/45 p-5">
@@ -86,9 +90,9 @@ export default function EmailCaseLab() {
         <p className="my-3 text-slate-200">{run.every(row => row.passed)
           ? 'All three cases meet the policy. What would you test if both email fields were empty?'
           : 'Pick a case that needs a fix. Which field or rule would you check next?'}</p>
-        {coach ? <div className="h-[32rem] max-h-[78vh] overflow-hidden rounded-lg">
+        {aiEnabled && (coach ? <div className="h-[32rem] max-h-[78vh] overflow-hidden rounded-lg">
           <AITutor course="salesforce" labRules={rules} isOpen onToggle={() => setCoach(false)} />
-        </div> : <button type="button" onClick={() => setCoach(true)} className="rounded-lg border border-teal-500 px-4 py-2 font-semibold text-teal-200">Ask the AI lab coach</button>}
+        </div> : <button type="button" onClick={() => setCoach(true)} className="rounded-lg border border-teal-500 px-4 py-2 font-semibold text-teal-200">Ask the AI lab coach</button>)}
       </section>
     </>}
   </div>;

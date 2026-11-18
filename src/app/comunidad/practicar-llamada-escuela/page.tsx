@@ -13,7 +13,7 @@ export default function SchoolCallPage() {
     <main className={styles.main}>
       <h1>{schoolCall.title}</h1>
       <p className={styles.intro}>En cinco minutos puedes ensayar cómo pedir documentos, una cita o ayuda en español. Escucha el inglés y practica en voz alta sin grabar tu voz.</p>
-      <SchoolCallRehearsal />
+      <SchoolCallRehearsal aiEnabled={Boolean(process.env.OPENAI_API_KEY)} />
       <p className={styles.contacts}>Para hacer la llamada real, <a href={schoolDirectory}>busca el teléfono de tu escuela en el directorio del distrito</a>.</p>
     </main>
   </div>;

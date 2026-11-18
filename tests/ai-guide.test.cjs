@@ -76,6 +76,14 @@ test('both activities have direct homepage links, distinct previews and standalo
   assert.notEqual(school.metadata.openGraph.title, lab.metadata.openGraph.title);
 });
 
+test('the community preparation form names the available source', () => {
+  const hub = require('../src/components/community/CommunityHub.tsx').default;
+  assert.ok(render(hub, { aiEnabled: true }).includes('Preparar con IA'));
+  const guideOnly = render(hub, { aiEnabled: false });
+  assert.ok(guideOnly.includes('Preparar con la guía'));
+  assert.ok(!guideOnly.includes('Preparar con IA'));
+});
+
 test('guide is discoverable from home and Exam P without changing Salesforce resources', () => {
   const Home = require('../src/app/page.tsx').default;
   const Overview = require('../src/components/learning/CourseOverview.tsx').default;

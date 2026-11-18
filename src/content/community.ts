@@ -76,3 +76,16 @@ export const communityTasks = {
   lista: 'Preparar una lista para mi próxima llamada o visita',
   preguntas: 'Redactar preguntas en inglés con traducción al español',
 } as const;
+
+const questionsForGuide: Record<CommunityTopic, string> = {
+  luz: 'Which office can help me ask about my electricity bill?\n¿En qué oficina puedo preguntar por ayuda con mi factura de luz?',
+  empleo: 'How can I get help preparing for a job interview?\n¿Cómo puedo recibir ayuda para prepararme para una entrevista de trabajo?',
+  escuela: 'Which documents should I bring for school registration?\n¿Qué documentos debo llevar para la inscripción escolar?',
+  ingles: 'How can I find an English class for my level?\n¿Cómo puedo encontrar una clase de inglés para mi nivel?',
+};
+
+export function guidePreparation(guide: CommunityGuide, task: keyof typeof communityTasks) {
+  if (task === 'preguntas') return questionsForGuide[guide.id] + '\n\nCan someone help me in Spanish?\n¿Hay alguien que pueda ayudarme en español?';
+  const items = task === 'lista' ? guide.prepare : guide.steps;
+  return items.map((item, index) => (task === 'lista' ? '• ' : (index + 1) + '. ') + item).join('\n\n');
+}

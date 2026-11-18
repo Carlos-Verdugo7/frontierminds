@@ -14,9 +14,9 @@ export function validLabRules(value: unknown): value is LabRules {
 }
 
 export const labCases = [
-  { id: 'member', label: 'Member request', subject: 'Can you update my mailing address?', account: true, contact: 'alex@example.test', sender: 'alex@example.test', automated: false, expected: ['alex@example.test'] },
-  { id: 'inquiry', label: 'General inquiry', subject: 'How can I become a member?', account: false, contact: '', sender: 'sam@example.test', automated: false, expected: ['sam@example.test'] },
-  { id: 'notice', label: 'Automated notification', subject: 'Automatic delivery notice', account: false, contact: '', sender: 'notices@example.test', automated: true, expected: [] },
+  { id: 'member', label: 'Member request', subject: 'Can you update my mailing address?', account: true, contact: 'alex@example.test', sender: 'alex@example.test', automated: false, expected: ['alex@example.test'], hint: 'The member rule already sent a reply before the Flow started. Which Flow entry condition would keep Alex from getting a second one?' },
+  { id: 'inquiry', label: 'General inquiry', subject: 'How can I become a member?', account: false, contact: '', sender: 'sam@example.test', automated: false, expected: ['sam@example.test'], hint: 'Sam has no linked Contact. Which field still contains the address that came in with the email?' },
+  { id: 'notice', label: 'Automated notification', subject: 'Automatic delivery notice', account: false, contact: '', sender: 'notices@example.test', automated: true, expected: [], hint: 'Look at the type of sender. Which rule would deliberately skip this message even if it had a usable reply address?' },
 ];
 
 // An existing member auto-response runs before the proposed Flow in this exercise.
@@ -46,6 +46,6 @@ export function runEmailCases(rules: LabRules) {
     const passed = recipients.length === record.expected.length
       && recipients.every((address, i) => address === record.expected[i])
       && (!record.automated || rules.automated === 'skip');
-    return { id: record.id, label: record.label, recipients, expected: record.expected, trace, passed };
+    return { id: record.id, label: record.label, recipients, expected: record.expected, trace, passed, hint: record.hint };
   });
 }

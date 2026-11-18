@@ -7,5 +7,5 @@ export const metadata = pageMetadata({
 });
 
 export default function CommunityPage() {
-  return <CommunityHub />;
+  return <CommunityHub aiEnabled={Boolean(process.env.OPENAI_API_KEY)} />;
 }

@@ -10,11 +10,11 @@ function Line({ phrase }: { phrase: Phrase }) {
   return <><p lang="en" className={styles.english}>{phrase.en}</p><p className={styles.translation}>{phrase.es}</p></>;
 }
 
-function Conversation({ scenario, restart }: { scenario: typeof schoolScenarios[number]; restart: () => void }) {
+function Conversation({ scenario, aiEnabled, restart }: { scenario: typeof schoolScenarios[number]; aiEnabled: boolean; restart: () => void }) {
   const [reply, setReply] = useState<Phrase | null>(null);
   const [audioNote, setAudioNote] = useState('');
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'manual'>('idle');
-  const [coaching, setCoaching] = useState('');
+  const [coaching, setCoaching] = useState<{ label: string; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const copied = useRef(false);
   const request = useRef<AbortController | null>(null);
@@ -69,6 +69,11 @@ function Conversation({ scenario, restart }: { scenario: typeof schoolScenarios[
   }
 
   async function askCoach() {
+    const preset = { label: 'Pregunta de práctica', text: callScript([scenario.followUp]) };
+    if (!aiEnabled) {
+      setCoaching(preset);
+      return;
+    }
     const controller = new AbortController();
     request.current = controller;
     setLoading(true);
@@ -82,9 +87,9 @@ function Conversation({ scenario, restart }: { scenario: typeof schoolScenarios[
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error();
-      setCoaching(data.reply);
+      setCoaching({ label: 'Sugerencia de IA', text: data.reply });
     } catch {
-      setCoaching('La IA no está disponible en este momento. Puedes seguir ensayando y copiar tu guion.');
+      setCoaching(preset);
     } finally {
       window.clearTimeout(timeout);
       setLoading(false);
@@ -126,18 +131,18 @@ function Conversation({ scenario, restart }: { scenario: typeof schoolScenarios[
     </div>}
     <p role="status">{audioNote}</p>
     <div className={styles.more}>
-      <button type="button" className={styles.audio} disabled={loading} onClick={askCoach}>{loading ? 'Preparando otra pregunta…' : 'Pedir otra pregunta a la IA'}</button>
-      <div aria-live="polite" className={styles.coachText}>{coaching}</div>
+      <button type="button" className={styles.audio} disabled={loading} onClick={askCoach}>{loading ? 'Preparando otra pregunta…' : aiEnabled ? 'Pedir otra pregunta a la IA' : 'Ver otra pregunta de práctica'}</button>
+      <div aria-live="polite" className={styles.coachText}>{coaching && <><strong>{coaching.label}</strong><p>{coaching.text}</p></>}</div>
     </div>
     <button type="button" className={styles.audio} onClick={restart}><RotateCcw size={16} /> Practicar otro tema</button>
   </section>;
 }
 
-export default function SchoolCallRehearsal() {
+export default function SchoolCallRehearsal({ aiEnabled }: { aiEnabled: boolean }) {
   const [goal, setGoal] = useState(schoolScenarios[0]);
   const [active, setActive] = useState(false);
   const goalPicker = useRef<HTMLSelectElement>(null);
-  if (active) return <Conversation scenario={goal} restart={() => { setActive(false); requestAnimationFrame(() => goalPicker.current?.focus()); }} />;
+  if (active) return <Conversation scenario={goal} aiEnabled={aiEnabled} restart={() => { setActive(false); requestAnimationFrame(() => goalPicker.current?.focus()); }} />;
   return <form className={styles.selection} onSubmit={event => {
     event.preventDefault();
     trackActivity('school_rehearsal_start');

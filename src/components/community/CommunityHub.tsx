@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MapPin, MessageCircle, Sparkles, Zap } from 'lucide-react';
 import FrontierMindsLogo from '@/components/FrontierMindsLogo';
-import { communityGuides, communityPosts, communityTasks, type CommunityTopic } from '@/content/community';
+import { communityGuides, communityPosts, communityTasks, guidePreparation, type CommunityTopic } from '@/content/community';
 import { trackCommunity } from '@/lib/community-analytics';
 import { schoolCall } from '@/content/activities';
 import { schoolDirectory } from '@/content/school-call';
@@ -24,10 +24,10 @@ const taskCopy = {
 };
 const formatDate = (date: string) => new Intl.DateTimeFormat('es-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T12:00:00Z`));
 
-export default function CommunityHub() {
+export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
   const [topic, setTopic] = useState<CommunityTopic>('luz');
   const [task, setTask] = useState<keyof typeof communityTasks>('pasos');
-  const [result, setResult] = useState<{ topic: CommunityTopic; task: string; text: string } | null>(null);
+  const [result, setResult] = useState<{ topic: CommunityTopic; task: string; text: string; source: 'guide' | 'ai' } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<{ topic: CommunityTopic; task: string; text: string } | null>(null);
   const [votes, setVotes] = useState<Partial<Record<CommunityTopic, string>>>({});
@@ -63,6 +63,11 @@ export default function CommunityHub() {
 
   async function askAI(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const prepared = { topic, task, text: guidePreparation(guide, task), source: 'guide' as const };
+    if (!aiEnabled) {
+      setResult(prepared);
+      return;
+    }
     setBusy(true); setResult(null); setError(null);
     trackCommunity({ action: 'ai_request', topic, task });
     try {
@@ -73,9 +78,10 @@ export default function CommunityHub() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'No pudimos generar la respuesta. Inténtalo más tarde.');
       if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('No llegó una respuesta. Inténtalo más tarde.');
-      setResult({ topic, task, text: data.reply });
+      setResult({ topic, task, text: data.reply, source: 'ai' });
       trackCommunity({ action: 'ai_success', topic, task });
     } catch (failure) {
+      setResult(prepared);
       setError({ topic, task, text: failure instanceof Error && failure.name !== 'TimeoutError' ? failure.message : 'La respuesta tardó demasiado. Usa la guía o inténtalo más tarde.' });
       trackCommunity({ action: 'ai_error', topic, task });
     } finally { setBusy(false); }
@@ -100,7 +106,7 @@ export default function CommunityHub() {
       <div className={styles.topline}>Información en español. Pasos para avanzar. <span>Empezamos en West Palm Beach.</span></div>
       <nav className={styles.nav} aria-label="Navegación principal">
         <Link href="/" className={styles.brand} aria-label="FrontierMinds, inicio"><FrontierMindsLogo size="sm" showText={false} /><span>FrontierMinds<small>COMUNIDAD</small></span></Link>
-        <div className={styles.navLinks}><a href="#recursos">Encontrar ayuda</a><a href="#asistente">Prepararme con IA</a><a href="#novedades">Novedades</a></div>
+        <div className={styles.navLinks}><a href="#recursos">Encontrar ayuda</a><a href="#asistente">{aiEnabled ? 'Prepararme con IA' : 'Preparar mi visita'}</a><a href="#novedades">Novedades</a></div>
         <a href="#comentarios" className={styles.navContact}>Te escuchamos <ArrowUpRight size={15} aria-hidden="true" /></a>
       </nav>
 
@@ -109,7 +115,7 @@ export default function CommunityHub() {
           <p className={styles.location}><MapPin size={14} aria-hidden="true" /> WEST PALM BEACH, FLORIDA</p>
           <h1>La ayuda empieza<br />con <em>un primer paso.</em></h1>
           <p className={styles.intro}>Encontrar apoyo para tu familia debería ser más sencillo. Aquí reunimos información en español para que sepas por dónde empezar.</p>
-          <div className={styles.actions}><a className={styles.primary} href="#recursos">¿Qué ayuda necesitas? <ArrowDown size={17} aria-hidden="true" /></a><a className={styles.textLink} href="#asistente">Conoce el apoyo de IA <ArrowUpRight size={16} aria-hidden="true" /></a></div>
+          <div className={styles.actions}><a className={styles.primary} href="#recursos">¿Qué ayuda necesitas? <ArrowDown size={17} aria-hidden="true" /></a><a className={styles.textLink} href="#asistente">{aiEnabled ? 'Conoce el apoyo de IA' : 'Prepara tu llamada o visita'} <ArrowUpRight size={16} aria-hidden="true" /></a></div>
           <p className={styles.heroNote}><Check size={15} aria-hidden="true" /> Guías abiertas, sin crear una cuenta.</p>
         </div>
         <div className={styles.routeCard}>
@@ -142,7 +148,7 @@ export default function CommunityHub() {
             <div className={styles.guideIntro}><div><h3 id="guide-title">{guide.title}</h3><p>{guide.description}</p></div><span className={styles.guideIndex}>GUÍA {String(communityGuides.indexOf(guide) + 1).padStart(2, '0')} / 04</span></div>
             <div className={styles.guideColumns}>
               <div className={styles.steps}><h4>Así puedes empezar</h4><ol>{guide.steps.map((step, index) => <li key={step}><span aria-hidden="true">{index + 1}</span><p>{step}</p></li>)}</ol>
-                <div className={styles.guideAi}><Sparkles size={21} aria-hidden="true" /><div><strong>¿Te gustaría preparar esa llamada o visita?</strong><p>La IA puede ayudarte con una lista o preguntas en inglés.</p><a href="#asistente">Prepararme sobre este tema <ArrowRight size={15} aria-hidden="true" /></a>
+                <div className={styles.guideAi}><Sparkles size={21} aria-hidden="true" /><div><strong>¿Te gustaría preparar esa llamada o visita?</strong><p>Prepara una lista o practica preguntas en inglés.</p><a href="#asistente">Prepararme sobre este tema <ArrowRight size={15} aria-hidden="true" /></a>
                   {topic === 'escuela' && <Link className={styles.rehearse} href={schoolCall.path}>{schoolCall.title} <ArrowRight size={15} aria-hidden="true" /></Link>}</div></div>
               </div>
               <aside className={styles.guideAside} aria-label="Preparación y contactos">
@@ -166,13 +172,13 @@ export default function CommunityHub() {
       </section>
 
       <section id="asistente" className={styles.aiSection} aria-labelledby="ai-title">
-        <div className={styles.aiLayout}><div className={styles.aiCopy}><p className={styles.eyebrow}><span>02</span> DE LA INFORMACIÓN A LA ACCIÓN</p><span className={styles.aiMark}><Sparkles size={27} aria-hidden="true" /></span><h2 id="ai-title">Un poco de preparación.<br /><em>Más confianza para avanzar.</em></h2><p>Usa la IA para entender una guía, organizar lo que necesitas o preparar una conversación en inglés.</p><div className={styles.aiFootnote}><Check size={17} aria-hidden="true" /><p>No necesitas compartir datos personales. El asistente trabaja con las guías de esta página.</p></div><details className={styles.aiDisclosure}><summary>Cómo funciona este apoyo</summary><p>Al generar, enviamos a OpenAI el tema, la tarea elegida y nuestra guía. La IA no consulta disponibilidad en tiempo real, no decide si calificas y no presenta solicitudes. Confirma los detalles con la organización.</p></details></div>
+        <div className={styles.aiLayout}><div className={styles.aiCopy}><p className={styles.eyebrow}><span>02</span> DE LA INFORMACIÓN A LA ACCIÓN</p><span className={styles.aiMark}><Sparkles size={27} aria-hidden="true" /></span><h2 id="ai-title">Un poco de preparación.<br /><em>Más confianza para avanzar.</em></h2><p>Elige una guía para repasar los pasos, organizar lo que necesitas o preparar una conversación en inglés.</p><div className={styles.aiFootnote}><Check size={17} aria-hidden="true" /><p>No necesitas compartir datos personales. El asistente trabaja con las guías de esta página.</p></div><details className={styles.aiDisclosure}><summary>Cómo funciona este apoyo</summary><p>{aiEnabled ? 'Al pedir ayuda a la IA, enviamos a OpenAI el tema, la tarea y la guía. Si la IA no responde, verás la preparación de la guía.' : 'La preparación usa las guías de FrontierMinds y preguntas bilingües de práctica.'} Confirma los detalles con la organización.</p></details></div>
           <form onSubmit={askAI} className={styles.aiForm}>
             <div className={styles.formHeading}><span>PREPARA TU PRÓXIMO PASO</span><Sparkles size={17} aria-hidden="true" /></div>
             <label htmlFor="ai-topic">¿Qué tema quieres preparar?</label><select id="ai-topic" value={topic} disabled={busy} onChange={event => { setTopic(event.target.value as CommunityTopic); setResult(null); setError(null); }}>{communityGuides.map(item => <option key={item.id} value={item.id}>{topicCopy[item.id].title}</option>)}</select>
             <fieldset disabled={busy} className={styles.taskChoices}><legend>Elige cómo te podemos ayudar</legend>{(Object.keys(communityTasks) as (keyof typeof communityTasks)[]).map(id => { const copy = taskCopy[id]; const Icon = copy.icon; return <label key={id} className={styles.taskChoice}><input type="radio" name="ai-task" value={id} checked={task === id} onChange={() => { setTask(id); setResult(null); setError(null); }} /><Icon size={19} aria-hidden="true" /><span><strong>{copy.title}</strong><small>{copy.detail}</small></span></label>; })}</fieldset>
-            <button className={styles.primary} type="submit" disabled={busy}>{busy ? 'Preparando tu orientación…' : 'Preparar con IA'}<ArrowRight size={17} aria-hidden="true" /></button><p className={styles.formHint}>Orientación generada por IA. Revísala antes de usarla.</p>
-            <div aria-live="polite" aria-busy={busy}>{error?.topic === topic && error.task === task && <p className={styles.error} role="alert">{error.text} Puedes seguir usando las guías y sus contactos.</p>}{result?.topic === topic && result.task === task && <div className={styles.reply}><span className={styles.eyebrow}>TU PREPARACIÓN · {guide.label}</span><p>{result.text}</p><a href={guide.sources[0].url} target="_blank" rel="noopener noreferrer">Confirmar en la fuente oficial <ArrowUpRight size={14} aria-hidden="true" /></a></div>}</div>
+            <button className={styles.primary} type="submit" disabled={busy}>{busy ? 'Preparando tu orientación…' : aiEnabled ? 'Preparar con IA' : 'Preparar con la guía'}<ArrowRight size={17} aria-hidden="true" /></button><p className={styles.formHint}>Confirma los requisitos con la organización antes de tu visita.</p>
+            <div aria-live="polite" aria-busy={busy}>{error?.topic === topic && error.task === task && <p className={styles.error} role="alert">{error.text} Puedes seguir usando las guías y sus contactos.</p>}{result?.topic === topic && result.task === task && <div className={styles.reply}><span className={styles.eyebrow}>{result.source === 'ai' ? 'SUGERENCIA DE IA' : 'PREPARACIÓN DE LA GUÍA'} · {guide.label}</span><p>{result.text}</p><a href={guide.sources[0].url} target="_blank" rel="noopener noreferrer">Confirmar en la fuente oficial <ArrowUpRight size={14} aria-hidden="true" /></a></div>}</div>
           </form>
         </div>
       </section>

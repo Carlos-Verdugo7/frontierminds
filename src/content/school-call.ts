@@ -5,6 +5,7 @@ type SchoolScenario = {
   opening: Phrase;
   office: Phrase;
   replies: [Phrase, Phrase];
+  followUp: Phrase;
 };
 
 export const schoolDirectory = 'https://www2.palmbeachschools.org/directorysearch/indexportal.html';
@@ -12,6 +13,7 @@ export const schoolDirectory = 'https://www2.palmbeachschools.org/directorysearc
 export const schoolScenarios: SchoolScenario[] = [
   {
     id: 'documentos', goal: 'Preguntar qué documentos llevar',
+    followUp: { en: 'Who can I contact if I am missing a document?', es: '¿Con quién puedo hablar si me falta un documento?' },
     opening: { en: 'Hello. Which documents should I bring to register my child?', es: 'Hola. ¿Qué documentos debo llevar para inscribir a mi hijo o hija?' },
     office: { en: 'Would you like us to go over the list together?', es: '¿Quiere que repasemos la lista juntos?' },
     replies: [
@@ -21,6 +23,7 @@ export const schoolScenarios: SchoolScenario[] = [
   },
   {
     id: 'cita', goal: 'Preguntar si necesito una cita',
+    followUp: { en: 'If I need to change the appointment, whom should I call?', es: 'Si necesito cambiar la cita, ¿a quién debo llamar?' },
     opening: { en: 'Hello. Do I need an appointment to register my child?', es: 'Hola. ¿Necesito una cita para inscribir a mi hijo o hija?' },
     office: { en: 'What would you like to know about visiting our office?', es: '¿Qué le gustaría saber sobre su visita a nuestra oficina?' },
     replies: [
@@ -30,6 +33,7 @@ export const schoolScenarios: SchoolScenario[] = [
   },
   {
     id: 'idioma', goal: 'Pedir ayuda en español',
+    followUp: { en: 'What is the best way to ask for help in Spanish next time I call?', es: '¿Cuál es la mejor manera de pedir ayuda en español la próxima vez que llame?' },
     opening: { en: 'Hello. Is someone available to help me in Spanish with school registration?', es: 'Hola. ¿Hay alguien que pueda ayudarme en español con la inscripción escolar?' },
     office: { en: 'What part of registration would you like help with?', es: '¿Con qué parte de la inscripción le gustaría recibir ayuda?' },
     replies: [

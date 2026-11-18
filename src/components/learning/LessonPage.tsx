@@ -17,9 +17,11 @@ const tabs = ['learn', 'explore', 'practice'] as const;
 export default function LessonPage({
   course,
   lesson,
+  aiEnabled,
 }: {
   course: CourseId;
   lesson: Lesson;
+  aiEnabled: boolean;
 }) {
   const [tab, setTab] = useState<(typeof tabs)[number]>('learn');
   const list = courses[course].chapters.flatMap((c) => c.lessons);
@@ -148,7 +150,7 @@ export default function LessonPage({
             {course === 'salesforce' && lesson.id === '2.1' && <section className="space-y-4">
               <h2 className="text-2xl font-semibold">{emailCaseLab.title}</h2>
               <Link href={emailCaseLab.path} className="inline-block text-sm text-teal-300 underline">Open the standalone lab</Link>
-              <EmailCaseLab />
+              <EmailCaseLab aiEnabled={aiEnabled} />
             </section>}
             <section className="rounded-xl border border-slate-700 p-6 bg-slate-900">
               <h2 className="text-xl font-semibold">Your activity</h2>
