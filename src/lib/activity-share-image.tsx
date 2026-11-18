@@ -2,10 +2,10 @@ import { ImageResponse } from 'next/og';
 import { deductibleLab, emailCaseLab, responseLab, schoolCall } from '@/content/activities';
 
 const cards = {
-  school: { page: schoolCall, label: 'Comunidad', caption: 'Inglés y español · Práctica de 5 minutos', background: '#faf8f2', ink: '#193e36', accent: '#b04f29' },
-  salesforce: { page: emailCaseLab, label: 'Salesforce', caption: '3 fictional cases · 5-minute practice lab', background: '#101c2f', ink: '#f2f6fa', accent: '#75dfca' },
-  deductible: { page: deductibleLab, label: 'Actuarial Exam P', caption: 'Simulate a contract · Audit a calculation', background: '#153e33', ink: '#f7f3e2', accent: '#edbc93' },
-  review: { page: responseLab, label: 'Salesforce & AI', caption: 'Review a reply · Cite the case record', background: '#e9efde', ink: '#193e36', accent: '#985331' },
+  school: { page: schoolCall, label: 'Comunidad', caption: 'Inglés y español · Práctica de 5 minutos', background: '#f6e7c6', ink: '#22262c', accent: '#835314' },
+  salesforce: { page: emailCaseLab, label: 'Salesforce', caption: '3 fictional cases · 5-minute practice lab', background: '#f7e0dc', ink: '#232631', accent: '#88443b' },
+  deductible: { page: deductibleLab, label: 'Actuarial Exam P', caption: 'Simulate a contract · Audit a calculation', background: '#2548cc', ink: '#fff9ef', accent: '#dce5ff' },
+  review: { page: responseLab, label: 'Salesforce & AI', caption: 'Review a reply · Cite the case record', background: '#f8e7e1', ink: '#22262c', accent: '#834037' },
 };
 
 export function activityShareImage(activity: keyof typeof cards) {

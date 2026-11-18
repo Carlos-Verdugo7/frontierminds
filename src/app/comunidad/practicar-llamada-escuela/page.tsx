@@ -9,7 +9,7 @@ export const metadata = pageMetadata(schoolCall, schoolCall.path + '/opengraph-i
 
 export default function SchoolCallPage() {
   return <div className={styles.page} lang="es">
-    <nav className={styles.nav} aria-label="Comunidad"><Link href="/">FrontierMinds</Link><Link href="/comunidad#guia-escuela">Volver a la guía de inscripción</Link></nav>
+    <div className="course-nav-wrap"><nav className="course-nav site-width" aria-label="Comunidad"><Link href="/comunidad">Guías de ayuda</Link><Link href="/comunidad#guia-escuela">Volver a la guía de inscripción</Link></nav></div>
     <main className={styles.main}>
       <h1>{schoolCall.title}</h1>
       <p className={styles.intro}>En cinco minutos puedes ensayar cómo pedir documentos, una cita o ayuda en español. Escucha el inglés y practica en voz alta sin grabar tu voz.</p>

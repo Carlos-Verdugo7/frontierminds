@@ -14,16 +14,16 @@ function Tracker({ course, id }: { course: CourseId; id: string }) {
     updateProgress(course, (old) => ({ ...old, lastLesson: id }));
   }, [course, id]);
   return (
-    <div className="border-b border-slate-700 bg-slate-900 text-slate-300">
+    <div className="lesson-progress">
       <div className="max-w-6xl mx-auto px-5 py-3 flex flex-wrap gap-3 justify-between items-center text-sm">
         <span>
           {p.storageWarning
             ? 'Saving is unavailable. Progress will last only for this visit.'
-            : 'Progress saves in this browser. Complete a lesson when you finish its learning activities.'}
+            : 'Your progress is saved in this browser.'}
         </span>
-        {scope && <span className="text-amber-200 text-sm">{scope}</span>}
+        {scope && <span className="text-amber-900 text-sm">{scope}</span>}
         <button
-          className="px-3 py-2 rounded-lg border border-teal-500 text-teal-300"
+          className="site-small-button"
           aria-pressed={done}
           onClick={() =>
             updateProgress(course, (old) => ({
@@ -42,7 +42,7 @@ function Tracker({ course, id }: { course: CourseId; id: string }) {
 }
 export default function ProgressTracker() {
   const path = usePathname();
-  const match = path.match(
+  const match = path?.match(
     /^\/courses\/([^/]+)\/chapter\/(\d+)\/section\/(\d+)$/,
   );
   if (!match || !isCourse(match[1])) return null;

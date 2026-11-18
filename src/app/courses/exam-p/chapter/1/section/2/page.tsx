@@ -1,8 +1,9 @@
 'use client';
 
+import ClassicLesson from '@/components/learning/ClassicLesson';
+
 import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight, BookOpen, Beaker, PenTool } from 'lucide-react';
+
 import CountingSimulator from '@/components/CountingSimulator';
 import PascalsTriangle from '@/components/PascalsTriangle';
 import PracticeProblems from '@/components/PracticeProblems';
@@ -13,71 +14,11 @@ export default function Section12Page() {
   const [activeTab, setActiveTab] = useState<Tab>('learn');
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <Link
-            href="/courses/exam-p/chapter/1"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Chapter 1
-          </Link>
-          <h1 className="text-3xl font-bold mb-2">Section 1.2: Methods of Enumeration</h1>
-          <p className="text-slate-400">
-            Master counting techniques: multiplication principle, permutations, combinations, and multinomial coefficients.
-          </p>
-        </div>
-
-        {/* Tab Navigation */}
-        <div className="flex gap-2 mb-6">
-          {[
-            { key: 'learn', icon: BookOpen, label: 'Learn' },
-            { key: 'simulate', icon: Beaker, label: 'Simulate' },
-            { key: 'practice', icon: PenTool, label: 'Practice' },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as Tab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === tab.key
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:text-white'
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'learn' && <LearnContent />}
-        {activeTab === 'simulate' && <SimulateContent />}
-        {activeTab === 'practice' && <PracticeProblems section="1.2" />}
-      </div>
-
-      {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700 p-4">
-        <div className="max-w-6xl mx-auto flex justify-between">
-          <Link
-            href="/courses/exam-p/chapter/1/section/1"
-            className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Previous: 1.1 Properties
-          </Link>
-          <Link
-            href="/courses/exam-p/chapter/1/section/3"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors"
-          >
-            Next: 1.3 Conditional Probability
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </main>
+    <ClassicLesson id="1.2" title="Methods of Enumeration" description="Master counting techniques: multiplication principle, permutations, combinations, and multinomial coefficients." mode={activeTab} onChange={setActiveTab}>
+      {activeTab === 'learn' && <LearnContent />}
+      {activeTab === 'simulate' && <SimulateContent />}
+      {activeTab === 'practice' && <PracticeProblems section="1.2" />}
+    </ClassicLesson>
   );
 }
 

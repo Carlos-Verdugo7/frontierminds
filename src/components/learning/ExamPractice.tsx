@@ -17,7 +17,7 @@ import {
 } from '@/lib/learning/progress';
 import CourseShell from './CourseShell';
 import ExamCalculator from '@/components/ExamCalculator';
-const button = 'rounded-lg px-5 py-3 bg-teal-300 text-slate-950 font-semibold';
+const button = 'rounded-lg px-5 py-3 bg-[#2548cc] text-white font-semibold';
 export default function ExamPractice() {
   const p = useProgress('exam-p'),
     exam = p.exam;
@@ -92,17 +92,17 @@ export default function ExamPractice() {
   };
   return (
     <CourseShell course="exam-p">
-      <h1 className="text-4xl font-bold">Practice with purpose</h1>
-      <p className="text-slate-400 mt-4 max-w-3xl">
+      <h1 className="text-4xl font-bold">Exam P practice &amp; exams</h1>
+      <p className="text-slate-600 mt-4 max-w-3xl">
         Build confidence with a mixed set, or practice pacing in a three-hour
         session. These are learning exercises using the FrontierMinds bank, not
         official SOA exams or pass predictions.
       </p>
       {!exam && (
         <div className="grid md:grid-cols-2 gap-5 my-8">
-          <section className="p-6 rounded-xl bg-slate-900 border border-slate-700">
+          <section className="p-6 rounded-xl bg-white border border-slate-300">
             <h2 className="text-2xl font-semibold">Mixed practice</h2>
-            <p className="text-slate-400 my-4">
+            <p className="text-slate-600 my-4">
               10 questions across core topics. Review feedback after every
               answer.
             </p>
@@ -121,9 +121,9 @@ export default function ExamPractice() {
               Start a mixed set
             </button>
           </section>
-          <section className="p-6 rounded-xl bg-slate-900 border border-teal-800">
+          <section className="p-6 rounded-xl bg-white border border-indigo-200">
             <h2 className="text-2xl font-semibold">Timed exam</h2>
-            <p className="text-slate-400 my-4">
+            <p className="text-slate-600 my-4">
               30 questions · 3 hours · 8 general, 14 univariate, 8 multivariate.
               Answers are revealed after submission. The timer continues when
               you leave the page.
@@ -136,7 +136,7 @@ export default function ExamPractice() {
       )}
       {exam && !exam.submittedAt && current && (
         <section className="mt-8 space-y-5">
-          <div className="flex flex-wrap gap-4 justify-between items-center rounded-xl p-5 bg-slate-900 border border-slate-700">
+          <div className="flex flex-wrap gap-4 justify-between items-center rounded-xl p-5 bg-white border border-slate-300">
             <p
               className="font-mono text-2xl"
               role="timer"
@@ -149,7 +149,7 @@ export default function ExamPractice() {
             <p>{answered}/30 answered · saved in this browser</p>
             <button
               onClick={() => setCalculator(!calculator)}
-              className="text-teal-300"
+              className="text-[#203ead]"
             >
               Calculator
             </button>
@@ -160,14 +160,14 @@ export default function ExamPractice() {
                 key={q.key}
                 aria-label={`Question ${i + 1}${exam.answers[q.key] !== undefined ? ', answered' : ''}`}
                 aria-current={index === i ? 'step' : undefined}
-                className={`w-10 h-10 rounded border ${index === i ? 'bg-teal-900 border-teal-300' : exam.answers[q.key] !== undefined ? 'bg-blue-950 border-blue-500' : 'border-slate-700'}`}
+                className={`w-10 h-10 rounded border ${index === i ? 'bg-indigo-100 border-indigo-600' : exam.answers[q.key] !== undefined ? 'bg-blue-100 border-blue-500' : 'border-slate-300'}`}
                 onClick={() => setIndex(i)}
               >
                 {i + 1}
               </button>
             ))}
           </div>
-          <div className="rounded-xl bg-slate-900 border border-slate-700 p-6">
+          <div className="rounded-xl bg-white border border-slate-300 p-6">
             <h2 className="text-lg whitespace-pre-wrap mb-6">
               {index + 1}. {current.question}
             </h2>
@@ -177,7 +177,7 @@ export default function ExamPractice() {
                   key={i}
                   aria-pressed={exam.answers[current.key] === i}
                   onClick={() => choose(i)}
-                  className={`w-full text-left rounded-lg p-4 border ${exam.answers[current.key] === i ? 'border-teal-300 bg-teal-950' : 'border-slate-600'}`}
+                  className={`w-full text-left rounded-lg p-4 border ${exam.answers[current.key] === i ? 'border-indigo-600 bg-indigo-100' : 'border-slate-400'}`}
                 >
                   {String.fromCharCode(65 + i)}. {o}
                 </button>
@@ -200,7 +200,7 @@ export default function ExamPractice() {
               </button>
             </div>
           </div>
-          <details className="border border-slate-700 rounded-xl p-5">
+          <details className="border border-slate-300 rounded-xl p-5">
             <summary className="cursor-pointer">Finish and submit exam</summary>
             <p className="my-4">
               {30 - answered} unanswered questions will count as incorrect.
@@ -226,8 +226,8 @@ export default function ExamPractice() {
             {topicGroups.map((g) => {
               const qs = questions.filter((q) => q.group === g.id);
               return (
-                <div key={g.id} className="rounded-xl bg-slate-900 p-5">
-                  <p className="text-sm text-slate-400">{g.title}</p>
+                <div key={g.id} className="rounded-xl bg-white p-5">
+                  <p className="text-sm text-slate-600">{g.title}</p>
                   <p className="text-2xl mt-2">
                     {
                       qs.filter((q) => exam.answers[q.key] === q.correctIndex)
@@ -239,14 +239,14 @@ export default function ExamPractice() {
               );
             })}
           </div>
-          <p className="text-slate-400">
+          <p className="text-slate-600">
             Missed and unanswered questions are available at your study desk.
             Your most recent exam remains here until you start another.
           </p>
           {questions.map((q, i) => (
             <details
               key={q.key}
-              className="border border-slate-700 rounded-xl p-5"
+              className="border border-slate-300 rounded-xl p-5"
             >
               <summary className="cursor-pointer">
                 {i + 1}.{' '}
@@ -256,20 +256,20 @@ export default function ExamPractice() {
                 · {q.topic}
               </summary>
               <p className="whitespace-pre-wrap my-4">{q.question}</p>
-              <p className="text-slate-400">
+              <p className="text-slate-600">
                 Your answer:{' '}
                 {exam.answers[q.key] === undefined
                   ? 'Unanswered'
                   : q.options[exam.answers[q.key]]}
               </p>
-              <p className="text-teal-300 my-2">
+              <p className="text-[#203ead] my-2">
                 Correct: {q.options[q.correctIndex]}
               </p>
-              <p className="whitespace-pre-wrap text-slate-300">
+              <p className="whitespace-pre-wrap text-slate-700">
                 {q.explanation}
               </p>
               <Link
-                className="inline-block mt-4 text-teal-300"
+                className="inline-block mt-4 text-[#203ead]"
                 href={lessonHref('exam-p', q.section)}
               >
                 Review lesson →
@@ -280,7 +280,7 @@ export default function ExamPractice() {
             Start another exam
           </button>
           <button
-            className="ml-4 text-teal-300"
+            className="ml-4 text-[#203ead]"
             onClick={() =>
               updateProgress('exam-p', (old) => ({ ...old, exam: undefined }))
             }
@@ -308,7 +308,7 @@ function MixedSet({ questions }: { questions: BankQuestion[] }) {
     recordAnswer('exam-p', q.key, i, i === q.correctIndex);
   };
   return (
-    <section className="rounded-xl border border-slate-700 bg-slate-900 p-6 space-y-5">
+    <section className="rounded-xl border border-slate-300 bg-white p-6 space-y-5">
       <h2 className="text-xl">
         Mixed set · Question {index + 1} of {questions.length}
       </h2>
@@ -316,7 +316,7 @@ function MixedSet({ questions }: { questions: BankQuestion[] }) {
       <div className="space-y-3">
         {q.options.map((o, i) => (
           <button
-            className={`w-full text-left rounded-lg border p-4 ${answer !== undefined && i === q.correctIndex ? 'border-teal-400 bg-teal-950' : answer === i ? 'border-rose-400' : 'border-slate-600'}`}
+            className={`w-full text-left rounded-lg border p-4 ${answer !== undefined && i === q.correctIndex ? 'border-indigo-500 bg-indigo-100' : answer === i ? 'border-rose-400' : 'border-slate-400'}`}
             key={i}
             disabled={answer !== undefined}
             onClick={() => choose(i)}
@@ -326,7 +326,7 @@ function MixedSet({ questions }: { questions: BankQuestion[] }) {
         ))}
       </div>
       {answer !== undefined && (
-        <p className="whitespace-pre-wrap text-slate-300">
+        <p className="whitespace-pre-wrap text-slate-700">
           {answer === q.correctIndex ? 'Correct. ' : 'Review: '}
           {q.explanation}
         </p>
@@ -348,7 +348,7 @@ function MixedSet({ questions }: { questions: BankQuestion[] }) {
         </button>
       </div>
       {Object.keys(answers).length === questions.length && (
-        <p className="text-teal-300">
+        <p className="text-[#203ead]">
           Set complete:{' '}
           {questions.filter((q) => answers[q.key] === q.correctIndex).length}/
           {questions.length} correct. Visit your study desk to review mistakes.

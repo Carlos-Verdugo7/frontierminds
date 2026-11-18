@@ -1,27 +1,15 @@
 import { ImageResponse } from 'next/og';
+import GuideMark from '@/components/site/GuideMark';
 
 export const runtime = 'edge';
-export const alt = 'FrontierMinds actuarial math, Salesforce and AI practice labs';
+export const alt = 'FrontierMinds field guides for actuarial math, Salesforce and AI, and community resources in Spanish';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default function Image() {
-  return new ImageResponse(
-    <div style={{ width: '100%', height: '100%', background: '#faf8f2', color: '#173c37', display: 'flex', flexDirection: 'column', padding: '50px 68px', fontFamily: 'sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #d8ddcf', paddingBottom: 25 }}>
-        <span style={{ fontSize: 29, fontWeight: 700, letterSpacing: '-1px' }}>FrontierMinds</span>
-        <span style={{ fontSize: 16, letterSpacing: '2px', color: '#67775e' }}>LEARNING & COMMUNITY</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginTop: 48, fontFamily: 'serif', fontSize: 83, lineHeight: 1.08, letterSpacing: '-3px' }}>
-        <span>Actuarial math</span>
-        <span style={{ color: '#a34d31', fontStyle: 'italic' }}>&amp; AI in practice.</span>
-      </div>
-      <div style={{ display: 'flex', fontSize: 24, color: '#4f6156', marginTop: 27 }}>Train a payout model. Review a Salesforce reply.</div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #d8ddcf', paddingTop: 23, marginTop: 'auto' }}>
-        <div style={{ display: 'flex', gap: 24, fontSize: 18 }}><span>Probability & Salesforce</span><span style={{ color: '#7a876d' }}>/</span><span>Comunidad en español</span></div>
-        <span style={{ fontSize: 18, color: '#67775e' }}>frontierminds.io</span>
-      </div>
-    </div>,
-    size,
-  );
+  return new ImageResponse(<div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', padding: '60px 70px', background: '#faf9f5', color: '#20242a', fontFamily: 'sans-serif' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 34, borderBottom: '2px solid #d5d6ce', paddingBottom: 24 }}><GuideMark size={48} />FrontierMinds</div>
+    <div style={{ display: 'flex', flexDirection: 'column', margin: '52px 0', fontSize: 92, letterSpacing: '-4px', lineHeight: 1.05 }}><span>Choose your</span><span style={{ fontFamily: 'serif', fontStyle: 'italic', color: '#2548cc' }}>field guide.</span></div>
+    <div style={{ display: 'flex', gap: 28, borderTop: '2px solid #d5d6ce', paddingTop: 22, marginTop: 'auto', fontSize: 27 }}><span>Actuarial math</span><span>Salesforce &amp; AI</span><span>Comunidad en español</span></div>
+  </div>, size);
 }

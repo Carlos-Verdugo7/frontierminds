@@ -15,25 +15,25 @@ export default function ChapterOverview({
   );
   return (
     <CourseShell course={course}>
-      <Link href={`/courses/${course}`} className="text-teal-300">
+      <Link href={`/courses/${course}`} className="text-[#203ead]">
         ← Course roadmap
       </Link>
-      <p className="text-sm text-teal-300 mt-8">
+      <p className="text-sm text-[#203ead] mt-8">
         CHAPTER {chapter.id} · {chapter.lessons.length} LESSONS · {count}{' '}
         QUESTIONS
       </p>
       <h1 className="text-4xl font-bold mt-2">{chapter.title}</h1>
-      <p className="mt-4 text-slate-400">{chapter.description}</p>
+      <p className="mt-4 text-slate-600">{chapter.description}</p>
       <div className="space-y-4 mt-8">
         {chapter.lessons.map((l) => (
           <Link
             key={l.id}
             href={lessonHref(course, l.id)}
-            className="block p-6 bg-slate-900 border border-slate-700 rounded-xl hover:border-teal-300"
+            className="block p-6 bg-white border border-slate-300 rounded-xl hover:border-indigo-600"
           >
             {l.id} · {l.title} →
             {l.enrichment && (
-              <p className="text-sm text-amber-200/80 mt-2">{l.enrichment}</p>
+              <p className="text-sm text-amber-900 mt-2">{l.enrichment}</p>
             )}
           </Link>
         ))}

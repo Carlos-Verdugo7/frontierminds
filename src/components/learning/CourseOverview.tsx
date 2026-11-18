@@ -1,205 +1,53 @@
 'use client';
+
+import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import type { CourseId } from '@/lib/learning/types';
-import {
-  allQuestions,
-  courses,
-  lessonHref,
-  lessonTitle,
-  syllabus,
-  topicGroups,
-} from '@/content/catalog';
+import { allQuestions, courses, lessonHref, lessonTitle, syllabus, topicGroups } from '@/content/catalog';
+import { deductibleLab, emailCaseLab, responseLab } from '@/content/activities';
 import { useProgress } from '@/lib/learning/progress';
 import CourseShell from './CourseShell';
-import { deductibleLab, responseLab } from '@/content/activities';
+import styles from './course-guide.module.css';
+
 export default function CourseOverview({ course }: { course: CourseId }) {
-  const data = courses[course],
-    p = useProgress(course);
-  const lessons = data.chapters.flatMap((c) => c.lessons);
-  const lab = course === 'exam-p' ? deductibleLab : responseLab;
-  const done = lessons.filter((l) => p.completed.includes(l.id)).length;
-  const last =
-    lessons.some((l) => l.id === p.lastLesson) || p.lastLesson === '0.1'
-      ? p.lastLesson
-      : undefined;
-  return (
-    <CourseShell course={course}>
-      <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 items-start">
-        <div>
-          <p className="text-teal-300 text-sm font-semibold tracking-widest">
-            {course === 'exam-p'
-              ? 'PROBABILITY, MADE TANGIBLE'
-              : 'YOUR NEXT LEARNING PATH'}
-          </p>
-          <h1 className="text-4xl md:text-5xl font-bold mt-3">{data.title}</h1>
-          <p className="text-lg text-slate-400 mt-5 max-w-2xl">
-            {data.description}
-          </p>
-          <div className="flex flex-wrap gap-3 mt-7">
-            <Link
-              className="rounded-lg bg-teal-300 text-slate-950 px-5 py-3 font-semibold"
-              href={lessonHref(course, last ?? lessons[0].id)}
-            >
-              {last ? 'Continue learning' : 'Start the path'} →
-            </Link>
-            <Link
-              className="rounded-lg border border-slate-600 px-5 py-3"
-              href={`/courses/${course}/study`}
-            >
-              My study desk
-            </Link>
-          </div>
-          {last && (
-            <p className="text-sm text-slate-400 mt-3">
-              Last visited: {lessonTitle(course, last)}
-            </p>
-          )}
-        </div>
-        <aside className="rounded-2xl bg-slate-900 border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold">Your progress</h2>
-          <p className="text-3xl text-teal-200 mt-3">
-            {done} / {lessons.length} lessons
-          </p>
-          <progress
-            aria-label="Completed lessons"
-            className="w-full mt-4 accent-teal-300"
-            value={done}
-            max={lessons.length}
-          />
-          <p className="text-sm text-slate-400 mt-3">
-            {p.storageWarning
-              ? 'Progress cannot be saved beyond this visit.'
-              : 'Saved in this browser. Completion is separate from practice accuracy.'}
-          </p>
-          <div className="grid grid-cols-2 gap-4 mt-5 border-t border-slate-700 pt-4">
-            <div>
-              <strong>{data.chapters.length}</strong>
-              <p className="text-sm text-slate-400">Chapters</p>
-            </div>
-            <div>
-              <strong>{allQuestions(course).length}</strong>
-              <p className="text-sm text-slate-400">
-                Practice questions
-                {course === 'exam-p' ? ' incl. refresher & enrichment' : ''}
-              </p>
-            </div>
-          </div>
-        </aside>
+  const data = courses[course];
+  const progress = useProgress(course);
+  const exam = course === 'exam-p';
+  const lessons = data.chapters.flatMap(chapter => chapter.lessons);
+  const done = lessons.filter(lesson => progress.completed.includes(lesson.id)).length;
+  const last = lessons.some(lesson => lesson.id === progress.lastLesson) || (exam && progress.lastLesson === '0.1') ? progress.lastLesson : undefined;
+  const lab = exam ? deductibleLab : responseLab;
+  return <CourseShell course={course}>
+    <header className={styles.cover}>
+      <div><p className={styles.kicker}>{exam ? 'Probability & insurance' : 'Development & service'}</p>
+        <h1>{data.title}</h1><p className={styles.description}>{data.description}</p>
+        <div className={styles.actions}><Link className="field-action" href={lessonHref(course, last ?? lessons[0].id)}>{last ? 'Continue learning' : 'Start the first lesson'}<ArrowRight size={16} aria-hidden="true" /></Link><a href="#chapters">Browse chapters</a></div>
+        {last && <p className={styles.last}>Last visited · {lessonTitle(course, last)}</p>}
       </div>
-      <section className="mt-9 rounded-xl border-l-4 border-[#d19063] bg-[#e9eede] p-6 text-[#193f34]">
-        <h2 className="font-serif text-3xl">{lab.title}</h2>
-        <p className="mb-3 mt-2 max-w-2xl">{lab.description}</p>
-        <Link className="font-semibold underline underline-offset-4" href={lab.path}>Open the practice lab →</Link>
+      <Image src={'/field-guides/' + (exam ? 'actuarial' : 'salesforce') + '.webp'} alt="" width={960} height={640} sizes="(max-width: 650px) 100vw, 40vw" loading="eager" />
+    </header>
+    <div className={styles.layout}>
+      <section id="chapters" className={styles.contents}>
+        <h2>Chapters</h2>
+        {data.chapters.map(chapter => <article key={chapter.id} className={styles.chapter}>
+          <p className={styles.kicker}>Chapter {chapter.id}</p>
+          <h3><Link href={'/courses/' + course + '/chapter/' + chapter.id}>{chapter.title}<ArrowUpRight size={19} aria-hidden="true" /></Link></h3>
+          <p>{chapter.description}</p>
+          <ol>{chapter.lessons.map(lesson => <li key={lesson.id}><Link href={lessonHref(course, lesson.id)}><span className={styles.number}>{lesson.id}</span><div>{lesson.title}{lesson.enrichment && <small>{lesson.enrichment}</small>}</div>{progress.completed.includes(lesson.id) ? <span className={styles.completed}><Check size={17} aria-label="Completed" /></span> : <ArrowRight size={16} aria-hidden="true" />}</Link></li>)}</ol>
+        </article>)}
       </section>
-      {course === 'exam-p' ? (
-        <>
-          <section className="mt-10">
-            <div className="flex flex-wrap justify-between gap-3">
-              <h2 className="text-xl font-semibold">Official topic groups</h2>
-              <a
-                href={syllabus.url}
-                className="text-sm text-teal-300 underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {syllabus.label} ↗
-              </a>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-4 mt-4">
-              {topicGroups.map((g) => (
-                <div
-                  key={g.id}
-                  className="rounded-xl bg-slate-900 border border-slate-800 p-5"
-                >
-                  <p className="text-2xl text-teal-200">{g.weight}</p>
-                  <p className="mt-2">{g.title}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-sm text-slate-400 mt-3">
-              These ranges describe SOA topic groups, not individual chapters.
-              Learning activities and practice results are not a prediction of
-              your exam score.
-            </p>
-          </section>
-          <div className="my-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              [
-                'Calculus readiness',
-                'Optional diagnostic and refresher',
-                lessonHref(course, '0.1'),
-              ],
-              [
-                'Practice & exams',
-                'Mixed sets and a three-hour exam',
-                '/courses/exam-p/practice',
-              ],
-              [
-                'Formula reference',
-                'Key formulas linked to lessons',
-                '/courses/exam-p/reference',
-              ],
-              [
-                'AI & probability',
-                'Study thoughtfully. Explore actuarial implications.',
-                '/guides/ai-probability-actuarial-science',
-              ],
-            ].map(([title, desc, href]) => (
-              <Link
-                key={href}
-                href={href}
-                className="rounded-xl border border-slate-700 p-5 hover:border-teal-400"
-              >
-                <h3 className="font-semibold">{title} →</h3>
-                <p className="text-sm text-slate-400 mt-2">{desc}</p>
-              </Link>
-            ))}
-          </div>
-        </>
-      ) : (
-        <p className="mt-8 rounded-xl border border-blue-800 bg-blue-950/30 p-5 text-blue-100">
-          Two hands-on chapters: six Salesforce foundations lessons and six AI-assisted
-          development and deployment lessons. Follow a realistic Dev → UAT → Production
-          release path using Apex tests, CLI validation, and post-deployment checks.
-          The response review and Email-to-Case simulations run in your browser.
-          Use a Trailhead Playground or authorized sandbox for the manual exercises.
-        </p>
-      )}
-      <section className="mt-10 space-y-5">
-        <h2 className="text-2xl font-semibold">Your learning roadmap</h2>
-        {data.chapters.map((ch) => (
-          <article
-            key={ch.id}
-            className="bg-slate-900 rounded-xl border border-slate-800 p-6"
-          >
-            <p className="text-sm text-teal-300">CHAPTER {ch.id}</p>
-            <h3 className="text-2xl font-semibold mt-2">{ch.title}</h3>
-            <p className="text-slate-400 mt-2 mb-5">{ch.description}</p>
-            <div className="divide-y divide-slate-800">
-              {ch.lessons.map((l) => (
-                <Link
-                  key={l.id}
-                  href={lessonHref(course, l.id)}
-                  className="flex justify-between gap-4 py-4 hover:text-teal-200"
-                >
-                  <div>
-                    <span className="text-slate-500 mr-3">{l.id}</span>
-                    {l.title}
-                    {'enrichment' in l && l.enrichment && (
-                      <p className="text-xs text-amber-200/80 mt-2">
-                        {l.enrichment}
-                      </p>
-                    )}
-                  </div>
-                  <span className="text-sm shrink-0 text-teal-300">
-                    {p.completed.includes(l.id) ? '✓ Completed' : 'Start →'}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </article>
-        ))}
-      </section>
-    </CourseShell>
-  );
+      <aside className={styles.sidebar}>
+        <section className={styles.progress}><h2>Your study desk</h2><p><strong>{done} / {lessons.length}</strong> lessons complete</p>
+          <progress aria-label="Completed lessons" value={done} max={lessons.length} /><small>{progress.storageWarning ? 'Progress lasts for this visit.' : 'Progress is saved in this browser.'}</small>
+          <Link href={'/courses/' + course + '/study'}>Open study desk <ArrowRight size={16} /></Link>
+        </section>
+        <section className={styles.supplement}><h2>Practice & resources</h2><p>{allQuestions(course).length} practice questions{exam ? ', including refresher and enrichment topics.' : ' across two hands-on chapters.'}</p>
+          <Link href={lab.path}>{lab.title}<ArrowRight size={15} /></Link>
+          {exam ? <><Link href={lessonHref(course, '0.1')}>Calculus readiness<ArrowRight size={15} /></Link><Link href="/courses/exam-p/practice">Practice & exams<ArrowRight size={15} /></Link><Link href="/courses/exam-p/reference">Formula reference<ArrowRight size={15} /></Link><Link href="/guides/ai-probability-actuarial-science">AI & probability<ArrowRight size={15} /></Link></> : <><Link href={emailCaseLab.path}>Email-to-Case lab<ArrowRight size={15} /></Link><p>Use a Trailhead Playground or authorized sandbox for the manual exercises.</p></>}
+        </section>
+        {exam && <section className={styles.supplement}><h2>Exam P topic weights</h2><dl>{topicGroups.map(group => <div key={group.id}><dt>{group.title}</dt><dd>{group.weight}</dd></div>)}</dl><a href={syllabus.url} target="_blank" rel="noreferrer">{syllabus.label}<ArrowUpRight size={15} /></a></section>}
+      </aside>
+    </div>
+  </CourseShell>;
 }

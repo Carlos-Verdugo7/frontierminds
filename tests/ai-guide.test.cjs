@@ -128,3 +128,45 @@ test('guide is discoverable from home and Exam P without changing Salesforce res
   assert.ok(!render(Overview, { course: 'salesforce' }).includes(href));
 });
 
+
+test('the field guide index has one entry per destination and covers every chapter and lesson', () => {
+  const { courses, lessonHref } = require('../src/content/catalog.ts');
+  const { guideIndex } = require('../src/lib/guide-index.ts');
+  const paths = new Set(guideIndex.map(entry => entry.path));
+  assert.equal(paths.size, guideIndex.length);
+  for (const [course, data] of Object.entries(courses)) {
+    for (const chapter of data.chapters) {
+      assert.ok(paths.has('/courses/' + course + '/chapter/' + chapter.id));
+      for (const lesson of chapter.lessons) assert.ok(paths.has(lessonHref(course, lesson.id)));
+    }
+  }
+  assert.ok(paths.has(lessonHref('exam-p', '0.1')));
+});
+
+test('English and Spanish searches resolve to lessons, labs and individual community guides', () => {
+  const { findGuides } = require('../src/lib/guide-index.ts');
+  for (const [query, path] of [
+    ['bayes', '/courses/exam-p/chapter/1/section/5'],
+    ['Salesforce Flow', '/courses/salesforce/labs/email-to-case'],
+    ['deductible', '/courses/exam-p/labs/deductible'],
+    ['escolar', '/comunidad#guia-escuela'],
+    ['electricity', '/comunidad#guia-luz'],
+    ['job', '/comunidad#guia-empleo'],
+    ['INGLÉS', '/comunidad#guia-ingles'],
+  ]) assert.ok(findGuides(query).some(entry => entry.path === path), query);
+  assert.deepEqual(findGuides('xxzzy'), []);
+  assert.deepEqual(findGuides('!!!'), []);
+  assert.ok(findGuides('').some(entry => entry.area === 'comunidad'));
+});
+
+test('search works as a GET form with labeled inputs and a recovery link for empty results', () => {
+  const search = require('../src/components/site/GuideSearch.tsx').default;
+  const english = render(search, { query: 'Bayes' });
+  assert.match(english, /<form(?=[^>]*method="get")(?=[^>]*action="\/search")/);
+  assert.match(english, /for="guide-query"/);
+  assert.match(english, /href="\/courses\/exam-p\/chapter\/1\/section\/5"/);
+  const spanish = render(search, { query: 'xxxxzz', es: true });
+  assert.match(spanish, /lang="es"/);
+  assert.match(spanish, /No encontramos coincidencias/);
+  assert.match(spanish, /href="\/buscar"/);
+});
