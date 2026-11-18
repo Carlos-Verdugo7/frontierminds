@@ -19,7 +19,7 @@ function compile(relativePath) {
 }
 
 const content = {};
-vm.runInNewContext(`${compile('src/content/community.ts')}\nObject.assign(output, {communityGuides,communityTasks});`, { output: content });
+vm.runInNewContext(`${compile('src/content/community.ts')}\nObject.assign(output, {communityGuides,communityTasks,guidePreparation});`, { output: content });
 vm.runInNewContext(`${compile('src/content/school-call.ts')}\nObject.assign(output, {schoolScenarios,callScript,closing});`, { output: content });
 
 function route({ configured = true, fail = false } = {}) {
@@ -101,6 +101,18 @@ test('school rehearsal coaching accepts only the selected school goal and includ
     { topic: 'escuela', task: 'preguntas', goal: 'arbitrary visitor message' },
   ]) assert.equal((await post(request(invalid))).status, 400);
   assert.equal(calls.length, before);
+});
+
+test('guide preparation and school follow-ups remain useful without a provider', () => {
+  for (const guide of content.communityGuides) {
+    assert.ok(content.guidePreparation(guide, 'pasos').includes(guide.steps[0]));
+    assert.ok(content.guidePreparation(guide, 'lista').includes(guide.prepare[0]));
+    assert.ok(content.guidePreparation(guide, 'preguntas').includes('¿'));
+  }
+  for (const scenario of content.schoolScenarios) {
+    assert.ok(scenario.followUp.es.includes('¿') && scenario.followUp.es.endsWith('?') && scenario.followUp.en.endsWith('?'));
+    assert.notEqual(scenario.opening.en, scenario.followUp.en);
+  }
 });
 
 test('missing configuration, provider failure, and the request cap produce recoverable responses', async () => {

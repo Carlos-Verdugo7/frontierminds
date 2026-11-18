@@ -17,6 +17,8 @@ npm run dev
 
 Open `http://localhost:3000`. Set `OPENAI_API_KEY` in `.env.local` to enable the AI tutor. Lessons, simulations, and practice work without an AI key.
 
+For the live activities, set the server-only `OPENAI_API_KEY` in the Vercel project's Production environment and redeploy. The school rehearsal provides a preset bilingual follow-up and the Salesforce lab includes case-specific hints when live coaching is unavailable.
+
 ## Validate
 
 ```sh

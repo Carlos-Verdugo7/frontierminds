@@ -29,6 +29,7 @@ export default async function Page({
       key={`${course}:${lesson.id}`}
       course={course}
       lesson={lesson}
+      aiEnabled={Boolean(process.env.OPENAI_API_KEY)}
     />
   );
 }

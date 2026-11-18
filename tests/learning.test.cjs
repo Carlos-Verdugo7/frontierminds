@@ -34,6 +34,8 @@ test('Email-to-Case lab detects missed replies, duplicate replies and silent aut
   const first = runEmailCases(initialLabRules);
   assert.deepEqual(first.map(row => row.recipients.length), [2, 0, 0]);
   assert.deepEqual(first.map(row => row.passed), [false, false, false]);
+  assert.equal(new Set(first.map(row => row.hint)).size, 3);
+  assert.ok(first.every(row => row.hint.endsWith('?')));
   assert.match(first[2].trace.join(' '), /treated an automated notification like a person/);
   for (const recipient of ['contact', 'fallback']) {
     for (const flow of ['all', 'unhandled']) {
