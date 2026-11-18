@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.frontierminds.io"),
   title: "FrontierMinds | Learning & Community",
   description: "Interactive learning paths in probability and Salesforce, alongside practical Spanish community guides for West Palm Beach families.",
   keywords: ["learning", "education", "probability", "actuarial", "exam p", "Salesforce", "community", "West Palm Beach", "recursos en español"],

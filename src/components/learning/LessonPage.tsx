@@ -5,6 +5,8 @@ import type { CourseId, Lesson } from '@/lib/learning/types';
 import { courses, lessonHref } from '@/content/catalog';
 import CourseShell from './CourseShell';
 import PracticeProblems from '@/components/PracticeProblems';
+import EmailCaseLab from './EmailCaseLab';
+import { emailCaseLab } from '@/content/activities';
 import {
   JointExplorer,
   SamplingExplorer,
@@ -143,6 +145,11 @@ export default function LessonPage({
         {tab === 'explore' && (
           <div className="space-y-6">
             {Simulator && <Simulator />}
+            {course === 'salesforce' && lesson.id === '2.1' && <section className="space-y-4">
+              <h2 className="text-2xl font-semibold">{emailCaseLab.title}</h2>
+              <Link href={emailCaseLab.path} className="inline-block text-sm text-teal-300 underline">Open the standalone lab</Link>
+              <EmailCaseLab />
+            </section>}
             <section className="rounded-xl border border-slate-700 p-6 bg-slate-900">
               <h2 className="text-xl font-semibold">Your activity</h2>
               <ol className="list-decimal pl-6 mt-4 space-y-3 text-slate-300">

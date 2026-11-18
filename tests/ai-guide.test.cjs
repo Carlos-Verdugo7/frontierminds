@@ -62,6 +62,20 @@ test('worked base-rate example has the correct independently calculated answer',
   assert.ok(html.includes(`${(100 * trueFlags / (trueFlags + falseFlags)).toFixed(2)}%`));
 });
 
+test('both activities have direct homepage links, distinct previews and standalone entry points', () => {
+  const home = render(require('../src/app/page.tsx').default);
+  const school = require('../src/app/comunidad/practicar-llamada-escuela/page.tsx');
+  const lab = require('../src/app/courses/salesforce/labs/email-to-case/page.tsx');
+  const activities = require('../src/content/activities.ts');
+  for (const [page, activity] of [[school, activities.schoolCall], [lab, activities.emailCaseLab]]) {
+    assert.ok(home.includes('href="' + activity.path + '"'));
+    assert.ok(render(page.default).includes(activity.title));
+    assert.equal(page.metadata.openGraph.url, 'https://www.frontierminds.io' + activity.path);
+    assert.equal(page.metadata.twitter.images[0], page.metadata.openGraph.url + '/opengraph-image');
+  }
+  assert.notEqual(school.metadata.openGraph.title, lab.metadata.openGraph.title);
+});
+
 test('guide is discoverable from home and Exam P without changing Salesforce resources', () => {
   const Home = require('../src/app/page.tsx').default;
   const Overview = require('../src/components/learning/CourseOverview.tsx').default;

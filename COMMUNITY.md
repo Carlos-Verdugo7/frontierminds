@@ -2,7 +2,9 @@
 
 The Spanish-first `/comunidad` section sits alongside the existing courses. Homepage navigation and a community introduction link to it.
 
-The page follows four numbered sections: choose a resource, prepare with AI, read updates, and share feedback. Topic cards open one focused guide with steps, a preparation checklist, and agency contacts. Links such as `/comunidad#guia-escuela` select the corresponding guide and support browser back/forward navigation. The guide's AI action preselects that topic; changing the guide does not relabel an existing AI result. Longer program notes, AI explanations, and Analytics details sit in expandable disclosures.
+The page follows four numbered sections: choose a resource, prepare with AI, read updates, and share feedback. Topic cards open one focused guide with steps, a preparation checklist, and agency contacts. Links such as `/comunidad#guia-escuela` select the corresponding guide and support browser back/forward navigation. The guide and its AI helper share the selected topic, including when a visitor follows a topic link. Results and errors are shown only for the topic and task that produced them. Longer program notes, AI explanations, and Analytics details sit in expandable disclosures.
+
+The school guide links to `/comunidad/practicar-llamada-escuela`, a bilingual rehearsal with three goals, English audio when the browser supports speech synthesis, two possible replies for each goal, and a copyable script. The school guide also offers the rehearsal and the district phone directory after a visitor chooses “Todavía necesito ayuda.”
 
 ## Publish guides and posts
 
@@ -16,7 +18,7 @@ The form requires a reply email, topic, comment, and consent. It opens a mailto 
 
 ## AI preparation helper
 
-Uses the existing server-only `OPENAI_API_KEY` with `gpt-4o-mini`. No new dependencies. The independent `/api/community-help` endpoint accepts only allowlisted `topic` and `task` values; it sends the corresponding reviewed guide and a fixed task to OpenAI. Visitors can request simple steps, a preparation list, or bilingual questions. It receives no free-text visitor input or personal information. The page explains that AI has no live availability data and does not determine eligibility or submit applications. Missing API configuration and provider failures show a recoverable message while guides remain available.
+Uses the existing server-only `OPENAI_API_KEY` with `gpt-4o-mini`. No new dependencies. The independent `/api/community-help` endpoint accepts allowlisted `topic` and `task` values and an optional preset school rehearsal `goal` for bilingual school questions; it sends the corresponding reviewed guide and a fixed task to OpenAI. Visitors can request simple steps, a preparation list, or bilingual questions. It receives no free-text visitor input or personal information. The page explains that AI has no live availability data and does not determine eligibility or submit applications. Missing API configuration and provider failures show a recoverable message while guides remain available.
 
 Requests have a 1 KB streaming body cap, fixed input validation, a 25-second provider timeout, no automatic retries, no-store responses, and a best-effort global limit of 20 provider requests per minute per running instance. A distributed deployment should add a shared gateway rate limit and project usage limits; the in-memory counter is not shared across instances. `store: false` disables completion storage for this request; it does not imply zero provider retention. No visitor content is logged by the route.
 
@@ -26,13 +28,15 @@ The section uses the existing root Google Analytics setup (`G-6CDFK61KQ8`); it d
 
 | Event | Parameters | What it can tell you |
 | --- | --- | --- |
-| `community_guide_open` | topic | Which category cards people choose |
+| `community_guide_open` | topic | Which guide links people open, including shared topic links |
 | `community_resource_click` | topic, resource (numeric source index) | Which official sources or contact actions they open |
 | `community_helpfulness` | topic, value (`yes` or `needs_help`) | Which guides need clearer follow-through |
 | `community_ai_request`, `community_ai_success`, `community_ai_error` | topic, task | Demand for AI preparation and completion reliability |
 | `community_feedback_email_open` | topic | Draft-opening intent, not delivery |
 
-All events include `language=es` and `area=west_palm_beach`, describing the page's audience, not an inferred visitor location. Register event-scoped custom dimensions for `topic`, `task`, and `value` in GA4 to compare them in Explore. `resource` can be registered as a custom metric. Compare guide interest with `needs_help` responses and official-link clicks to choose the next guide to improve. Feedback buttons limit voting within the current mounted page only; these are directional signals, not unique people or confirmed service outcomes.
+The two homepage activities also emit `school_rehearsal_start`, `school_script_copy`, `salesforce_lab_start`, and `salesforce_lab_pass`. Divide script copies by starts and lab passes by starts for the same reporting window. A rehearsal starts on “Empezar a practicar.” A lab starts on the first rule edit or test run. Each activity counts its outcome once per attempt (school) or mounted lab (Salesforce). These events include only the preset activity identifier.
+
+All community-prefixed events include `language=es` and `area=west_palm_beach`, describing the page's audience, not an inferred visitor location. Register event-scoped custom dimensions for `topic`, `task`, and `value` in GA4 to compare them in Explore. `resource` can be registered as a custom metric. Compare guide interest with `needs_help` responses and official-link clicks to choose the next guide to improve. Feedback buttons limit voting within the current mounted page only; these are directional signals, not unique people or confirmed service outcomes.
 
 Emails and message bodies are not custom-event parameters. The feedback fields and AI results are not put in URLs or browser storage. Review the existing GA4 property's enhanced-measurement and retention settings before public rollout; no account-level Analytics settings were changed here. Tracking may be blocked, so absence of events does not prove absence of need. Counts become available only after deployment and real usage.
 

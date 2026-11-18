@@ -1,0 +1,41 @@
+.page { min-height: 100vh; background: #faf8f2; color: #173c37; }
+.nav, .main { max-width: 55rem; margin: auto; padding: 1.4rem clamp(1.2rem, 5vw, 3rem); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: .8rem; border-bottom: 1px solid #d8ddcf; }
+.nav a, .contacts a { text-decoration: underline; text-underline-offset: .2em; }
+.nav a:first-child { font-weight: 700; text-decoration: none; }
+.main { padding-top: clamp(2rem, 6vw, 4rem); padding-bottom: 4rem; }
+.main h1, .session h2 { font-family: Georgia, serif; font-weight: 500; letter-spacing: -.035em; line-height: 1.12; }
+.main h1 { font-size: clamp(2.45rem, 7vw, 4.4rem); max-width: 14ch; }
+.intro { max-width: 38rem; margin: 1rem 0 1.6rem; color: #4e665e; font-size: 1.05rem; line-height: 1.65; }
+.selection, .session { padding: clamp(1.1rem, 4vw, 2rem); border: 1px solid #ced9ca; border-radius: 12px; background: #fffefa; }
+.selection { display: grid; gap: 1rem; justify-items: start; }
+.selection label, .session h3, .responses legend { font-weight: 650; }
+.selection select, .manual textarea { width: 100%; padding: .8rem; border: 1px solid #869a8d; border-radius: 6px; color: #173c37; background: #fffefa; font: inherit; }
+.primary, .audio { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 44px; padding: .55rem .9rem; border-radius: 6px; cursor: pointer; font-size: .92rem; font-weight: 600; }
+.primary { color: white; background: #1b4b40; }
+.audio { border: 1px solid #aebfb0; background: #fffefa; color: #194a3f; }
+.audio:disabled { cursor: wait; opacity: .7; }
+.page :focus-visible { outline: 3px solid #a8542f; outline-offset: 3px; }
+.session { display: grid; gap: 1.2rem; }
+.session h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+.line, .office, .script { padding: 1.1rem; border-radius: 8px; }
+.line { background: #edf3eb; }
+.office { background: #f3f0e8; }
+.english { margin-top: .4rem; font-size: 1.13rem; line-height: 1.5; }
+.translation, .responses small { color: #51645b; }
+.line button, .office button { margin-top: .75rem; }
+.responses { display: grid; gap: .6rem; min-width: 0; }
+.responses legend { margin-bottom: .55rem; }
+.responses label { display: flex; align-items: baseline; gap: .7rem; padding: .85rem; border: 1px solid #c4d1c1; border-radius: 7px; cursor: pointer; }
+.responses label:has(input:checked) { border-color: #376a53; background: #f1f6ef; }
+.responses small { display: block; margin-top: .25rem; }
+.responses input { accent-color: #24533f; }
+.script { border: 1px solid #a6b79e; }
+.script ol { margin: .8rem 0; padding-left: 1.35rem; list-style: decimal; }
+.script li { padding: .1rem 0 .4rem .2rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.manual { display: block; margin-top: .75rem; }
+.session [role=status]:empty, .coachText:empty { display: none; }
+.session > button { justify-self: start; }
+.coachText { white-space: pre-line; margin-top: .75rem; }
+.contacts { margin-top: 1.5rem; line-height: 1.7; }
