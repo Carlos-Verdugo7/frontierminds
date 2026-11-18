@@ -84,6 +84,19 @@ test('the community preparation form names the available source', () => {
   assert.ok(!guideOnly.includes('Preparar con IA'));
 });
 
+test('payout chart exposes the loss left over and insurer payment in each table row', () => {
+  const chart = require('../src/components/labs/LossChart.tsx').default;
+  const { priceContract } = require('../src/lib/learning/loss-lab.ts');
+  const markup = render(chart, { contract: priceContract(500, 1500) });
+  const rows = [...markup.matchAll(/<tr>(.*?)<\/tr>/gs)].map(match => match[1]);
+  assert.match(rows[0], /Loss left over/);
+  for (const row of rows.slice(1)) {
+    assert.equal((row.match(/<(td|th)\b/g) ?? []).length, 4);
+    assert.doesNotMatch(row, /<td[^>]*aria-hidden/);
+  }
+  assert.match(rows[2], /class="sr-only">\$500<\/span>.*<td>\$250<\/td>/);
+});
+
 test('new labs are reachable from home and each course without a provider', async () => {
   const home = render(require('../src/app/page.tsx').default);
   const overview = require('../src/components/learning/CourseOverview.tsx').default;
