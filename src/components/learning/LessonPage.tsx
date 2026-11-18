@@ -6,7 +6,7 @@ import { courses, lessonHref } from '@/content/catalog';
 import CourseShell from './CourseShell';
 import PracticeProblems from '@/components/PracticeProblems';
 import EmailCaseLab from './EmailCaseLab';
-import { emailCaseLab } from '@/content/activities';
+import { deductibleLab, emailCaseLab, responseLab } from '@/content/activities';
 import {
   JointExplorer,
   SamplingExplorer,
@@ -47,6 +47,12 @@ export default function LessonPage({
       </p>
       <h1 className="text-3xl md:text-4xl font-bold mt-2">{lesson.title}</h1>
       <p className="text-lg text-slate-400 mt-4 max-w-3xl">{lesson.summary}</p>
+      {course === 'exam-p' && ['6.1', '6.3'].includes(lesson.id) && (
+        <Link href={deductibleLab.path} className="mt-4 inline-block text-teal-300 underline">Try the deductible lab →</Link>
+      )}
+      {course === 'salesforce' && lesson.id === '1.6' && (
+        <Link href={responseLab.path} className="mt-4 inline-block text-teal-300 underline">Review AI replies in the case queue →</Link>
+      )}
       <div
         role="tablist"
         aria-label="Lesson activities"

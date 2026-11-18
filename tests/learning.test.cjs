@@ -29,6 +29,67 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { jointStats, payment, moments } = require('../src/lib/learning/math.ts');
 const { runEmailCases, initialLabRules, validLabRules } = require('../src/lib/learning/email-case.ts');
+const { priceContract, sampleContracts, auditFinding, predictHeldOut, readDeductible } = require('../src/lib/learning/loss-lab.ts');
+const { reviewCases, reviewActions, checkReview } = require('../src/content/agent-review.ts');
+const { rankRecords } = require('../src/lib/learning/record-search.ts');
+
+test('insurance experiment distinguishes per-loss and positive-payment means across all controls', () => {
+  const initial = priceContract(500, 1500);
+  assert.deepEqual(initial.rows.map(row => row.paid), [0, 250, 1000, 1500]);
+  assert.equal(initial.mean, 425);
+  assert.ok(Math.abs(initial.meanWhenPaid - 2125 / 3) < 1e-9);
+  assert.equal(priceContract(0, 1500).mean - initial.mean, 350);
+  for (const cap of [500, 1500, 3000]) {
+    for (let deductible = 0; deductible <= 3000; deductible += 250) {
+      const contract = priceContract(deductible, cap);
+      const paid = contract.rows.filter(row => row.paid > 0);
+      assert.equal(auditFinding(contract), paid.length === 4 ? 'matches' : paid.length ? 'overstates' : 'undefined');
+      assert.ok(contract.rows.every(row => row.paid >= 0 && row.paid <= Math.min(cap, row.loss)));
+      if (paid.length) assert.ok(Math.abs(contract.meanWhenPaid * contract.paidProbability - contract.mean) < 1e-9);
+      else assert.equal(contract.meanWhenPaid, null);
+    }
+  }
+  assert.deepEqual(['0', '1000', '3000', '', null, '-250', '501', '3250', ['0','250']].map(readDeductible), [0,1000,3000,500,500,500,500,500,500]);
+});
+
+test('paired sampling preserves the same losses and the same cap across contracts', () => {
+  const first = sampleContracts(500, 1500, 10000, 19);
+  const changed = sampleContracts(1000, 1500, 10000, 19);
+  assert.deepEqual(sampleContracts(500, 1500, 10000, 19), first);
+  assert.equal(changed.baselineMean, first.baselineMean);
+  assert.ok(changed.mean < first.mean);
+  assert.ok(Math.abs(first.mean - 425) < 20);
+  assert.ok(Math.abs(changed.reduction - (changed.baselineMean - changed.mean)) < 1e-9);
+  assert.equal(sampleContracts(0, 500, 100, 23).reduction, 0);
+  assert.notDeepEqual(first, sampleContracts(500, 1500, 10000, 20));
+});
+
+test('held-out regression omits the test payment and exposes out-of-range predictions', () => {
+  const initial = priceContract(500, 1500);
+  assert.ok(Math.abs(predictHeldOut(initial, 3000) - 41500 / 19) < 1e-9);
+  const changed = { ...initial, rows: initial.rows.map(row => row.loss === 3000 ? { ...row, paid: 0 } : row) };
+  assert.equal(predictHeldOut(initial, 3000), predictHeldOut(changed, 3000));
+  for (const row of initial.rows) {
+    assert.ok(Math.abs(predictHeldOut(priceContract(0, 3000), row.loss) - row.loss) < 1e-9);
+    assert.equal(predictHeldOut(priceContract(3000, 500), row.loss), 0);
+  }
+});
+
+test('record ranking is local to the case and decisions require both the correct action and evidence', () => {
+  for (const scenario of reviewCases) {
+    assert.equal(rankRecords(scenario.evidence, scenario.search)[0].id, scenario.source);
+    assert.deepEqual(rankRecords(scenario.evidence, 'the unknownword'), []);
+    for (const action of reviewActions) {
+      for (const record of scenario.evidence) {
+        const grade = checkReview(scenario, action.id, record.id);
+        assert.equal(grade.actionCorrect, action.id === scenario.action);
+        assert.equal(grade.evidenceCorrect, record.id === scenario.source);
+        assert.equal(grade.passed, grade.actionCorrect && grade.evidenceCorrect);
+      }
+    }
+  }
+  assert.equal(rankRecords(reviewCases[1].evidence, 'mailing address')[0].id, 'C-1058');
+});
 
 test('Email-to-Case lab detects missed replies, duplicate replies and silent automated-sender failures', () => {
   const first = runEmailCases(initialLabRules);

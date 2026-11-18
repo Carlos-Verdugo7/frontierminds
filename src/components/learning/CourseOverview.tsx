@@ -11,10 +11,12 @@ import {
 } from '@/content/catalog';
 import { useProgress } from '@/lib/learning/progress';
 import CourseShell from './CourseShell';
+import { deductibleLab, responseLab } from '@/content/activities';
 export default function CourseOverview({ course }: { course: CourseId }) {
   const data = courses[course],
     p = useProgress(course);
   const lessons = data.chapters.flatMap((c) => c.lessons);
+  const lab = course === 'exam-p' ? deductibleLab : responseLab;
   const done = lessons.filter((l) => p.completed.includes(l.id)).length;
   const last =
     lessons.some((l) => l.id === p.lastLesson) || p.lastLesson === '0.1'
@@ -84,6 +86,11 @@ export default function CourseOverview({ course }: { course: CourseId }) {
           </div>
         </aside>
       </div>
+      <section className="mt-9 rounded-xl border-l-4 border-[#d19063] bg-[#e9eede] p-6 text-[#193f34]">
+        <h2 className="font-serif text-3xl">{lab.title}</h2>
+        <p className="mb-3 mt-2 max-w-2xl">{lab.description}</p>
+        <Link className="font-semibold underline underline-offset-4" href={lab.path}>Open the practice lab →</Link>
+      </section>
       {course === 'exam-p' ? (
         <>
           <section className="mt-10">
@@ -154,8 +161,8 @@ export default function CourseOverview({ course }: { course: CourseId }) {
           Two hands-on chapters: six Salesforce foundations lessons and six AI-assisted
           development and deployment lessons. Follow a realistic Dev → UAT → Production
           release path using Apex tests, CLI validation, and post-deployment checks.
-          Run all labs in a Trailhead Playground or authorized sandbox with fictional data.
-          No Salesforce org is connected and none of the examples execute live deployments.
+          The response review and Email-to-Case simulations run in your browser.
+          Use a Trailhead Playground or authorized sandbox for the manual exercises.
         </p>
       )}
       <section className="mt-10 space-y-5">

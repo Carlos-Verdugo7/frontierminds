@@ -6,7 +6,7 @@ Interactive learning paths for Actuarial Exam P and Salesforce & AI Development,
 
 `/comunidad` adds Spanish resource guides for West Palm Beach families, editorial posts, private email feedback, topic-level Analytics events, and AI-assisted preparation using reviewed guides. The existing courses remain available. See [COMMUNITY.md](COMMUNITY.md) for posting instructions, Analytics setup, email behavior, and AI deployment details.
 
-The homepage connects learning and community resources in a shared visual style. Its fair-coin example is interactive: choose one to six independent flips to explore the chance of at least one head. Course counts are computed from the catalog on the server; the homepage client receives only the summary numbers. Planned Snowflake content appears as a roadmap note, not an available course.
+The homepage features an interactive insurance payout chart, links to both courses, and Spanish community resources. Choosing a deductible carries it into the full actuarial lab. The fair-coin explorer is available under Learning paths. Course counts come from the catalog.
 
 ## Run locally
 
@@ -37,6 +37,8 @@ The existing layout downloads Geist fonts during builds. In environments requiri
 - `/courses/salesforce`: 12 lessons across two chapters: six applied foundations lessons and a six-lesson AI-assisted Salesforce development/deployment path. Includes sample Apex/HTTP mocks, Salesforce CLI validation examples, change inventories, practice labs, and release checklists.
 - `/comunidad/practicar-llamada-escuela`: Spanish and English school-call rehearsal with audio, optional AI follow-up, and a copyable script.
 - `/courses/salesforce/labs/email-to-case`: a three-case acknowledgment simulator with rule traces and an optional AI coach, also available inside lesson 2.1.
+- `/courses/exam-p/labs/deductible` compares weighted contract payments with paired Monte Carlo samples. Learners train a linear regression on three loss sizes, test it on a held-out loss, and audit a sample AI calculation.
+- `/courses/salesforce/labs/response-review` lets learners rank records with local TF-IDF search and review three fictional agent drafts against case evidence. Both new labs work in the browser without credentials.
 - `/courses/{course}/study`: saved progress, topic accuracy, and mistake review.
 
 Progress saves in the current browser, separately for each course. It does not sync between devices. Timed exams use a stored absolute deadline and keep running when the page is closed. This is a learning tool, not an official SOA exam or pass predictor. Salesforce activities include local case simulations and manual practice-org labs; the application does not connect to Salesforce or deploy changes. Code snippets and CLI examples are educational and are not executed by the app.

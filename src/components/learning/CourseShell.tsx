@@ -2,6 +2,7 @@ import Link from 'next/link';
 import FrontierMindsLogo from '@/components/FrontierMindsLogo';
 import type { CourseId } from '@/lib/learning/types';
 import { courses } from '@/content/catalog';
+import { deductibleLab, responseLab } from '@/content/activities';
 export default function CourseShell({
   course,
   children,
@@ -11,7 +12,7 @@ export default function CourseShell({
 }) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="border-b border-slate-800 bg-slate-950/95">
+      <header className="border-b border-emerald-800 bg-[#143d35]">
         <div className="max-w-6xl mx-auto p-5 flex flex-wrap justify-between gap-4 items-center">
           <Link href="/" aria-label="FrontierMinds home">
             <FrontierMindsLogo size="sm" />
@@ -21,6 +22,7 @@ export default function CourseShell({
             className="flex flex-wrap gap-4 text-sm text-slate-300"
           >
             <Link href={`/courses/${course}`}>{courses[course].title}</Link>
+            <Link href={course === 'exam-p' ? deductibleLab.path : responseLab.path}>Practice lab</Link>
             <Link href={`/courses/${course}/study`}>My study desk</Link>
             {course === 'exam-p' && (
               <>
