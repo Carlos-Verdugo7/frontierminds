@@ -84,6 +84,28 @@ test('the community preparation form names the available source', () => {
   assert.ok(!guideOnly.includes('Preparar con IA'));
 });
 
+test('new labs are reachable from home and each course without a provider', async () => {
+  const home = render(require('../src/app/page.tsx').default);
+  const overview = require('../src/components/learning/CourseOverview.tsx').default;
+  const actuarial = require('../src/app/courses/exam-p/labs/deductible/page.tsx');
+  const review = require('../src/app/courses/salesforce/labs/response-review/page.tsx');
+  const { deductibleLab, responseLab } = require('../src/content/activities.ts');
+  for (const [course, lab, page] of [['exam-p', deductibleLab, actuarial], ['salesforce', responseLab, review]]) {
+    assert.ok(home.includes('href="' + lab.path + '"'));
+    assert.ok(render(overview, { course }).includes('href="' + lab.path + '"'));
+    assert.equal(page.metadata.openGraph.url, 'https://www.frontierminds.io' + lab.path);
+  }
+  const custom = renderToStaticMarkup(await actuarial.default({ searchParams: Promise.resolve({ deductible: '1000' }) }));
+  assert.match(custom, /id="deductible"[^>]*value="1000"/);
+  assert.ok(render(review.default).includes('Document receipt'));
+  const practice = require('../src/components/PracticeProblems.tsx').default;
+  const settings = require('../src/components/learning/TutorAvailability.tsx').TutorSettings;
+  const quiz = React.createElement(practice, { section: '6.1', course: 'exam-p' });
+  const noKey = renderToStaticMarkup(React.createElement(settings, { enabled: false }, quiz));
+  assert.ok(noKey.includes('Show hint') && !noKey.includes('Ask AI tutor'));
+  assert.ok(renderToStaticMarkup(React.createElement(settings, { enabled: true }, quiz)).includes('Ask AI tutor'));
+});
+
 test('guide is discoverable from home and Exam P without changing Salesforce resources', () => {
   const Home = require('../src/app/page.tsx').default;
   const Overview = require('../src/components/learning/CourseOverview.tsx').default;

@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { TutorAvailability } from './learning/TutorAvailability';
 import { questionBank, lessonTitle } from '@/content/catalog';
 import {
   recordAnswer,
@@ -19,6 +20,7 @@ export default function PracticeProblems({
   onlyIds?: number[];
 }) {
   const progress = useProgress(course);
+  const aiEnabled = useContext(TutorAvailability);
   const questions = (questionBank[course][section] ?? []).filter(
     (q) => !onlyIds || onlyIds.includes(q.id),
   );
@@ -181,9 +183,9 @@ export default function PracticeProblems({
             />
           </label>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => setChat(!chat)} className="text-purple-300">
+            {aiEnabled && <button onClick={() => setChat(!chat)} className="text-purple-300">
               {chat ? 'Close tutor' : 'Ask AI tutor'}
-            </button>
+            </button>}
             {course === 'exam-p' && (
               <button
                 onClick={() => setCalculator(!calculator)}
@@ -214,7 +216,7 @@ export default function PracticeProblems({
             </p>
           )}
         </div>
-        {chat && (
+        {aiEnabled && chat && (
           <div className="min-w-0 h-[650px]">
             <AITutor
               key={key}

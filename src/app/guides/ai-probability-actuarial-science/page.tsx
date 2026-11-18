@@ -191,7 +191,8 @@ export default function AIProbabilityGuide() {
             it is not an actuarial credential. Snowflake remains a planned learning path.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/courses/exam-p/practice" className="rounded-lg bg-teal-300 px-5 py-3 font-semibold text-slate-950 hover:bg-teal-200">Practice probability →</Link>
+            <Link href="/courses/exam-p/labs/deductible" className="rounded-lg bg-teal-300 px-5 py-3 font-semibold text-slate-950 hover:bg-teal-200">Train and check a payout model →</Link>
+            <Link href="/courses/exam-p/practice" className="rounded-lg border border-slate-600 px-5 py-3 text-white hover:border-teal-300">Practice probability →</Link>
             <Link href="/courses/salesforce" className="rounded-lg border border-slate-600 px-5 py-3 text-white hover:border-teal-300">Explore Salesforce →</Link>
           </div>
         </section>

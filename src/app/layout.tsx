@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import ProgressTracker from "@/components/learning/ProgressTracker";
+import { TutorSettings } from "@/components/learning/TutorAvailability";
 
 const GA_MEASUREMENT_ID = "G-6CDFK61KQ8";
 
@@ -62,7 +63,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ProgressTracker />
-        {children}
+        <TutorSettings enabled={Boolean(process.env.OPENAI_API_KEY)}>{children}</TutorSettings>
       </body>
     </html>
   );
