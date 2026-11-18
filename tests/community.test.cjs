@@ -20,6 +20,7 @@ function compile(relativePath) {
 
 const content = {};
 vm.runInNewContext(`${compile('src/content/community.ts')}\nObject.assign(output, {communityGuides,communityTasks});`, { output: content });
+vm.runInNewContext(`${compile('src/content/school-call.ts')}\nObject.assign(output, {schoolScenarios,callScript,closing});`, { output: content });
 
 function route({ configured = true, fail = false } = {}) {
   const calls = [];
@@ -79,6 +80,27 @@ test('each topic and task uses only the selected guide and disables completion s
       assert.ok(sent.messages[1].content.startsWith(content.communityTasks[task]));
     }
   }
+});
+
+test('school rehearsal coaching accepts only the selected school goal and includes its opening line', async () => {
+  const { post, calls } = route();
+  for (const scenario of content.schoolScenarios) {
+    const response = await post(request({ topic: 'escuela', task: 'preguntas', goal: scenario.id }));
+    assert.equal(response.status, 200);
+    const prompt = calls.at(-1).messages[1].content;
+    assert.ok(prompt.includes(scenario.opening.en));
+    for (const reply of scenario.replies) {
+      const script = content.callScript([scenario.opening, reply, content.closing]);
+      assert.ok(script.includes(reply.en + '\n' + reply.es));
+      assert.ok(!script.includes(scenario.office.en));
+    }
+  }
+  const before = calls.length;
+  for (const invalid of [
+    { topic: 'luz', task: 'preguntas', goal: 'cita' }, { topic: 'escuela', task: 'pasos', goal: 'cita' },
+    { topic: 'escuela', task: 'preguntas', goal: 'arbitrary visitor message' },
+  ]) assert.equal((await post(request(invalid))).status, 400);
+  assert.equal(calls.length, before);
 });
 
 test('missing configuration, provider failure, and the request cap produce recoverable responses', async () => {

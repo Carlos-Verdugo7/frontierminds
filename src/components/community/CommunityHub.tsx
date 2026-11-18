@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MapPin, MessageCircle, Sparkles, Zap } from 'lucide-react';
 import FrontierMindsLogo from '@/components/FrontierMindsLogo';
 import { communityGuides, communityPosts, communityTasks, type CommunityTopic } from '@/content/community';
 import { trackCommunity } from '@/lib/community-analytics';
+import { schoolCall } from '@/content/activities';
+import { schoolDirectory } from '@/content/school-call';
 import styles from './community.module.css';
 
 const icons = { luz: Zap, empleo: BriefcaseBusiness, escuela: GraduationCap, ingles: Languages };
@@ -23,26 +25,28 @@ const taskCopy = {
 const formatDate = (date: string) => new Intl.DateTimeFormat('es-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T12:00:00Z`));
 
 export default function CommunityHub() {
-  const [selectedTopic, setSelectedTopic] = useState<CommunityTopic>('luz');
   const [topic, setTopic] = useState<CommunityTopic>('luz');
   const [task, setTask] = useState<keyof typeof communityTasks>('pasos');
-  const [result, setResult] = useState<{ topic: CommunityTopic; text: string } | null>(null);
+  const [result, setResult] = useState<{ topic: CommunityTopic; task: string; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<{ topic: CommunityTopic; task: string; text: string } | null>(null);
   const [votes, setVotes] = useState<Partial<Record<CommunityTopic, string>>>({});
   const [feedbackStatus, setFeedbackStatus] = useState('');
-  const guide = communityGuides.find(item => item.id === selectedTopic)!;
-  const resultGuide = result && communityGuides.find(item => item.id === result.topic)!;
-  const GuideIcon = icons[selectedTopic];
+  const guide = communityGuides.find(item => item.id === topic)!;
+  const GuideIcon = icons[topic];
+  const lastGuideHash = useRef('');
 
   // Support shareable topic links, including links from the original draft.
   useEffect(() => {
     function readHash() {
-      const id = window.location.hash.replace('#guia-', '');
-      if (communityGuides.some(item => item.id === id)) {
-        setSelectedTopic(id as CommunityTopic);
+      const hash = window.location.hash;
+      const opened = communityGuides.find(item => hash === '#guia-' + item.id);
+      if (opened) {
+        setTopic(opened.id);
+        if (lastGuideHash.current !== hash) trackCommunity({ action: 'guide_open', topic: opened.id });
         requestAnimationFrame(() => document.getElementById('guia')?.scrollIntoView({ block: 'start' }));
       }
+      lastGuideHash.current = hash;
     }
     readHash();
     window.addEventListener('hashchange', readHash);
@@ -50,8 +54,7 @@ export default function CommunityHub() {
   }, []);
 
   function selectGuide(id: CommunityTopic) {
-    setSelectedTopic(id);
-    trackCommunity({ action: 'guide_open', topic: id });
+    setTopic(id);
     requestAnimationFrame(() => {
       document.getElementById('guia')?.scrollIntoView({ block: 'start' });
       document.getElementById(`guia-${id}`)?.focus({ preventScroll: true });
@@ -60,7 +63,7 @@ export default function CommunityHub() {
 
   async function askAI(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBusy(true); setResult(null); setError('');
+    setBusy(true); setResult(null); setError(null);
     trackCommunity({ action: 'ai_request', topic, task });
     try {
       const response = await fetch('/api/community-help', {
@@ -70,10 +73,10 @@ export default function CommunityHub() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'No pudimos generar la respuesta. Inténtalo más tarde.');
       if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('No llegó una respuesta. Inténtalo más tarde.');
-      setResult({ topic, text: data.reply });
+      setResult({ topic, task, text: data.reply });
       trackCommunity({ action: 'ai_success', topic, task });
     } catch (failure) {
-      setError(failure instanceof Error && failure.name !== 'TimeoutError' ? failure.message : 'La respuesta tardó demasiado. Usa la guía o inténtalo más tarde.');
+      setError({ topic, task, text: failure instanceof Error && failure.name !== 'TimeoutError' ? failure.message : 'La respuesta tardó demasiado. Usa la guía o inténtalo más tarde.' });
       trackCommunity({ action: 'ai_error', topic, task });
     } finally { setBusy(false); }
   }
@@ -127,19 +130,20 @@ export default function CommunityHub() {
           {communityGuides.map(item => {
             const Icon = icons[item.id];
             const copy = topicCopy[item.id];
-            return <a key={item.id} href={`#guia-${item.id}`} className={`${styles.topic} ${selectedTopic === item.id ? styles.topicActive : ''}`} aria-current={selectedTopic === item.id ? 'true' : undefined} onClick={() => selectGuide(item.id)}>
+            return <a key={item.id} href={`#guia-${item.id}`} className={`${styles.topic} ${topic === item.id ? styles.topicActive : ''}`} aria-current={topic === item.id ? 'true' : undefined} onClick={() => selectGuide(item.id)}>
               <span className={styles.topicIcon} data-color={copy.color}><Icon size={23} aria-hidden="true" /></span><span><strong>{copy.title}</strong><small>{copy.detail}</small></span><ArrowUpRight className={styles.topicArrow} size={17} aria-hidden="true" />
             </a>;
           })}
         </div>
 
         <div id="guia" className={styles.guideAnchor}>
-          <article id={`guia-${selectedTopic}`} tabIndex={-1} className={styles.guide} aria-labelledby="guide-title">
+          <article id={`guia-${topic}`} tabIndex={-1} className={styles.guide} aria-labelledby="guide-title">
             <div className={styles.guideHeading}><div className={styles.guideLabel}><GuideIcon size={17} aria-hidden="true" /> {guide.label}</div><span className={styles.reviewed}><span className={styles.dot} /> Revisado el {formatDate(guide.reviewed)}</span></div>
             <div className={styles.guideIntro}><div><h3 id="guide-title">{guide.title}</h3><p>{guide.description}</p></div><span className={styles.guideIndex}>GUÍA {String(communityGuides.indexOf(guide) + 1).padStart(2, '0')} / 04</span></div>
             <div className={styles.guideColumns}>
               <div className={styles.steps}><h4>Así puedes empezar</h4><ol>{guide.steps.map((step, index) => <li key={step}><span aria-hidden="true">{index + 1}</span><p>{step}</p></li>)}</ol>
-                <div className={styles.guideAi}><Sparkles size={21} aria-hidden="true" /><div><strong>¿Te gustaría preparar esa llamada o visita?</strong><p>La IA puede ayudarte con una lista o preguntas en inglés.</p><a href="#asistente" aria-disabled={busy} onClick={event => { if (busy) { event.preventDefault(); return; } setTopic(guide.id); setResult(null); setError(''); }}>Prepararme sobre este tema <ArrowRight size={15} aria-hidden="true" /></a></div></div>
+                <div className={styles.guideAi}><Sparkles size={21} aria-hidden="true" /><div><strong>¿Te gustaría preparar esa llamada o visita?</strong><p>La IA puede ayudarte con una lista o preguntas en inglés.</p><a href="#asistente">Prepararme sobre este tema <ArrowRight size={15} aria-hidden="true" /></a>
+                  {topic === 'escuela' && <Link className={styles.rehearse} href={schoolCall.path}>{schoolCall.title} <ArrowRight size={15} aria-hidden="true" /></Link>}</div></div>
               </div>
               <aside className={styles.guideAside} aria-label="Preparación y contactos">
                 <div className={styles.prepare}><h4><ClipboardList size={18} aria-hidden="true" /> Ten a mano</h4><ul>{guide.prepare.map(thing => <li key={thing}><Check size={15} aria-hidden="true" /><span>{thing}</span></li>)}</ul></div>
@@ -147,7 +151,16 @@ export default function CommunityHub() {
               </aside>
             </div>
             <details className={styles.guideNote} key={guide.id}><summary>Lo que conviene saber antes de solicitar ayuda</summary><p>{guide.note}</p></details>
-            <div className={styles.vote}><div><MessageCircle size={18} aria-hidden="true" /><span>¿Ahora sabes mejor qué hacer?</span></div>{votes[guide.id] ? <strong role="status">Gracias por ayudarnos a mejorar.</strong> : <div>{([{ value: 'yes', label: 'Sí, me orientó' }, { value: 'needs_help', label: 'Todavía necesito ayuda' }] as const).map(option => <button type="button" key={option.value} onClick={() => { setVotes(previous => ({ ...previous, [guide.id]: option.value })); trackCommunity({ action: 'helpfulness', topic: guide.id, value: option.value }); }}>{option.label}</button>)}</div>}</div>
+            <div className={styles.vote}><div><MessageCircle size={18} aria-hidden="true" /><span>¿Ahora sabes mejor qué hacer?</span></div>{votes[guide.id] === 'needs_help' ? <div className={styles.helpOptions}>
+              <strong role="status">Puedes dar el siguiente paso aquí.</strong>
+              {topic === 'escuela' ? <>
+                <Link href={schoolCall.path}>{schoolCall.title}</Link>
+                <a href={schoolDirectory}>Buscar el teléfono de mi escuela</a>
+              </> : <>
+                <a href="#asistente">Prepararme con la guía de {guide.label.toLowerCase()}</a>
+                <a href={guide.contact.href} onClick={() => trackCommunity({ action: 'resource_click', topic, resource: guide.sources.length })}>{guide.contact.label}</a>
+              </>}
+            </div> : votes[guide.id] === 'yes' ? <strong role="status">Gracias por ayudarnos a mejorar.</strong> : <div>{([{ value: 'yes', label: 'Sí, me orientó' }, { value: 'needs_help', label: 'Todavía necesito ayuda' }] as const).map(option => <button type="button" key={option.value} onClick={() => { setVotes(previous => ({ ...previous, [guide.id]: option.value })); trackCommunity({ action: 'helpfulness', topic: guide.id, value: option.value }); }}>{option.label}</button>)}</div>}</div>
           </article>
         </div>
       </section>
@@ -156,10 +169,10 @@ export default function CommunityHub() {
         <div className={styles.aiLayout}><div className={styles.aiCopy}><p className={styles.eyebrow}><span>02</span> DE LA INFORMACIÓN A LA ACCIÓN</p><span className={styles.aiMark}><Sparkles size={27} aria-hidden="true" /></span><h2 id="ai-title">Un poco de preparación.<br /><em>Más confianza para avanzar.</em></h2><p>Usa la IA para entender una guía, organizar lo que necesitas o preparar una conversación en inglés.</p><div className={styles.aiFootnote}><Check size={17} aria-hidden="true" /><p>No necesitas compartir datos personales. El asistente trabaja con las guías de esta página.</p></div><details className={styles.aiDisclosure}><summary>Cómo funciona este apoyo</summary><p>Al generar, enviamos a OpenAI el tema, la tarea elegida y nuestra guía. La IA no consulta disponibilidad en tiempo real, no decide si calificas y no presenta solicitudes. Confirma los detalles con la organización.</p></details></div>
           <form onSubmit={askAI} className={styles.aiForm}>
             <div className={styles.formHeading}><span>PREPARA TU PRÓXIMO PASO</span><Sparkles size={17} aria-hidden="true" /></div>
-            <label htmlFor="ai-topic">¿Qué tema quieres preparar?</label><select id="ai-topic" value={topic} disabled={busy} onChange={event => { setTopic(event.target.value as CommunityTopic); setResult(null); setError(''); }}>{communityGuides.map(item => <option key={item.id} value={item.id}>{topicCopy[item.id].title}</option>)}</select>
-            <fieldset disabled={busy} className={styles.taskChoices}><legend>Elige cómo te podemos ayudar</legend>{(Object.keys(communityTasks) as (keyof typeof communityTasks)[]).map(id => { const copy = taskCopy[id]; const Icon = copy.icon; return <label key={id} className={styles.taskChoice}><input type="radio" name="ai-task" value={id} checked={task === id} onChange={() => { setTask(id); setResult(null); setError(''); }} /><Icon size={19} aria-hidden="true" /><span><strong>{copy.title}</strong><small>{copy.detail}</small></span></label>; })}</fieldset>
+            <label htmlFor="ai-topic">¿Qué tema quieres preparar?</label><select id="ai-topic" value={topic} disabled={busy} onChange={event => { setTopic(event.target.value as CommunityTopic); setResult(null); setError(null); }}>{communityGuides.map(item => <option key={item.id} value={item.id}>{topicCopy[item.id].title}</option>)}</select>
+            <fieldset disabled={busy} className={styles.taskChoices}><legend>Elige cómo te podemos ayudar</legend>{(Object.keys(communityTasks) as (keyof typeof communityTasks)[]).map(id => { const copy = taskCopy[id]; const Icon = copy.icon; return <label key={id} className={styles.taskChoice}><input type="radio" name="ai-task" value={id} checked={task === id} onChange={() => { setTask(id); setResult(null); setError(null); }} /><Icon size={19} aria-hidden="true" /><span><strong>{copy.title}</strong><small>{copy.detail}</small></span></label>; })}</fieldset>
             <button className={styles.primary} type="submit" disabled={busy}>{busy ? 'Preparando tu orientación…' : 'Preparar con IA'}<ArrowRight size={17} aria-hidden="true" /></button><p className={styles.formHint}>Orientación generada por IA. Revísala antes de usarla.</p>
-            <div aria-live="polite" aria-busy={busy}>{error && <p className={styles.error} role="alert">{error} Puedes seguir usando las guías y sus contactos.</p>}{result && resultGuide && <div className={styles.reply}><span className={styles.eyebrow}>TU PREPARACIÓN · {resultGuide.label}</span><p>{result.text}</p><a href={resultGuide.sources[0].url} target="_blank" rel="noopener noreferrer">Confirmar en la fuente oficial <ArrowUpRight size={14} aria-hidden="true" /></a></div>}</div>
+            <div aria-live="polite" aria-busy={busy}>{error?.topic === topic && error.task === task && <p className={styles.error} role="alert">{error.text} Puedes seguir usando las guías y sus contactos.</p>}{result?.topic === topic && result.task === task && <div className={styles.reply}><span className={styles.eyebrow}>TU PREPARACIÓN · {guide.label}</span><p>{result.text}</p><a href={guide.sources[0].url} target="_blank" rel="noopener noreferrer">Confirmar en la fuente oficial <ArrowUpRight size={14} aria-hidden="true" /></a></div>}</div>
           </form>
         </div>
       </section>

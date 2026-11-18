@@ -28,6 +28,28 @@ require.extensions['.ts'] = function (module, filename) {
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { jointStats, payment, moments } = require('../src/lib/learning/math.ts');
+const { runEmailCases, initialLabRules, validLabRules } = require('../src/lib/learning/email-case.ts');
+
+test('Email-to-Case lab detects missed replies, duplicate replies and silent automated-sender failures', () => {
+  const first = runEmailCases(initialLabRules);
+  assert.deepEqual(first.map(row => row.recipients.length), [2, 0, 0]);
+  assert.deepEqual(first.map(row => row.passed), [false, false, false]);
+  assert.match(first[2].trace.join(' '), /treated an automated notification like a person/);
+  for (const recipient of ['contact', 'fallback']) {
+    for (const flow of ['all', 'unhandled']) {
+      for (const automated of ['include', 'skip']) {
+        const rules = { recipient, flow, automated };
+        assert.ok(validLabRules(rules));
+        const run = runEmailCases(rules);
+        assert.deepEqual(run.map(row => row.passed), [flow === 'unhandled', recipient === 'fallback', automated === 'skip']);
+        if (run.every(row => row.passed)) assert.deepEqual(run.map(row => row.recipients), [['alex@example.test'], ['sam@example.test'], []]);
+      }
+    }
+  }
+  for (const invalid of [null, [], {}, { ...initialLabRules, flow: 'free text' }, { ...initialLabRules, other: 1 }]) {
+    assert.equal(validLabRules(invalid), false);
+  }
+});
 const {
   allQuestions,
   createExam,

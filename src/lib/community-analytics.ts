@@ -1,6 +1,7 @@
 'use client';
 
 import type { CommunityTopic } from '@/content/community';
+import { sendEvent } from './site-analytics';
 
 type CommunityEvent =
   | { action: 'guide_open'; topic: CommunityTopic }
@@ -11,8 +12,6 @@ type CommunityEvent =
 
 // Deliberately no email, prompt, message, search text, or arbitrary URL parameters.
 export function trackCommunity(event: CommunityEvent) {
-  if (typeof window === 'undefined') return;
-  const analytics = window as Window & { gtag?: (command: string, name: string, params: Record<string, string | number>) => void };
   const { action, ...params } = event;
-  analytics.gtag?.('event', `community_${action}`, { ...params, language: 'es', area: 'west_palm_beach' });
+  sendEvent(`community_${action}`, { ...params, language: 'es', area: 'west_palm_beach' });
 }

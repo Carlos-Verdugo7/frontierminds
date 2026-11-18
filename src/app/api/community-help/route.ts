@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { communityGuides, communityTasks } from '@/content/community';
+import { schoolScenarios } from '@/content/school-call';
 
 // A per-instance cost guard. Configure a shared gateway limit for multi-instance hosting.
 let windowStart = 0;
@@ -37,7 +38,9 @@ export async function POST(request: NextRequest) {
   }
   const input = body as Record<string, unknown>;
   const guide = communityGuides.find(item => item.id === input.topic);
-  if (!guide || typeof input.task !== 'string' || !Object.hasOwn(communityTasks, input.task) || Object.keys(input).some(key => !['topic', 'task'].includes(key))) {
+  const scenario = input.goal === undefined ? undefined : schoolScenarios.find(item => item.id === input.goal);
+  const invalidGoal = input.goal !== undefined && (!scenario || input.topic !== 'escuela' || input.task !== 'preguntas');
+  if (!guide || typeof input.task !== 'string' || !Object.hasOwn(communityTasks, input.task) || invalidGoal || Object.keys(input).some(key => !['topic', 'task', 'goal'].includes(key))) {
     return NextResponse.json({ error: 'Elige un tema y una tarea de la lista.' }, { status: 400, headers });
   }
   if (!process.env.OPENAI_API_KEY) {
@@ -55,7 +58,11 @@ export async function POST(request: NextRequest) {
       model: 'gpt-4o-mini', store: false, max_tokens: 850, temperature: 0.2,
       messages: [
         { role: 'system', content: 'Eres el orientador de Comunidad de FrontierMinds para familias de West Palm Beach. Responde con texto sencillo en español, sin Markdown, máximo 300 palabras. Usa únicamente la guía proporcionada como fuente. No inventes enlaces, documentos, horarios, fondos, plazos, disponibilidad ni requisitos. No decidas elegibilidad, no garantices ayuda y no afirmes presentar solicitudes o contactar a nadie. No pidas datos personales. Para preguntas en inglés, proporciona frases de ejemplo con traducción al español, sin inventar hechos sobre la familia. Aclara que el usuario debe confirmar los detalles con la organización. Incluye la fecha de revisión de la guía. No tienes acceso en tiempo real.' },
-        { role: 'user', content: `${communityTasks[input.task as keyof typeof communityTasks]}\n\nGuía revisada por el sitio:\n${JSON.stringify(guide)}` },
+        { role: 'user', content: [
+          communityTasks[input.task as keyof typeof communityTasks],
+          scenario && `Ensayo: ${scenario.goal}. La familia ya practicó «${scenario.opening.en}». Sugiere una sola pregunta de seguimiento distinta en inglés y español.`,
+          `Guía revisada por el sitio:\n${JSON.stringify(guide)}`,
+        ].filter(Boolean).join('\n\n') },
       ],
     });
     const reply = result.choices[0]?.message?.content;

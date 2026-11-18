@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { CourseId } from '@/lib/learning/types';
+import type { LabRules } from '@/lib/learning/email-case';
 import {
   MessageCircle,
   Send,
@@ -39,12 +40,11 @@ interface ProblemContext {
   isCorrect?: boolean;
 }
 
-interface AITutorProps {
+type AITutorProps = {
   course?: CourseId;
-  problemContext: ProblemContext;
   isOpen: boolean;
   onToggle: () => void;
-}
+} & ({ problemContext: ProblemContext; labRules?: never } | { labRules: LabRules; problemContext?: never });
 
 const QUICK_PROMPTS = [
   {
@@ -62,9 +62,16 @@ const QUICK_PROMPTS = [
   { label: 'Why wrong?', prompt: 'Why is my answer wrong? What did I miss?' },
 ];
 
+const LAB_PROMPTS = [
+  { label: 'Trace a reply', prompt: 'Walk me through one case in my latest run and ask me which field or rule I would check next.' },
+  { label: 'Give me a hint', prompt: 'Give me one hint about my current rules without giving me the whole configuration.' },
+  { label: 'Another test', prompt: 'Which edge case would you add to this test matrix, and why?' },
+];
+
 export default function AITutor({
   course = 'exam-p',
   problemContext,
+  labRules,
   isOpen,
   onToggle,
 }: AITutorProps) {
@@ -74,6 +81,7 @@ export default function AITutor({
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const quickPrompts = labRules ? LAB_PROMPTS : QUICK_PROMPTS;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -108,12 +116,13 @@ export default function AITutor({
             content: m.content,
           })),
           problemContext,
+          labRules,
           course,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error(labRules ? 'The AI coach is unavailable. You can still use the test results and rerun the cases.' : 'Failed to get response');
       }
 
       const data = await response.json();
@@ -121,9 +130,6 @@ export default function AITutor({
       if (data.error) {
         throw new Error(data.error);
       }
-
-      // Debug: log raw response to see what OpenAI returns
-      console.log('Raw API response:', JSON.stringify(data.reply));
 
       setMessages((prev) => [
         ...prev,
@@ -168,7 +174,7 @@ export default function AITutor({
           <div className="p-1.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
-          <h3 className="font-semibold text-white text-sm">AI Tutor</h3>
+          <h3 className="font-semibold text-white text-sm">{labRules ? 'AI lab coach' : 'AI Tutor'}</h3>
         </div>
         <div className="flex items-center gap-1">
           {messages.length > 0 && (
@@ -182,6 +188,7 @@ export default function AITutor({
           )}
           <button
             onClick={onToggle}
+            aria-label="Close tutor"
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
           >
             <X className="w-4 h-4" />
@@ -195,9 +202,9 @@ export default function AITutor({
           <div className="h-full flex flex-col items-center justify-center text-center px-2">
             <MessageCircle className="w-10 h-10 text-slate-600 mb-3" />
             <p className="text-slate-400 text-sm mb-2">How can I help?</p>
-            <p className="text-slate-500 text-xs mb-4">Try a quick prompt:</p>
+            <p className="text-slate-400 text-xs mb-4">{labRules ? 'Ask about these fictional cases. Your question and the simulated results go to the AI coach.' : 'Try a quick prompt:'}</p>
             <div className="flex flex-wrap gap-2 justify-center">
-              {QUICK_PROMPTS.map((qp) => (
+              {quickPrompts.map((qp) => (
                 <button
                   key={qp.label}
                   onClick={() => sendMessage(qp.prompt)}
@@ -262,7 +269,7 @@ export default function AITutor({
       {messages.length > 0 && (
         <div className="px-3 py-2 border-t border-slate-700/50 bg-slate-800/50">
           <div className="flex gap-1.5 overflow-x-auto pb-1">
-            {QUICK_PROMPTS.slice(0, 3).map((qp) => (
+            {quickPrompts.slice(0, 3).map((qp) => (
               <button
                 key={qp.label}
                 onClick={() => sendMessage(qp.prompt)}
@@ -288,11 +295,13 @@ export default function AITutor({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask a question..."
+            aria-label={labRules ? 'Question about the fictional cases' : 'Question for the AI tutor'}
             disabled={isLoading}
             className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 disabled:opacity-50"
           />
           <button
             type="submit"
+            aria-label="Send question"
             disabled={!input.trim() || isLoading}
             className="px-3 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
           >

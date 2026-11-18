@@ -98,6 +98,9 @@
 .guideAi p { font-size: .85rem; color: var(--muted); margin: 4px 0 8px; }
 .guideAi a { display: inline-flex; gap: 8px; align-items: center; font-size: .85rem; font-weight: 600; text-underline-offset: 4px; }
 .guideAi a[aria-disabled=true] { opacity: .5; cursor: wait; }
+.guideAi a.rehearse { display: flex; width: fit-content; margin-top: .6rem; }
+.vote .helpOptions { flex-wrap: wrap; }
+.helpOptions a { color: var(--ink); text-decoration: underline; text-underline-offset: .2em; padding: .4rem 0; }
 .guideAside { min-width: 0; }
 .prepare { background: #f1f2e7; border-radius: 8px; padding: 24px; }
 .prepare h4 { display: flex; align-items: center; gap: 8px; font-size: .85rem; margin-bottom: 17px; }

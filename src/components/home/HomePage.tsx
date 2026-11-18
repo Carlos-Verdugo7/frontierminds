@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight, BookOpen, BriefcaseBusiness, Check, ChevronRight, Compass, GraduationCap, Languages, Mail, MapPin, MessageCircle, SlidersHorizontal, Sparkles, Workflow, Zap } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, ChevronRight, Compass, GraduationCap, Languages, Mail, MapPin, MessageCircle, SlidersHorizontal, Sparkles, Workflow, Zap } from 'lucide-react';
 import FrontierMindsLogo from '@/components/FrontierMindsLogo';
 import styles from './home.module.css';
+import { emailCaseLab, schoolCall } from '@/content/activities';
 
 type HomeProps = { examChapters: number; examQuestions: number; salesforceLessons: number };
 const probability = (flips: number) => (1 - Math.pow(0.5, flips)) * 100;
@@ -52,9 +53,9 @@ export default function HomePage({ examChapters, examQuestions, salesforceLesson
     </header>
 
     <section id="choose" className={styles.choose} aria-labelledby="choose-title">
-      <div className={styles.chooseIntro}><p className={styles.eyebrow}>YOUR NEXT STEP</p><h2 id="choose-title">What brings<br />you here?</h2></div>
-      <a href="#courses" className={styles.chooseCard}><span className={styles.chooseIcon}><BookOpen size={23} aria-hidden="true" /></span><div><h3>I want to learn something.</h3><p>Explore probability and practical Salesforce skills.</p></div><ArrowDown size={19} aria-hidden="true" /></a>
-      <Link href="/comunidad" className={styles.chooseCard} lang="es"><span className={`${styles.chooseIcon} ${styles.warmIcon}`}><MapPin size={23} aria-hidden="true" /></span><div><h3>Busco apoyo para mi familia.</h3><p>Luz, trabajo, escuela e inglés en Palm Beach County.</p></div><ArrowUpRight size={19} aria-hidden="true" /></Link>
+      <div className={styles.chooseIntro}><h2 id="choose-title">Try it in<br />five minutes.</h2></div>
+      <Link href={schoolCall.path} className={styles.chooseCard} lang="es"><span className={`${styles.chooseIcon} ${styles.warmIcon}`}><Languages size={23} aria-hidden="true" /></span><div><h3>{schoolCall.title}</h3><p>Ensaya en inglés y llévate un guion bilingüe.</p></div><ArrowUpRight size={19} aria-hidden="true" /></Link>
+      <Link href={emailCaseLab.path} className={styles.chooseCard}><span className={styles.chooseIcon}><Workflow size={23} aria-hidden="true" /></span><div><h3>Try a Salesforce Email-to-Case lab</h3><p>Fix missing and duplicate replies in three sample cases.</p></div><ArrowUpRight size={19} aria-hidden="true" /></Link>
     </section>
 
     <section id="courses" className={styles.section} aria-labelledby="courses-title">

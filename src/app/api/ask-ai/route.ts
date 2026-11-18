@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { runEmailCases, validLabRules } from '@/lib/learning/email-case';
 
 // Lazily initialize OpenAI client to avoid build-time errors
 let openai: OpenAI | null = null;
@@ -43,11 +44,13 @@ export async function POST(request: NextRequest) {
     const {
       messages,
       problemContext,
+      labRules,
       course = 'exam-p',
     } = await request.json();
 
     if (
       !['exam-p', 'salesforce'].includes(course) ||
+      (labRules !== undefined && (course !== 'salesforce' || problemContext !== undefined || !validLabRules(labRules))) ||
       !Array.isArray(messages) ||
       messages.length > 30 ||
       messages.some(
@@ -78,7 +81,13 @@ export async function POST(request: NextRequest) {
     const systemMessages = [
       {
         role: 'system' as const,
-        content: SYSTEM_PROMPT + '\n\n' + courseContext,
+        content: labRules
+          ? [
+            'Coach a learner in a fictional Salesforce Email-to-Case simulation. An existing member rule runs before their Flow. Only discuss this lab and its synthetic cases. Use the computed trace as the source of truth. Explain one relevant field or rule in plain English and ask a short diagnostic question. For a passing run, suggest an edge case. Do not claim access to a real org or send email.',
+            'Chosen rules: ' + JSON.stringify(labRules),
+            'Simulated results: ' + JSON.stringify(runEmailCases(labRules)),
+          ].join('\n')
+          : SYSTEM_PROMPT + '\n\n' + courseContext,
       },
     ];
 
