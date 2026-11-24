@@ -5,7 +5,7 @@
 .intro em { font: italic 1.035em/1 var(--editorial); color: var(--blue); letter-spacing: -.072em; white-space: nowrap; }
 .intro p, .lede { color: var(--muted); line-height: 1.6; }
 .intro p { font-size: clamp(.94rem,1.3vw,1.1rem); padding-bottom: .28em; }
-.covers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(15px,2.25vw,32px); }
+.covers { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(15px,2.25vw,32px); }
 .cover { display: flex; flex-direction: column; color: inherit; text-decoration: none; }
 .photo { overflow: hidden; background: #e8e6dd; border-radius: 5px; }
 .photo img { width: 100%; aspect-ratio: 1.75; height: auto; object-fit: cover; transition: transform .24s ease-out; }
@@ -57,6 +57,7 @@
 @media (max-width: 800px) {
   .intro { grid-template-columns: 1fr; gap: 12px; }
   .intro p { max-width: 42ch; }
+  .covers { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .cardTitle span { width: 26px; height: 26px; }
   .cardTitle span svg { width: 16px; }
   .workbenchGrid { gap: 28px; }
