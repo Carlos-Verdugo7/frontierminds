@@ -8,6 +8,7 @@ import { problems as originalProblems, type Problem } from './exam-p/problems';
 import { lessons as examLessons } from './exam-p/lessons';
 import { lessons as salesforceLessons } from './salesforce/lessons';
 import { aiDeploymentLessons } from './salesforce/ai-deployment-lessons';
+import { dataEngineeringLessons } from './data-engineering/lessons';
 
 const salesforceCurriculum = [...salesforceLessons, ...aiDeploymentLessons];
 
@@ -127,9 +128,31 @@ export const courses: Record<
     ],
     lessons: salesforceCurriculum,
   },
+  'data-engineering': {
+    title: 'Data Engineering with AI',
+    description: 'Ingest with Fivetran or free local files, build Bronze/Silver/Gold models with AI-assisted SQL and dbt, and publish verified analysis and PDF reports.',
+    chapters: [
+      {
+        id: 1, title: 'Ingest Data · Fivetran & Free Alternatives',
+        description: 'Understand the full pipeline, connector pricing, and a no-account local ingestion workflow.',
+        lessons: dataEngineeringLessons.filter(l => l.id.startsWith('1.')).map(l => ({ id: l.id, title: l.title })),
+      },
+      {
+        id: 2, title: 'Build a Medallion Architecture',
+        description: 'Audit Bronze provenance, clean and deduplicate Silver, then reconcile a tested Gold metric.',
+        lessons: dataEngineeringLessons.filter(l => l.id.startsWith('2.')).map(l => ({ id: l.id, title: l.title })),
+      },
+      {
+        id: 3, title: 'AI Engineering, Analysis & PDF Reports',
+        description: 'Review generated dbt code, question unsupported claims, and render grounded PDFs locally.',
+        lessons: dataEngineeringLessons.filter(l => l.id.startsWith('3.')).map(l => ({ id: l.id, title: l.title })),
+      },
+    ],
+    lessons: dataEngineeringLessons,
+  },
 };
 export function isCourse(value: string): value is CourseId {
-  return value === 'exam-p' || value === 'salesforce';
+  return value === 'exam-p' || value === 'salesforce' || value === 'data-engineering';
 }
 export function lessonHref(course: CourseId, id: string) {
   const [chapter, section] = id.split('.');
@@ -172,6 +195,7 @@ export const questionBank: Record<CourseId, Record<string, Problem[]>> = {
   salesforce: Object.fromEntries(
     salesforceCurriculum.map((l) => [l.id, l.problems]),
   ),
+  'data-engineering': Object.fromEntries(dataEngineeringLessons.map(l => [l.id, l.problems])),
 };
 export type BankQuestion = Problem & {
   section: string;
