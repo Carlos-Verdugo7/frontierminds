@@ -13,7 +13,7 @@ export const uscisLinks = {
   times: 'https://egov.uscis.gov/processing-times/es',
   address: 'https://www.uscis.gov/addresschange',
   inquiry: 'https://www.uscis.gov/e-request',
-  scams: 'https://www.uscis.gov/avoid-scams',
+  scams: 'https://www.uscis.gov/es/evite-las-estafas-de-inmigracion',
   legalHelp: 'https://www.uscis.gov/es/encuentre-servicios-legales',
   uscisSpanish: 'https://www.uscis.gov/es',
 } as const;
