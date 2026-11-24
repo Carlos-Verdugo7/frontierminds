@@ -10,6 +10,7 @@ import GuideMark from './GuideMark';
 const destinations = [
   { href: '/courses/exam-p', label: 'Actuarial math', es: 'Matemática actuarial' },
   { href: '/courses/salesforce', label: 'Salesforce & AI', es: 'Salesforce e IA' },
+  { href: '/courses/data-engineering', label: 'Data Engineering', es: 'Ingeniería de datos' },
   { href: '/comunidad', label: 'Comunidad', es: 'Comunidad' },
 ];
 
