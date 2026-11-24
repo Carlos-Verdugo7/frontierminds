@@ -79,3 +79,9 @@
   .photo img, .cardTitle span { transition: none; }
   .cover:hover .photo img { transform: none; }
 }
+
+/* Fourth field-guide cover: CSS-only diagram to avoid external image dependency. */
+.pipelineCover { width: 100%; aspect-ratio: 1.75; padding: clamp(9px,1.6vw,18px); display: flex; align-items: center; justify-content: space-around; gap: 5px; background: linear-gradient(135deg,#1b2e55,#45618a); color: #fff; }
+.pipelineCover span { font: 550 clamp(.45rem,.7vw,.7rem)/1.2 var(--font-geist-mono),monospace; letter-spacing: .08em; opacity: .85; text-align: center; overflow-wrap: anywhere; }
+.pipelineCover strong,.pipelineCover b { font: 600 clamp(.45rem,.82vw,.79rem)/1.2 var(--font-geist-mono),monospace; padding: clamp(6px,1vw,12px) 3px; min-width: 0; border: 1px solid #b7cee7aa; border-radius: 4px; text-align: center; background: #fff2; overflow-wrap: anywhere; }
+@media (max-width: 600px) { .pipelineCover { aspect-ratio: 1; padding: 6px; flex-direction: column; gap: 2px; } .pipelineCover strong,.pipelineCover b { padding: 2px 3px; font-size: .48rem; width: 100%; } .pipelineCover span { font-size: .39rem; } }
