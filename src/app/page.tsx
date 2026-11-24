@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import HomePage from '@/components/home/HomePage';
 
 export const metadata: Metadata = {
-  title: 'FrontierMinds | Field guides for math, Salesforce & community',
-  description: 'Train a payout model, audit AI replies in a Salesforce case queue, study for Exam P, and find Spanish community resources in West Palm Beach.',
+  title: 'FrontierMinds | Field guides for math, Data Engineering, Salesforce & community',
+  description: 'Learn free Data Engineering with AI, medallion pipelines and Fivetran, alongside Salesforce and actuarial practice and Spanish community guides.',
   alternates: { canonical: 'https://www.frontierminds.io/' },
   openGraph: {
-    title: 'FrontierMinds | Actuarial math, Salesforce & Comunidad',
-    description: 'Try an insurance model, review a Salesforce case, or explore community guides in Spanish.',
+    title: 'FrontierMinds | Data Engineering, Salesforce, Actuarial Math & Comunidad',
+    description: 'Build a free medallion pipeline lab, learn Fivetran and AI-assisted SQL, review Salesforce cases and practice actuarial math.',
     url: 'https://www.frontierminds.io/',
     siteName: 'FrontierMinds',
     type: 'website',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'FrontierMinds | Actuarial math, Salesforce & Comunidad',
-    description: 'Hands-on probability and Salesforce labs, with community guides in Spanish.',
+    description: 'Free Data Engineering, probability and Salesforce labs, plus community guides in Spanish.',
   },
 };
 
