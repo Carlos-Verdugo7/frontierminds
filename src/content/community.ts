@@ -68,6 +68,7 @@ export const communityGuides: CommunityGuide[] = [
 // Editorial posts: add reviewed, dated entries here; never publish visitor messages.
 export const communityPosts = [
   { id: 'bienvenidos', date: '2026-10-29', title: 'Empezamos en West Palm Beach', text: 'Este espacio reúne pasos y fuentes para familias que buscan apoyo. Empezamos con luz, empleo, escuela e inglés. Cuéntanos qué tema falta y qué parte del proceso te resulta difícil.' },
+  { id: 'uscis-pasos', date: '2026-11-24', title: 'Nueva guía: aprende a usar USCIS en español', text: 'Explicamos cómo consultar un caso, entender mensajes y usar las herramientas oficiales. Practica sin escribir tu número de recibo. Visita la guía de USCIS en la sección de recursos.' },
   { id: 'ia-primer-paso', date: '2026-10-29', title: 'Usa la IA para preparar tu próxima conversación', text: 'Elige una guía y pide una lista de preparación o un borrador de preguntas en inglés. Revisa el resultado con la fuente oficial antes de usarlo. No necesitas compartir datos personales.' },
 ];
 
