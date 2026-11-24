@@ -25,3 +25,10 @@ export const responseLab = {
   description: 'Check three sample AI replies against fictional Salesforce records. Choose what a service rep should do and cite the evidence.',
   locale: 'en_US',
 };
+
+export const medallionLab = {
+  path: '/courses/data-engineering/labs/medallion',
+  title: 'Medallion data quality lab',
+  description: 'Practice a no-key Bronze, Silver and Gold pipeline, reconcile fictional orders, and audit a completed-revenue metric.',
+  locale: 'en_US',
+};

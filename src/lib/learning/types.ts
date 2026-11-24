@@ -1,5 +1,5 @@
 import type { Problem } from '@/content/exam-p/problems';
-export type CourseId = 'exam-p' | 'salesforce';
+export type CourseId = 'exam-p' | 'salesforce' | 'data-engineering';
 export type TopicGroup =
   'general' | 'univariate' | 'multivariate' | 'foundation';
 export interface Lesson {

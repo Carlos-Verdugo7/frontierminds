@@ -6,7 +6,7 @@ import { courses, lessonHref } from '@/content/catalog';
 import CourseShell from './CourseShell';
 import PracticeProblems from '@/components/PracticeProblems';
 import EmailCaseLab from './EmailCaseLab';
-import { deductibleLab, emailCaseLab, responseLab } from '@/content/activities';
+import { deductibleLab, emailCaseLab, responseLab, medallionLab } from '@/content/activities';
 import {
   JointExplorer,
   SamplingExplorer,
@@ -49,6 +49,9 @@ export default function LessonPage({
       <p className="text-lg text-slate-600 mt-4 max-w-3xl">{lesson.summary}</p>
       {course === 'exam-p' && ['6.1', '6.3'].includes(lesson.id) && (
         <Link href={deductibleLab.path} className="mt-4 inline-block text-[#203ead] underline">Try the deductible lab →</Link>
+      )}
+      {course === 'data-engineering' && ['1.3', '2.2', '2.3', '3.2'].includes(lesson.id) && (
+        <Link href={medallionLab.path} className="mt-4 inline-block text-[#203ead] underline">Explore the free medallion data-quality lab →</Link>
       )}
       {course === 'salesforce' && lesson.id === '1.6' && (
         <Link href={responseLab.path} className="mt-4 inline-block text-[#203ead] underline">Review AI replies in the case queue →</Link>
@@ -103,7 +106,7 @@ export default function LessonPage({
             {lesson.snippets && lesson.snippets.length > 0 && (
               <section className="space-y-3" aria-label="Copyable code and AI prompt examples">
                 <h2 className="text-xl font-semibold">Implementation examples</h2>
-                <p className="text-sm text-slate-600">These are educational examples, not commands executed against your Salesforce org. Review and adapt them before use.</p>
+                <p className="text-sm text-slate-600">These are educational examples, not code executed by FrontierMinds. Review, test and adapt them in an authorized practice environment before use.</p>
                 {lesson.snippets.map((snippet) => (
                   <details
                     key={snippet.title}

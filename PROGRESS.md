@@ -1,12 +1,12 @@
 # FrontierMinds development status
 
-Updated November 4, 2026.
+Updated November 24, 2026.
 
 ## Product roadmap
 
 1. Exam P: expand and improve the existing probability path.
 2. Salesforce: applied foundations are available; deeper administrator/developer specializations can follow.
-3. Snowflake: planned, with no lessons advertised as available yet.
+3. Data Engineering with AI: nine applied lessons and a browser-only medallion pipeline lab. Snowflake is an optional destination in the course, not a full standalone Snowflake certification path.
 4. Financial mathematics / Exam FM: on hold. Linear algebra is no longer promoted as an upcoming path.
 
 ## Exam P
@@ -58,3 +58,14 @@ Updated November 4, 2026.
 - Expand and independently review question difficulty and explanations before claiming comprehensive exam readiness. The original question bank was preserved, not fully re-audited.
 - Add account-backed progress only when sign-in and cross-device sync are needed.
 - Future Salesforce chapters can deepen LWC, advanced Flow diagnostics, CI/CD, integration resilience, and certification practice. Snowflake follows afterward.
+
+## Data Engineering with AI (November 24, 2026)
+
+- Three chapters, nine lessons, 27 knowledge-check questions.
+- Chapter 1: source-to-decision architecture, Fivetran Free Plan and usage/warehouse cost boundaries, local CSV and DuckDB ingestion.
+- Chapter 2: Bronze lineage and change versions, Silver deterministic deduplication/quarantine, Gold completed-order revenue and reconciliation.
+- Chapter 3: AI-assisted dbt code/test reviews, grounded analysis, reproducible local ReportLab PDF generation.
+- New no-key lab: /courses/data-engineering/labs/medallion with eight synthetic Bronze rows, seven order IDs, six valid Silver orders, and four Gold completed orders totaling $280; toggle deduplication/validation/status filters to demonstrate metric changes. The CSV is downloadable and reporting can be printed via the browser.
+- Official documentation and vendor Free Plan terms linked; ongoing Fivetran Free Plan is usage-limited and warehouse/AI fees are separate. The fully free path requires no Fivetran or other commercial account.
+- Course navigation, search metadata, home field guide, local course progress and optional AI tutor recognize the new course.
+- No real ingestion, cloud provisioning, subscription changes or PDF-generation backend is performed by FrontierMinds.

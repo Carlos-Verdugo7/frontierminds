@@ -154,7 +154,7 @@ test('policy applies inflation, deductible, participation, then PAYMENT cap', ()
   close(s.sd, 80);
 });
 test('question identities, answer choices, and every lesson practice set are valid', () => {
-  for (const course of ['exam-p', 'salesforce']) {
+  for (const course of ['exam-p', 'salesforce', 'data-engineering']) {
     const bank = allQuestions(course);
     assert.equal(new Set(bank.map((q) => q.key)).size, bank.length);
     for (const q of bank) {
@@ -272,4 +272,43 @@ test('Salesforce AI deployment chapter is navigable, complete, and practice-back
     assert.ok(full.snippets?.length >= 1, lesson.id);
     assert.equal(full.problems.length, 3, lesson.id);
   }
+});
+
+const {
+  DEFAULT_PIPELINE, ORDER_CSV, orders, currentOrders, evaluatePipeline,
+} = require('../src/lib/learning/medallion.ts');
+
+test('Data Engineering course has three chapters and valid no-key learning activities', () => {
+  const chapters = courses['data-engineering'].chapters;
+  assert.equal(chapters.length, 3);
+  assert.deepEqual(chapters.map(ch => ch.lessons.length), [3, 3, 3]);
+  assert.equal(courses['data-engineering'].lessons.length, 9);
+  assert.equal(allQuestions('data-engineering').length, 27);
+  const ids = chapters.flatMap(ch => ch.lessons.map(l => l.id));
+  assert.equal(new Set(ids).size, 9);
+  for (const lesson of courses['data-engineering'].lessons) {
+    assert.ok(lesson.blocks.length >= 3, lesson.id);
+    assert.ok(lesson.lab.length >= 3, lesson.id);
+    assert.ok(lesson.snippets?.length >= 1, lesson.id);
+    assert.equal(lesson.problems.length, 3, lesson.id);
+    assert.ok(lesson.source.url.startsWith('https://'), lesson.id);
+  }
+});
+
+test('medallion lab reconciles synthetic source into trusted Gold and detects quality mistakes', () => {
+  const result = evaluatePipeline(DEFAULT_PIPELINE);
+  assert.equal(orders.length, 8);
+  assert.equal(ORDER_CSV.trim().split('\n').length, 9);
+  assert.equal(new Set(orders.map(o => o.order_id)).size, 7);
+  assert.deepEqual(result.stages.map(s => [s.rows, s.amount]), [[8,450], [7,370], [6,390], [4,280]]);
+  assert.deepEqual(result.gold.map(o => o.order_id), ['1001','1002','1006','1007']);
+  assert.equal(result.rejected[0].order_id, '1004');
+  assert.equal(result.duplicateVersions, 1);
+  assert.equal(result.trusted, true);
+  assert.equal(currentOrders([...orders].reverse()).find(o => o.order_id === '1002').amount_usd, 90);
+  assert.equal(evaluatePipeline({...DEFAULT_PIPELINE, deduplicate:false}).revenue, 360);
+  assert.equal(evaluatePipeline({...DEFAULT_PIPELINE, validateAmount:false}).revenue, 260);
+  assert.equal(evaluatePipeline({...DEFAULT_PIPELINE, completedOnly:false}).revenue, 390);
+  assert.equal(evaluatePipeline({deduplicate:false, validateAmount:false, completedOnly:false}).revenue, 450);
+  assert.equal(evaluatePipeline({...DEFAULT_PIPELINE, completedOnly:false}).trusted, false);
 });
