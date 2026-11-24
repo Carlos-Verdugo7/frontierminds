@@ -1,6 +1,6 @@
 import { courses, lessonHref } from '@/content/catalog';
 import { communityGuides } from '@/content/community';
-import { deductibleLab, emailCaseLab, responseLab, schoolCall } from '@/content/activities';
+import { deductibleLab, emailCaseLab, responseLab, schoolCall, medallionLab } from '@/content/activities';
 import type { CourseId } from '@/lib/learning/types';
 
 type Area = CourseId | 'comunidad';
@@ -21,11 +21,12 @@ const studyResources: GuideEntry[] = [
 const activities: GuideEntry[] = [
   { ...deductibleLab, area: 'exam-p', detail: deductibleLab.description, keywords: 'insurance loss simulation deductible payout actuarial ai model', featured: true },
   { ...responseLab, area: 'salesforce', detail: responseLab.description, keywords: 'AI model case customer service review evidence agent', featured: true },
+  { ...medallionLab, area: 'data-engineering', detail: medallionLab.description, keywords: 'data engineering bronze silver gold medallion pipeline ingestion SQL Fivetran DuckDB dbt reporting AI', featured: true },
   { ...emailCaseLab, area: 'salesforce', detail: emailCaseLab.description, keywords: 'email flow automation duplicate missing acknowledgement' },
   { ...schoolCall, area: 'comunidad', detail: schoolCall.description, keywords: communityWords.escuela + ' llamada phone call practice', featured: true },
 ];
 export const guideIndex: GuideEntry[] = [];
-for (const area of ['exam-p', 'salesforce'] as const) {
+for (const area of ['exam-p', 'salesforce', 'data-engineering'] as const) {
   const course = courses[area];
   const base = '/courses/' + area;
   guideIndex.push({ title: course.title, path: base, detail: course.description, area, keywords: 'course curriculum guide curso', featured: true });
@@ -48,7 +49,7 @@ guideIndex.push(...activities, ...studyResources,
 function normalize(text: string) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9.]+/g, ' ').trim();
 }
-const areas = { 'exam-p': 'Exam P actuarial math probability', salesforce: 'Salesforce AI', comunidad: 'Comunidad español West Palm Beach' };
+const areas = { 'exam-p': 'Exam P actuarial math probability', salesforce: 'Salesforce AI', 'data-engineering': 'Data engineering Fivetran dbt DuckDB Snowflake Claude Codex medallion PDF', comunidad: 'Comunidad español West Palm Beach' };
 const indexed = guideIndex.map(entry => ({
   entry,
   title: normalize(entry.title),
