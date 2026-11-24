@@ -312,3 +312,34 @@ test('medallion lab reconciles synthetic source into trusted Gold and detects qu
   assert.equal(evaluatePipeline({deduplicate:false, validateAmount:false, completedOnly:false}).revenue, 450);
   assert.equal(evaluatePipeline({...DEFAULT_PIPELINE, completedOnly:false}).trusted, false);
 });
+
+
+const {
+  uscisJourneys, uscisLinks, sampleStatuses, uscisGlossary, uscisSafety, uscisReviewed,
+} = require('../src/content/uscis-guide.ts');
+
+test('USCIS community guide is safe, source linked and complete without case data', () => {
+  assert.equal(uscisReviewed, '2026-11-24');
+  assert.deepEqual(uscisJourneys.map(x => x.id), ['estado','cuenta','tiempos','direccion','ayuda']);
+  assert.equal(new Set(uscisJourneys.map(x=>x.id)).size, 5);
+  const allowed = new Set(['egov.uscis.gov', 'www.uscis.gov', 'my.uscis.gov', 'myaccount.uscis.gov']);
+  const urls = [...Object.values(uscisLinks), ...uscisJourneys.map(j=>j.url)];
+  for (const url of urls) {
+    assert.equal(new URL(url).protocol, 'https:', url);
+    assert.ok(allowed.has(new URL(url).hostname), url);
+  }
+  for (const journey of uscisJourneys) {
+    assert.ok(journey.steps.length >= 4, journey.id);
+    assert.ok(journey.officialLabel && journey.url && journey.remember, journey.id);
+    assert.ok(journey.steps.every(step => step.title && step.detail), journey.id);
+  }
+  assert.ok(sampleStatuses.length >= 5);
+  assert.equal(new Set(sampleStatuses.map(x=>x.id)).size, sampleStatuses.length);
+  assert.ok(sampleStatuses.every(x => x.english && x.spanish && x.meaning && x.next));
+  assert.ok(uscisGlossary.length >= 6);
+  assert.ok(uscisSafety.length >= 5);
+  const component = fs.readFileSync(path.join(__dirname, '../src/components/community/UscisGuide.tsx'), 'utf8');
+  assert.ok(!/<input\b|<textarea\b|localStorage|sessionStorage|fetch\(/i.test(component), 'USCIS practice must not collect or submit case data');
+  assert.match(component, /no es una página del gobierno/i);
+  assert.match(component, /\/comunidad\/uscis/);
+});
