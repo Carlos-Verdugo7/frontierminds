@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     } = await request.json();
 
     if (
-      !['exam-p', 'salesforce'].includes(course) ||
+      !['exam-p', 'salesforce', 'data-engineering'].includes(course) ||
       (labRules !== undefined && (course !== 'salesforce' || problemContext !== undefined || !validLabRules(labRules))) ||
       !Array.isArray(messages) ||
       messages.length > 30 ||
@@ -68,7 +68,9 @@ export async function POST(request: NextRequest) {
     const courseContext =
       course === 'salesforce'
         ? 'Teach Salesforce applied foundations: data modeling, access, Flow, reporting, SOQL, and integrations. Labs use a Playground or sandbox. Do not claim to inspect or modify an org. Explain configuration assumptions.'
-        : 'Teach probability for Actuarial Exam P. Separate current syllabus preparation from optional enrichment such as MGF techniques. Explain assumptions and reasoning.';
+        : course === 'data-engineering'
+          ? 'Teach data engineering with synthetic examples only: ingestion, Fivetran billing limits, Bronze/Silver/Gold, DuckDB, dbt tests and evidence-first PDF reports. Distinguish optional paid tools from no-key local alternatives. Do not claim to inspect a real warehouse, execute a deployment, or verify generated code without evidence.'
+          : 'Teach probability for Actuarial Exam P. Separate current syllabus preparation from optional enrichment such as MGF techniques. Explain assumptions and reasoning.';
     const client = getOpenAI();
     if (!client) {
       return NextResponse.json(
