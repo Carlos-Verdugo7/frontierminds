@@ -298,7 +298,7 @@ test('Data Engineering course has three chapters and valid no-key learning activ
 test('medallion lab reconciles synthetic source into trusted Gold and detects quality mistakes', () => {
   const result = evaluatePipeline(DEFAULT_PIPELINE);
   assert.equal(orders.length, 8);
-  assert.equal(ORDER_CSV.trim().split('\\n').length, 9);
+  assert.equal(ORDER_CSV.trim().split('\n').length, 9);
   assert.equal(new Set(orders.map(o => o.order_id)).size, 7);
   assert.deepEqual(result.stages.map(s => [s.rows, s.amount]), [[8,450], [7,370], [6,390], [4,280]]);
   assert.deepEqual(result.gold.map(o => o.order_id), ['1001','1002','1006','1007']);
