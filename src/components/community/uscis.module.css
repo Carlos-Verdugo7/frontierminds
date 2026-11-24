@@ -96,4 +96,4 @@
 @media(max-width:900px){ .goals { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(max-width:700px){ .hero,.duo,.statusGrid,.safety,.end { grid-template-columns:1fr; } .hero { padding:40px 0; } .goal { padding:12px; } .goals { grid-template-columns:repeat(2,minmax(0,1fr)); } .glossary { grid-template-columns:1fr; } .walkActions { align-items:start; } }
 @media(max-width:430px){ .controls { width:100%; justify-content:space-between; } .step { gap:11px; } .stepNum { width:31px;height:31px; } .visualInner h2 { font-size:1.55rem; } }
-@media(prefers-reduced-motion:reduce){ * { scroll-behavior:auto !important; } }
+@media(prefers-reduced-motion:reduce){ .page * { scroll-behavior:auto !important; } }
