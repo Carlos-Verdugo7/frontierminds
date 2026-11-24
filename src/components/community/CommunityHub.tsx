@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MessageCircle, Sparkles, Zap } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, CheckCheck, ClipboardList, GraduationCap, Languages, Mail, MessageCircle, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { communityGuides, communityPosts, communityTasks, guidePreparation, type CommunityTopic } from '@/content/community';
 import { trackCommunity } from '@/lib/community-analytics';
@@ -109,14 +109,17 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
         <div className={styles.heroCopy}>
           <p className={styles.location}>Comunidad en español</p>
           <h1>Guías para familias de <em>West Palm Beach.</em></h1>
-          <p className={styles.intro}>Encuentra los pasos, documentos y contactos para pedir ayuda con la luz, buscar trabajo, inscribir a tus hijos o aprender inglés.</p>
-          <div className={styles.actions}><a className={styles.primary} href="#recursos">Elegir una guía <ArrowDown size={17} aria-hidden="true" /></a><Link className={styles.textLink} href={schoolCall.path}>Practicar una llamada a la escuela <ArrowUpRight size={16} aria-hidden="true" /></Link></div>
+          <p className={styles.intro}>Encuentra orientación en español para usar USCIS, pedir ayuda con la luz, buscar trabajo, inscribir a tus hijos o aprender inglés.</p>
+          <div className={styles.actions}><a className={styles.primary} href="#recursos">Elegir una guía <ArrowDown size={17} aria-hidden="true" /></a><Link className={styles.textLink} href="/comunidad/uscis">Aprender a usar USCIS <ArrowUpRight size={16} aria-hidden="true" /></Link></div>
         </div>
         <Image className={styles.coverPhoto} src="/field-guides/comunidad.webp" alt="" width={960} height={640} sizes="(max-width: 600px) 100vw, 40vw" loading="eager" />
       </header>
 
       <section id="recursos" className={styles.section} aria-labelledby="resources-title">
         <div className={styles.sectionHeading}><h2 id="resources-title">¿Qué ayuda necesitas?</h2></div>
+        <Link href="/comunidad/uscis" className={styles.uscisPromo} aria-label="Abrir la guía gratis para aprender a usar USCIS">
+          <span><ShieldCheck size={27} aria-hidden="true" /></span><div><strong>Aprende a usar USCIS en español</strong><p>Consulta el estatus, entiende los avisos y practica cómo usar las herramientas oficiales, sin compartir datos personales.</p></div><ArrowUpRight size={22} aria-hidden="true" />
+        </Link>
         <div className={styles.topics} aria-label="Temas de ayuda">
           {communityGuides.map(item => {
             const Icon = icons[item.id];

@@ -4,6 +4,8 @@ Free interactive learning paths for Data Engineering with AI, Actuarial Exam P a
 
 ## Comunidad
 
+- `/comunidad/uscis`: guía independiente en español para aprender a consultar el estatus, usar myUSCIS, interpretar mensajes y tiempos, actualizar dirección y reconocer estafas. Incluye un recorrido interactivo y estados de muestra sin formularios ni datos reales; los trámites se hacen únicamente en USCIS.gov. Las fuentes y fecha de revisión están en `src/content/uscis-guide.ts`.
+
 `/comunidad` adds Spanish resource guides for West Palm Beach families, editorial posts, private email feedback, topic-level Analytics events, and AI-assisted preparation using reviewed guides. The existing courses remain available. See [COMMUNITY.md](COMMUNITY.md) for posting instructions, Analytics setup, email behavior, and AI deployment details.
 
 The homepage features a new Data Engineering field guide alongside the existing actuarial and Salesforce courses and Spanish community resources. Choosing a deductible carries it into the full actuarial lab. The fair-coin explorer is available under Learning paths. Course counts come from the catalog.

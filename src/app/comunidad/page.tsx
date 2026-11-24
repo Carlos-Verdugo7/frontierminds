@@ -3,7 +3,7 @@ import { pageMetadata } from '@/lib/page-metadata';
 
 export const metadata = pageMetadata({
   path: '/comunidad', locale: 'es_US', title: 'Comunidad | Ayuda en West Palm Beach',
-  description: 'Guías en español para encontrar ayuda con la luz, buscar trabajo, inscribir a tus hijos y aprender inglés en Palm Beach County.',
+  description: 'Guías gratuitas en español para usar USCIS, consultar el estatus de una solicitud, encontrar ayuda con la luz, buscar trabajo, inscribir a tus hijos y aprender inglés.',
 });
 
 export default function CommunityPage() {

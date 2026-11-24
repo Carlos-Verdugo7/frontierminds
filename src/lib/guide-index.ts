@@ -24,6 +24,7 @@ const activities: GuideEntry[] = [
   { ...medallionLab, area: 'data-engineering', detail: medallionLab.description, keywords: 'data engineering bronze silver gold medallion pipeline ingestion SQL Fivetran DuckDB dbt reporting AI', featured: true },
   { ...emailCaseLab, area: 'salesforce', detail: emailCaseLab.description, keywords: 'email flow automation duplicate missing acknowledgement' },
   { ...schoolCall, area: 'comunidad', detail: schoolCall.description, keywords: communityWords.escuela + ' llamada phone call practice', featured: true },
+  { title: 'Cómo usar USCIS en español', path: '/comunidad/uscis', area: 'comunidad', detail: 'Aprende a consultar el estatus de un caso, crear tu cuenta myUSCIS, interpretar avisos y encontrar ayuda oficial sin compartir datos personales.', keywords: 'USCIS inmigración immigration migración estatus caso aplicación solicitud green card residencia recibo carta RFE I-797 cuenta myUSCIS tiempos procesamiento dirección dirección cambiar dirección notario', featured: true },
 ];
 export const guideIndex: GuideEntry[] = [];
 for (const area of ['exam-p', 'salesforce', 'data-engineering'] as const) {

@@ -69,3 +69,10 @@ Updated November 24, 2026.
 - Official documentation and vendor Free Plan terms linked; ongoing Fivetran Free Plan is usage-limited and warehouse/AI fees are separate. The fully free path requires no Fivetran or other commercial account.
 - Course navigation, search metadata, home field guide, local course progress and optional AI tutor recognize the new course.
 - No real ingestion, cloud provisioning, subscription changes or PDF-generation backend is performed by FrontierMinds.
+
+## Comunidad: guía de USCIS (noviembre 24, 2026)
+
+- Ruta dedicada en español: /comunidad/uscis, enlazada desde Comunidad y búsqueda.
+- Cinco recorridos guiados para estatus, cuenta myUSCIS, tiempos, dirección y avisos/ayuda.
+- Simulador de frases ilustrativas, glosario inglés/español, enlaces a dominios oficiales y advertencias contra estafas.
+- No se capturan números de recibo, contraseñas ni información de casos; no hay integración con USCIS ni asesoramiento legal.

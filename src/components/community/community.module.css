@@ -230,3 +230,12 @@
 .disclosure { padding-block: 22px; font-size: .81rem; }
 .disclosure details { margin-top: 8px; }
 @media (max-width: 640px) { .hero { grid-template-columns: 1fr; gap: 18px; } .coverPhoto { aspect-ratio: 2.75; } }
+
+.uscisPromo { display:flex; align-items:center; gap:19px; padding:20px 23px; margin-bottom:22px; border:1px solid #aab7ab; border-radius:8px; background:#e9f0ea; text-decoration:none; }
+.uscisPromo>span { display:grid; place-items:center; border-radius:8px; width:50px; height:50px; color:#36594a; background:#fffdf7; flex:none; }
+.uscisPromo div { flex:1; }
+.uscisPromo strong { display:block; font-size:1.05rem; font-weight:650; }
+.uscisPromo p { color:#4e6256; font-size:.85rem; line-height:1.65; margin-top:5px; }
+.uscisPromo>svg { flex:none; color:#36594a; }
+.uscisPromo:hover { border-color:#476952; background:#deeadf; }
+@media(max-width:480px){ .uscisPromo { padding:16px; gap:12px; } .uscisPromo>span { width:38px; height:38px; } .uscisPromo>svg { width:17px; } }
