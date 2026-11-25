@@ -117,6 +117,9 @@ export default function CommunityHub({ aiEnabled }: { aiEnabled: boolean }) {
 
       <section id="recursos" className={styles.section} aria-labelledby="resources-title">
         <div className={styles.sectionHeading}><h2 id="resources-title">¿Qué ayuda necesitas?</h2></div>
+        <Link href="/comunidad/precios" className={styles.uscisPromo} aria-label="Comparar precios semanales de supermercados">
+          <span><ShieldCheck size={27} aria-hidden="true" /></span><div><strong>Compara precios de carne y alimentos</strong><p>Ofertas semanales verificadas en West Palm Beach, con dirección, fechas y enlace al anuncio original.</p></div><ArrowUpRight size={22} aria-hidden="true" />
+        </Link>
         <Link href="/comunidad/uscis" className={styles.uscisPromo} aria-label="Abrir la guía gratis para aprender a usar USCIS">
           <span><ShieldCheck size={27} aria-hidden="true" /></span><div><strong>Aprende a usar USCIS en español</strong><p>Consulta el estatus, entiende los avisos y practica cómo usar las herramientas oficiales, sin compartir datos personales.</p></div><ArrowUpRight size={22} aria-hidden="true" />
         </Link>
