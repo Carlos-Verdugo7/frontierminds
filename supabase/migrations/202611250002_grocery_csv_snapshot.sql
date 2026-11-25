@@ -53,16 +53,55 @@ alter table public.wpb_grocery_prices enable row level security;
 revoke all on public.grocery_csv_batches,public.wpb_grocery_stores,public.wpb_grocery_prices from anon,authenticated;
 grant select on public.grocery_csv_batches,public.wpb_grocery_stores,public.wpb_grocery_prices to anon,authenticated;
 
-create policy "csv batches published or admin" on public.grocery_csv_batches for select
- to anon,authenticated using(status='published' or (select public.is_grocery_admin()));
-create policy "csv stores published or admin" on public.wpb_grocery_stores for select
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_csv_batches'
+      AND policyname = 'csv batches published or admin'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "csv batches published or admin" on public.grocery_csv_batches for select
+ to anon,authenticated using(status='published' or (select public.is_grocery_admin()))
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'wpb_grocery_stores'
+      AND policyname = 'csv stores published or admin'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "csv stores published or admin" on public.wpb_grocery_stores for select
  to anon,authenticated using(
  exists(select 1 from public.grocery_csv_batches b where b.id=batch_id and b.status='published')
- or (select public.is_grocery_admin()));
-create policy "csv prices published or admin" on public.wpb_grocery_prices for select
+ or (select public.is_grocery_admin()))
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'wpb_grocery_prices'
+      AND policyname = 'csv prices published or admin'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "csv prices published or admin" on public.wpb_grocery_prices for select
  to anon,authenticated using(
  exists(select 1 from public.grocery_csv_batches b where b.id=batch_id and b.status='published')
- or (select public.is_grocery_admin()));
+ or (select public.is_grocery_admin()))
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
 
 -- A flyer can cover many distinct store locations. Preserve original rows and
 -- join only when BOTH flyer_id and chain match, so chains cannot leak prices.
