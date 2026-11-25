@@ -254,7 +254,7 @@ grant execute on function public.grocery_publish_week(date) to authenticated;
 create or replace function public.grocery_remove_offer(
  p_id uuid, p_allow_published boolean default false
 ) returns jsonb
-language plpgsql security definer set search_path = public, pg_temp as $
+language plpgsql security definer set search_path = public, pg_temp as $$
 declare v_week_id uuid; v_week_status text;
 begin
  if not public.is_grocery_admin() then raise exception 'Not authorized'; end if;
@@ -268,7 +268,7 @@ begin
  delete from public.grocery_offers where id=p_id;
  update public.grocery_weeks set updated_at=now() where id=v_week_id;
  return jsonb_build_object('removed',true);
-end; $;
+end; $$;
 revoke all on function public.grocery_remove_offer(uuid,boolean) from public;
 grant execute on function public.grocery_remove_offer(uuid,boolean) to authenticated;
 
