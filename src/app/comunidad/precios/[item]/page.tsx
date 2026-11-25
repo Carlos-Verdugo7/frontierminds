@@ -1,0 +1,11 @@
+import {notFound} from 'next/navigation';
+import Link from 'next/link';
+import type {Metadata} from 'next';
+import {published,current,fmt,weekStart} from '@/lib/grocery/data';
+import {groceryJsonLd,safeJson} from '@/lib/grocery/seo';
+import PriceTable from '@/components/grocery/PriceTable';
+import styles from '@/components/grocery/grocery.module.css';
+export const revalidate=300;
+type Params={params:Promise<{item:string}>};
+export async function generateMetadata({params}:Params):Promise<Metadata>{const {item}=await params;const r=await published();const row=r.offers.find(o=>o.item_slug===item);return {title:(row?.item_name||'Comparar precios')+' en West Palm Beach esta semana | FrontierMinds',description:'Precios semanales con fechas, tienda y anuncio original.',robots:row?undefined:{index:false},alternates:{canonical:'https://www.frontierminds.io/comunidad/precios/'+encodeURIComponent(item)}}}
+export default async function ItemPage({params}:Params){const {item}=await params;const r=await published();const rows=r.offers.filter(o=>o.item_slug===item);if(!rows.length)notFound();const active=current(rows).sort((a,b)=>a.price_usd-b.price_usd);const first=rows[0];return <main className={styles.main} lang="es"><div className={styles.container}><nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios</Link><span>›</span><span>{first.item_name}</span></nav><p className={styles.eyebrow}>COMPARACIÓN DE PRECIOS</p><h1 className="text-4xl font-semibold tracking-tight mt-3">{first.item_name} en West Palm Beach</h1><p className={styles.date}><strong>Semana:</strong> {fmt(weekStart())}. <strong>Última actualización:</strong> {active.length?new Date(Math.max(...active.map(o=>new Date(o.updated_at).getTime()))).toLocaleString('es-US',{timeZone:'America/New_York'}):'sin ofertas vigentes'}.</p><p className={styles.muted}>Especificación: {first.specification}. Comparamos solo la misma unidad y presentación. Los precios están ordenados de menor a mayor.</p><PriceTable offers={active} showItem={false}/><div className={styles.links}><Link href="/comunidad/precios">Ver todos los precios</Link></div><script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJson(groceryJsonLd(active,first.item_name+' en West Palm Beach'))}}/></div></main>}
