@@ -99,3 +99,13 @@ from public.grocery_feedback order by submitted_at desc limit 50;
 -- Clean up after a verified request to remove one specific response:
 -- delete from public.grocery_feedback where id = 'UUID_FROM_VERIFIED_REQUEST';
 \`\`\`
+
+## Redeploy after production environment changes
+
+FrontierMinds is connected to Vercel via the `main` branch. A new commit to
+`main` triggers a fresh production build using the current Production
+scoped environment variables, without editing application logic. Confirm the
+result in Vercel Deployments and verify the public page and feedback endpoint
+before collecting real contact information. Email-based account verification
+issues should be resolved through the provider's official account recovery
+flow, not by requesting verification codes in application logs.
