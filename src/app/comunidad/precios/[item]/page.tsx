@@ -34,5 +34,5 @@ export default async function ItemPage({params}:Params){
   <PriceTable offers={active} showItem={false} comparison/>
   <div className={styles.links}><Link href="/comunidad/precios">Ver todas las tiendas y productos</Link><Link href="/comunidad/precios/archivo">Precios anteriores (no vigentes)</Link></div>
   {active.length>0&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJson(groceryJsonLd(active,first.compare_item||first.item_en))}}/>}
- </div></main>;
+ <GroceryFeedback section="comparison" contextSlug={item}/></div></main>;
 }

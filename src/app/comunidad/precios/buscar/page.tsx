@@ -39,5 +39,5 @@ export default async function Search({searchParams}:P){
    <button type="submit">Filtrar</button>
   </form>
   <section className={styles.section}><h2>Resultados ordenados por precio comparable</h2><PriceTable offers={filtered} comparison/></section>
- </div></main>;
+ <GroceryFeedback section="search" contextSlug={null}/></div></main>;
 }

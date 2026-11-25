@@ -45,5 +45,5 @@ export default async function GroceryHome(){
   </section>
   <section className={styles.section}><h2>Semanas archivadas</h2><div className={styles.links}>{archive.map(date=><Link key={date} href={'/comunidad/precios/archivo/'+date}>{fmt(date)}</Link>)}</div></section>
   <p className={styles.small}>Fuente: anuncios aportados y fechados, no inventario en tiempo real. Confirma disponibilidad, límites de cantidad y precios definitivos con el establecimiento.</p>
- </div></main>;
+ <GroceryFeedback section="home" contextSlug={null}/></div></main>;
 }

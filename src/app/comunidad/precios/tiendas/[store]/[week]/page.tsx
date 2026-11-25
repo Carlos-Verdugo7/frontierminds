@@ -35,5 +35,5 @@ export default async function StoreWeek({params}:P){
   {upcoming.length>0&&<section className={styles.section}><h2>Ofertas futuras — todavía no vigentes</h2><PriceTable offers={upcoming} showStore={false}/></section>}
   {expired.length>0&&<section className={styles.section}><h2>Archivo — ofertas vencidas</h2><p className={styles.muted}>Estas ofertas son históricas. No uses estos importes como precios actuales.</p><PriceTable offers={expired} showStore={false}/></section>}
   {currentRows.length>0&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJson(groceryJsonLd(currentRows,'Ofertas de '+o.chain))}}/>}
- </div></main>;
+ <GroceryFeedback section="store" contextSlug={store}/></div></main>;
 }
