@@ -3,23 +3,33 @@
 Free interactive learning paths for Data Engineering with AI, Actuarial Exam P and Salesforce & AI Development, built with Next.js, TypeScript and React. Snowflake appears as an optional warehouse in the Data Engineering path; financial mathematics remains on hold.
 
 
-## Grocery Price Watch (in development)
+## Grocery Price Watch (CSV-driven)
 
-The feature is staged on a PR until Supabase is fully linked and the SQL
-migration has been tested. It never publishes fabricated prices.
+The community grocery feature uses **exactly two user-supplied CSV files**,
+stored as seed inputs in \`data/grocery/\`:
 
-- \`/comunidad/precios\` — verified current-week grocery prices
-- \`/comunidad/precios/buscar\` — server-rendered search and filtering
-- \`/comunidad/precios/tiendas/[store]/[week]\` — store/week pages
-- \`/comunidad/precios/archivo\` — archived weekly prices
-- \`/api/grocery-prices/current\` — read-only public current-week JSON
-- \`/admin/grocery-prices\` — private Supabase Auth CSV editor
+- \`wpb_grocery_prices.csv\` — 482 advertised rows, 25 original columns.
+- \`wpb_grocery_stores.csv\` — 22 locations, 12 original columns, including
+  the provided Bravo store at 5011 Broadway, West Palm Beach, FL 33407.
 
-Read \`supabase/GROCERY_SETUP.md\` before deployment. Apply the SQL migration
-to the intended project, configure Vercel integration variables, provision your
-private admin account, and run the security checks. The public pages contain
-no client-side price fetch. Anon RLS is read-only for published offers.
+The product-to-location relation is \`chain + flyer_id\` (a flyer may cover
+several stores). Comparisons are generated from \`compare_item\` and
+\`price_per_compare_unit\` and show \`match_note\` alongside the price.
+Rows without \`compare_item\` are listed on store pages only. The default
+geographic filter is \`palm_beach_county=yes\`. Current offers require
+\`valid_from <= today <= valid_to\` (Florida time); archives preserve older
+rows. All prices display \`price_type\` and \`membership_required\`.
 
+Public pages are server-rendered, indexed by sitemap/robots and accompanied
+by read-only JSON at \`/api/grocery-prices/current\`.
+The private \`/admin/grocery-prices\` accepts the two exact CSV formats in
+one atomic batch, maintains drafts, and requires an explicit publish action.
+
+**Read [the Supabase setup guide](supabase/GROCERY_SETUP.md) before launch.**
+Apply migrations \`202611250001\` and \`202611250002\` in order. The optional
+\`supabase/seed_grocery_20261125.sql\` loads the original CSV values as
+an unpublished draft. The site does not run migrations on deployment or
+publish anything before administrator approval.
 
 ## Comunidad
 
