@@ -1,0 +1,23 @@
+id,chain,flyer_id,store_number,address,city,state,zip,phone,hours_mon_sat,hours_sun,palm_beach_county
+1,Presidente Supermarket,PRES-A,7,2485 10th Ave. North,Lake Worth,FL,33461,(561) 432-5353,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+2,Presidente Supermarket,PRES-A,38,3131 Forest Hill Blvd.,West Palm Beach,FL,33406,(561) 642-2209,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+3,Presidente Supermarket,PRES-A,45,6406 Lake Worth Rd.,Greenacres,FL,33463,(561) 433-4831,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+4,Presidente Supermarket,PRES-A,51,2675 S Military Trl.,West Palm Beach,FL,33415,(561) 273-1901,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+5,Presidente Supermarket,PRES-A,58,2505 North Dixie Highway,Lake Worth,FL,33460,(561) 292-1320,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+6,Presidente Supermarket,PRES-B,5,450 NE 125th Street,North Miami,FL,33161,(305) 895-8282,7:00 AM-9:45 PM,7:00 AM-8:45 PM,no
+7,Presidente Supermarket,PRES-B,25,621 NW 62nd Street,Miami,FL,33150,(305) 756-9628,7:00 AM-9:45 PM,7:00 AM-8:45 PM,no
+8,Presidente Supermarket,PRES-B,36,8100 N Miami Ave.,Miami,FL,33150,(305) 751-1545,7:00 AM-9:45 PM,7:00 AM-8:45 PM,no
+9,Presidente Supermarket,PRES-B,37,"1225 45th Street, Suite 300 (Mangonia Park)",West Palm Beach,FL,33407,(561) 840-9614,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+10,Presidente Supermarket,PRES-B,40,"1565 S Congress Ave., Bay #2",Delray Beach,FL,33445,(561) 243-1195,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+11,Presidente Supermarket,PRES-B,43,1035 NW 9th Ave.,Fort Lauderdale,FL,33311,(954) 523-2935,7:00 AM-9:45 PM,7:00 AM-8:45 PM,no
+12,Presidente Supermarket,PRES-B,53,4360 Okeechobee Blvd.,West Palm Beach,FL,33409,(561) 323-4056,7:00 AM-9:45 PM,7:00 AM-8:45 PM,yes
+13,El Bodegon,BOD,1,4704 Forest Hill Blvd.,West Palm Beach,FL,33415,(561) 967-2121,8:00 AM-8:00 PM,8:00 AM-8:00 PM,yes
+14,El Bodegon,BOD,2,6128 South Congress Ave.,Lantana,FL,33463,(561) 967-7273,8:00 AM-8:00 PM,8:00 AM-8:00 PM,yes
+15,El Bodegon,BOD,4,4481 Lake Worth Rd.,Lake Worth,FL,33461,(561) 967-2177,8:00 AM-8:00 PM,8:00 AM-8:00 PM,yes
+16,El Bodegon,BOD,5,1910 Lake Worth Rd.,Lake Worth,FL,33461,(561) 967-6999,8:00 AM-9:00 PM,8:00 AM-9:00 PM,yes
+17,El Bodegon,BOD,6,6356 Forest Hills Blvd.,Greenacres,FL,33414,(561) 967-7300,8:00 AM-8:00 PM,8:00 AM-8:00 PM,yes
+18,El Bodegon,BOD,7,10201 Southern Blvd.,Royal Palm Beach,FL,33411,(561) 609-3000,8:00 AM-8:00 PM,8:00 AM-8:00 PM,yes
+19,Tapatia Supermarket,TAP,,3819 Westgate Ave.,West Palm Beach,FL,33409,,5:00 AM-9:30 PM,6:00 AM-9:00 PM,yes
+20,Tapatia Supermarket,TAP,,4601 Broadway,West Palm Beach,FL,33407,,5:00 AM-9:30 PM,6:00 AM-9:00 PM,yes
+21,Tapatia Supermarket,TAP,,5311 N State Road 7,Tamarac,FL,33319,,5:00 AM-9:30 PM,6:00 AM-9:00 PM,no
+22,Bravo Supermarkets,BRAVO,,5011 Broadway,West Palm Beach,FL,33407,,,,yes
