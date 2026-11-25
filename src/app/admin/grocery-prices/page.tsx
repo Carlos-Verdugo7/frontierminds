@@ -12,12 +12,14 @@ export default async function AdminPage({searchParams}:Params){
  const success=typeof query.success==='string'?query.success:null;
  const weeks=token?await request('/rest/v1/grocery_weeks?select=week_start,status,updated_at,published_at&order=week_start.desc&limit=25',{bearer:token,fresh:true}):null;
  const entries=Array.isArray(weeks?.data)?weeks.data as {week_start:string;status:string;updated_at:string;published_at:string|null}[]:[];
+ const offerResponse=token?await request('/rest/v1/grocery_editor_prices?select=*&order=week_start.desc,store_name.asc&limit=500',{bearer:token,fresh:true}):null;
+ const offerRows=Array.isArray(offerResponse?.data)?offerResponse.data as {id:string;week_start:string;status:string;store_name:string;item_name:string;specification:string;price_usd:number;unit:string;valid_from:string;valid_to:string;source_url:string}[]:[];
  return <main className={styles.main} lang="es"><div className={styles.container}>
  <nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios públicos</Link><span>›</span><span>Administración</span></nav>
  <p className={styles.eyebrow}>ACCESO RESTRINGIDO</p><h1 className="text-4xl font-semibold tracking-tight mt-3">Administrar precios semanales</h1>
  {!config()&&<p className={styles.adminNote}>Configura SUPABASE_URL y una clave publicable/anon en Vercel, y aplica la migración de Supabase. No copies claves secretas aquí.</p>}
  {error&&<p className={styles.error} role="alert">{error==='login'?'Credenciales inválidas o usuario sin permiso.':error==='csv'?'CSV inválido; revisa la plantilla, fechas y columnas.':error==='week'?'La semana debe comenzar en lunes.':error==='file'?'Elige un archivo CSV de menos de 160 KB.':'No se pudo completar la operación. Comprueba la migración, la configuración y los permisos.'}</p>}
- {success&&<p className={styles.success} role="status">{success==='publish'?'Semana publicada.':'Importación completada. Revisa los registros antes de publicar.'}</p>}
+ {success&&<p className={styles.success} role="status">{success==='publish'?'Semana publicada.':success==='remove'?'Oferta eliminada.':'Importación completada. Revisa los registros antes de publicar.'}</p>}
  {!token?<><p className={styles.muted}>Solo los administradores autorizados mediante Supabase Auth pueden subir y publicar precios. Ningún visitante puede escribir datos.</p><form method="post" action="/admin/grocery-prices/login" className={styles.form}>
  <label htmlFor="email">Correo administrador</label><input id="email" name="email" type="email" required maxLength={254} autoComplete="username"/>
  <label htmlFor="password">Contraseña</label><input id="password" name="password" type="password" required maxLength={300} autoComplete="current-password"/>
@@ -37,6 +39,14 @@ export default async function AdminPage({searchParams}:Params){
  <section className={styles.section}><h2>2. Revisar y publicar</h2>
  {!entries.length&&<p className={styles.muted}>Sin semanas importadas, o la migración todavía no se ha aplicado.</p>}
  <div className={styles.cards}>{entries.map(w=><div className={styles.card} key={w.week_start}><strong>{w.week_start}</strong><small>{w.status==='published'?'Publicado':'Borrador'} · {new Date(w.updated_at).toLocaleString('es-US',{timeZone:'America/New_York'})}</small>{w.status!=='published'&&<form method="post" action="/admin/grocery-prices/publish" className="mt-3"><input type="hidden" name="week_start" value={w.week_start}/><button type="submit" className={styles.pill}>Publicar semana</button></form>}</div>)}</div>
+ </section>
+ <section className={styles.section}><h2>3. Revisar ofertas importadas</h2><p className={styles.muted}>Aquí puedes comprobar precios y anuncios antes de publicar. Una nueva importación de la misma semana actualiza los productos coincidentes.</p>
+ <div className={styles.tableWrap}><table className={styles.table}><thead><tr><th>Semana</th><th>Producto y tienda</th><th>Precio</th><th>Anuncio</th><th>Acción</th></tr></thead><tbody>{offerRows.map(o=><tr key={o.id}>
+ <td>{o.week_start}<small>{o.status}</small></td><td>{o.item_name}<small>{o.specification} · {o.store_name}</small></td><td className={styles.price}>${Number(o.price_usd).toFixed(2)}<small>por {o.unit}</small></td><td><a href={o.source_url} rel="noopener noreferrer nofollow" target="_blank">Ver fuente ↗</a><small>{o.valid_from} a {o.valid_to}</small></td><td><form method="post" action="/admin/grocery-prices/remove">
+ <input type="hidden" name="offer_id" value={o.id}/><input type="hidden" name="allow_published" value={o.status==='published'?'yes':'no'}/>
+ <label className={styles.small}><input type="checkbox" name="confirm" required style={{width:'auto',marginRight:5}}/>Confirmar eliminación</label><button type="submit" className={styles.pill}>Eliminar</button></form></td>
+ </tr>)}</tbody></table></div>
+ {!offerRows.length&&<p className={styles.empty}>Todavía no hay precios importados que revisar.</p>}
  </section></>}
  <p className={styles.small}>Solo se guardan precios publicados, sus fuentes y fechas. Esta página privada no ofrece cuentas al público.</p>
  </div></main>

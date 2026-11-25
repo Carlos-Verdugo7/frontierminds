@@ -60,8 +60,8 @@ store_slug,store_name,street_address,city,zip,item_slug,item_name,category,speci
 - The import uses a database transaction: invalid entries fail the batch.
 - Review the saved week and then click **Publish**. Drafts are not public.
 - CSV re-import updates matching offers; it does not automatically delete
-  entries missing from the uploaded batch. To remove a mistaken offer, use
-  the authenticated Supabase SQL Editor and record the correction.
+  entries missing from the uploaded batch. The private editor lists imported
+  rows with an explicit confirmation control for deleting an incorrect offer.
 
 ## 5. Public pages and indexing
 

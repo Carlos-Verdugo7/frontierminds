@@ -250,6 +250,28 @@ $$;
 revoke all on function public.grocery_publish_week(date) from public;
 grant execute on function public.grocery_publish_week(date) to authenticated;
 
+-- Remove one mistaken listing through an authenticated editor workflow.
+create or replace function public.grocery_remove_offer(
+ p_id uuid, p_allow_published boolean default false
+) returns jsonb
+language plpgsql security definer set search_path = public, pg_temp as $
+declare v_week_id uuid; v_week_status text;
+begin
+ if not public.is_grocery_admin() then raise exception 'Not authorized'; end if;
+ select o.week_id,w.status into v_week_id,v_week_status
+   from public.grocery_offers o join public.grocery_weeks w on w.id=o.week_id
+   where o.id=p_id for update of o;
+ if v_week_id is null then raise exception 'Offer not found'; end if;
+ if v_week_status='published' and not p_allow_published then
+   raise exception 'Published offer requires explicit correction confirmation';
+ end if;
+ delete from public.grocery_offers where id=p_id;
+ update public.grocery_weeks set updated_at=now() where id=v_week_id;
+ return jsonb_build_object('removed',true);
+end; $;
+revoke all on function public.grocery_remove_offer(uuid,boolean) from public;
+grant execute on function public.grocery_remove_offer(uuid,boolean) to authenticated;
+
 -- After creating your ONE Supabase Auth administrator, grant access manually:
 -- insert into public.grocery_admins(user_id)
 -- select id from auth.users where email = 'YOUR_ADMIN_EMAIL@example.com';
