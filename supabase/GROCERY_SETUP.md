@@ -79,6 +79,20 @@ non-URL source references show the label, not a fabricated hyperlink. If
 the source is a private uploaded flyer, consider publicly hosting a legally
 permitted source document first so readers and crawlers can verify it.
 
+### Alternative: one-time SQL seed in Supabase SQL Editor
+
+If the private admin has not been created yet, you can load **the same
+482-price/22-store CSV snapshot as a draft** by running
+\`supabase/seed_grocery_20261125.sql\` in the Supabase SQL Editor **after**
+both schema migrations. That generated file contains the exact uploaded
+CSV values (and the Bravo Broadway row) as JSON for \`jsonb_to_recordset\`.
+It checks row counts, uses a transaction, and refuses to overwrite a
+published batch.
+
+This seed does **not** publish prices. Create and authorize your admin,
+inspect the draft, and explicitly publish once the offer sources have
+been checked. For following weeks, use the normal two-CSV upload.
+
 ## 5. How public comparisons work
 
 - Today's date is evaluated in \`America/New_York\` and must fall between
