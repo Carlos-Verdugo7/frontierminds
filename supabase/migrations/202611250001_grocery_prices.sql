@@ -191,18 +191,26 @@ begin
     insert into public.grocery_stores(slug,name,street_address,city,state,zip)
     values (v_store_slug, v_row->>'store_name',
             v_row->>'street_address', v_row->>'city', 'FL', v_row->>'zip')
-    on conflict(slug) do update
-      set name=excluded.name, street_address=excluded.street_address,
-          city=excluded.city, zip=excluded.zip
+    on conflict(slug) do update set name=excluded.name
+      where public.grocery_stores.street_address=excluded.street_address
+        and public.grocery_stores.city=excluded.city
+        and public.grocery_stores.zip=excluded.zip
     returning id into v_store_id;
+    if v_store_id is null then
+      raise exception 'A store slug cannot refer to a different location';
+    end if;
 
     insert into public.grocery_items(slug,name,category,specification,unit)
     values(v_item_slug, v_row->>'item_name', v_row->>'category',
       v_row->>'specification', v_unit)
-    on conflict(slug) do update
-      set name=excluded.name, category=excluded.category,
-          specification=excluded.specification, unit=excluded.unit
+    on conflict(slug) do update set name=excluded.name
+      where public.grocery_items.category=excluded.category
+        and public.grocery_items.specification=excluded.specification
+        and public.grocery_items.unit=excluded.unit
     returning id into v_item_id;
+    if v_item_id is null then
+      raise exception 'An item slug cannot mix specifications or units';
+    end if;
 
     insert into public.grocery_offers(
       week_id,store_id,item_id,price_usd,unit,promotion_details,
