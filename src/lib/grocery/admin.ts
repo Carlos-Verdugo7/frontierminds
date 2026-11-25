@@ -33,4 +33,4 @@ export function sameOrigin(request:Request){
  }catch{return false}
 }
 export const adminHeaders={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
-export { csvRows, templateHeader } from './csv';
+export { csvRows, pricesTemplate, storesTemplate } from './csv';
