@@ -70,3 +70,20 @@ test('page analytics are categorical and never send free-text or contact details
  assert.match(component,/grocery_feedback_submitted/);
  assert.doesNotMatch(component,/sendEvent\(.*(value|comment)/);
 });
+
+test('all grocery public content pages render tracker and feedback panel',()=>{
+ for(const route of [
+  'src/app/comunidad/precios/page.tsx',
+  'src/app/comunidad/precios/[item]/page.tsx',
+  'src/app/comunidad/precios/tiendas/[store]/[week]/page.tsx',
+  'src/app/comunidad/precios/buscar/page.tsx',
+  'src/app/comunidad/precios/archivo/page.tsx',
+  'src/app/comunidad/precios/archivo/[week]/page.tsx'
+ ]){
+  const code=read(route);
+  assert.match(code,/<GroceryActivityTracker section=/,route);
+  assert.match(code,/<GroceryFeedback section=/,route);
+ }
+ const feedback=read('src/components/grocery/GroceryFeedback.tsx');
+ assert.match(feedback,/formulario de comentarios estará disponible próximamente/);
+});
