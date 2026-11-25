@@ -73,8 +73,21 @@ revoke all on public.grocery_offers from anon, authenticated;
 grant select on public.grocery_admins to authenticated;
 grant select on public.grocery_weeks, public.grocery_stores, public.grocery_items, public.grocery_offers to anon, authenticated;
 
-create policy "Admins may read own membership" on public.grocery_admins
-  for select to authenticated using (user_id = (select auth.uid()));
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_admins'
+      AND policyname = 'Admins may read own membership'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "Admins may read own membership" on public.grocery_admins
+  for select to authenticated using (user_id = (select auth.uid()))
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
 
 create or replace function public.is_grocery_admin()
 returns boolean language sql stable security definer set search_path = public, pg_temp as $$
@@ -83,17 +96,69 @@ $$;
 revoke all on function public.is_grocery_admin() from public;
 grant execute on function public.is_grocery_admin() to anon, authenticated;
 
-create policy "Published weeks or editors can read" on public.grocery_weeks
-  for select to anon, authenticated using (status = 'published' or (select public.is_grocery_admin()));
-create policy "Stores can be read" on public.grocery_stores
-  for select to anon, authenticated using (true);
-create policy "Items can be read" on public.grocery_items
-  for select to anon, authenticated using (true);
-create policy "Published offers or editors can read" on public.grocery_offers
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_weeks'
+      AND policyname = 'Published weeks or editors can read'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "Published weeks or editors can read" on public.grocery_weeks
+  for select to anon, authenticated using (status = 'published' or (select public.is_grocery_admin()))
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_stores'
+      AND policyname = 'Stores can be read'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "Stores can be read" on public.grocery_stores
+  for select to anon, authenticated using (true)
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_items'
+      AND policyname = 'Items can be read'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "Items can be read" on public.grocery_items
+  for select to anon, authenticated using (true)
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
+DO $policy_guard$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'grocery_offers'
+      AND policyname = 'Published offers or editors can read'
+  ) THEN
+    EXECUTE $policy_sql$
+      create policy "Published offers or editors can read" on public.grocery_offers
   for select to anon, authenticated using (
     exists(select 1 from public.grocery_weeks w where w.id=week_id and w.status='published')
     or (select public.is_grocery_admin())
-  );
+  )
+    $policy_sql$;
+  END IF;
+END
+$policy_guard$;
 
 create or replace view public.grocery_public_prices
 with (security_invoker = true) as
