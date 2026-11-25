@@ -74,7 +74,7 @@ export default function GroceryFeedback({section,contextSlug=null}:{
  }
  return <section className={styles.feedbackPanel} aria-labelledby="grocery-feedback-title">
   <p className={styles.eyebrow}>AYÚDANOS A MEJORAR</p>
-  <h2 id="grocery-feedback-title">¿Te ayudó esta comparación a decidir dónde comprar?</h2>
+  <h2 id="grocery-feedback-title">{section==='comparison'?'¿Te ayudó esta comparación a decidir dónde comprar?':section==='store'?'¿Te sirvieron las ofertas de esta tienda?':section==='archive'?'¿Te sirvió consultar estos precios anteriores?':'¿Te ayudó la información a decidir dónde comprar?'}</h2>
   <p className={styles.muted}>Tu respuesta nos ayuda a saber si los precios son útiles para familias de Palm Beach County.</p>
   {!sitekey?<p className={styles.adminNote}>El formulario de comentarios estará disponible próximamente.</p>:<>
    <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
