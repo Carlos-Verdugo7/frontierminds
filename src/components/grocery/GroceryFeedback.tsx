@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef,useState,type FormEvent} from 'react';
 import Script from 'next/script';
+import Link from 'next/link';
 import {trackGrocery,type GrocerySection} from '@/lib/grocery/analytics';
 import styles from './grocery.module.css';
 type TurnstileApi={
@@ -107,7 +108,7 @@ export default function GroceryFeedback({section,contextSlug=null}:{
       onChange={e=>setConsent(e.target.checked)} required/>
       <span>Autorizo a FrontierMinds a contactarme únicamente para dar seguimiento a este comentario por el medio que elegí. No estoy solicitando mensajes promocionales ni suscripciones. Puedo solicitar que eliminen mi información escribiendo a info@frontierminds.io.</span></label>
     </>}
-    <p className={styles.small}>Tu nombre no es necesario. No compartas información sensible. Los datos de contacto son opcionales, no se envían a Google Analytics y solo se usan para responder a tu comentario. Se planea conservar los comentarios hasta 90 días; la eliminación debe configurarse antes de activar el formulario.</p>
+    <p className={styles.small}>Tu nombre no es necesario. No compartas información sensible. Los datos de contacto son opcionales, no se envían a Google Analytics y solo se usan para responder a tu comentario. Consulta <Link href="/comunidad/precios/privacidad">cómo usamos y protegemos los comentarios</Link> y solicita su eliminación cuando quieras.</p>
     <div ref={container} aria-label="Comprobación de seguridad de Cloudflare Turnstile"/>
     <button type="submit" disabled={busy||!vote||!token||(method!=='none'&&(!consent||!value.trim()))}>
      {busy?'Enviando…':'Enviar respuesta'}
