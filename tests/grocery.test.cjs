@@ -44,7 +44,7 @@ test('valid flyer join and normalized comparisons come from prices, not an impor
 test('reject malformed headers, duplicate IDs, invalid comparison and unknown flyers',()=>{
  assert.throws(()=>csvRows(pricesCsv.replace('compare_item,compare_qty','compare_item,wrong'), 'prices'),/encabezados/i);
  assert.throws(()=>validateJoin(prices,stores.filter(x=>x.flyer_id!=='BRAVO')),/flyers/i);
- const invalid=pricesCsv.replace('Beef inside round, whole,1,lb,3.78','Beef inside round, whole,1,,3.78');
+ const invalid=pricesCsv.replace('"Beef inside round, whole",1,lb,3.78','"Beef inside round, whole",1,,3.78');
  assert.throws(()=>csvRows(invalid,'prices'),/compare_unit/i);
  const dup=storesCsv.trimEnd()+'\n'+storesCsv.split(/\r?\n/)[1]+'\n';
  assert.throws(()=>csvRows(dup,'stores'),/duplicado/i);
