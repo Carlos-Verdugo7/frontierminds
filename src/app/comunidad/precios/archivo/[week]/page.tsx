@@ -1,3 +1,5 @@
+import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {published,fmt,lastUpdated,defaultCounty,localDate} from '@/lib/grocery/data';
@@ -17,11 +19,11 @@ export default async function Archive({params}:Params){
  .sort((a,b)=>a.chain.localeCompare(b.chain)||a.department.localeCompare(b.department)||a.item_en.localeCompare(b.item_en));
  if(!rows.length)notFound();
  const today=localDate();const expired=rows.filter(o=>o.valid_to<today);
- return <main className={styles.main} lang="es"><div className={styles.container}>
+ return <main className={styles.main} lang="es"><GroceryActivityTracker section="archive"/><div className={styles.container}>
   <nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios</Link><span>›</span><span>Archivo</span></nav>
   <h1 className="text-4xl font-semibold">Anuncios del lote {fmt(week)}</h1>
   <p className={styles.date}><strong>Archivo del lote:</strong> {fmt(week)}. <strong>Última actualización:</strong> {lastUpdated(rows)}. {expired.length} registros vencidos y {rows.length-expired.length} que pueden tener fechas vigentes o futuras.</p>
   <p className={styles.muted}>Este archivo conserva anuncios históricos y sus fechas. Cada fila indica su vigencia original; no todas las ofertas siguen disponibles.</p>
   <PriceTable offers={rows}/>
- </div></main>;
+ <GroceryFeedback section="archive" contextSlug={null}/></div></main>;
 }

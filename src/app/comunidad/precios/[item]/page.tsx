@@ -1,3 +1,5 @@
+import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import {notFound} from 'next/navigation';
 import Link from 'next/link';
 import type {Metadata} from 'next';
@@ -23,7 +25,7 @@ export default async function ItemPage({params}:Params){
  if(!all.length)notFound();
  const active=compareOffers(current(all));
  const first=all[0];
- return <main className={styles.main} lang="es"><div className={styles.container}>
+ return <main className={styles.main} lang="es"><GroceryActivityTracker section="comparison"/><div className={styles.container}>
   <nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios</Link><span>›</span><span>{first.compare_item}</span></nav>
   <p className={styles.eyebrow}>COMPARACIÓN POR PRECIO NORMALIZADO</p>
   <h1 className="text-4xl font-semibold tracking-tight mt-3">{first.compare_item}: precios en Palm Beach County</h1>
@@ -32,5 +34,5 @@ export default async function ItemPage({params}:Params){
   <PriceTable offers={active} showItem={false} comparison/>
   <div className={styles.links}><Link href="/comunidad/precios">Ver todas las tiendas y productos</Link><Link href="/comunidad/precios/archivo">Precios anteriores (no vigentes)</Link></div>
   {active.length>0&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJson(groceryJsonLd(active,first.compare_item||first.item_en))}}/>}
- </div></main>;
+ <GroceryFeedback section="comparison" contextSlug={item}/></div></main>;
 }

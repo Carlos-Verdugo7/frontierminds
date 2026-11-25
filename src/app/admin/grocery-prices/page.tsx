@@ -11,11 +11,14 @@ type Row={batch_id:string;snapshot_date:string;status:string;price_row_id:number
 export default async function AdminPage({searchParams}:P){
  const token=await currentAdmin();const q=await searchParams;
  const err=typeof q.error==='string'?q.error:null;const success=typeof q.success==='string'?q.success:null;
- const [batchResult,rowsResult]=token?await Promise.all([
+ const [batchResult,rowsResult,feedbackResult]=token?await Promise.all([
   request('/rest/v1/grocery_csv_batches?select=id,snapshot_date,status,updated_at,published_at&order=snapshot_date.desc&limit=25',{bearer:token,fresh:true}),
   request('/rest/v1/grocery_csv_editor_prices?select=*&order=snapshot_date.desc,price_row_id.asc&limit=500',{bearer:token,fresh:true}),
- ]):[null,null];
- const batches=Array.isArray(batchResult?.data)?batchResult.data as Batch[]:[];
+  request('/rest/v1/grocery_feedback?select=id,submitted_at,helpful,section,comment,contact_email,contact_phone,followup_consent&order=submitted_at.desc&limit=50',{bearer:token,fresh:true})
+ ]):[null,null,null];
+ type FeedbackRow={id:string;submitted_at:string;helpful:'yes'|'no';section:string;comment:string|null;contact_email:string|null;contact_phone:string|null;followup_consent:boolean};
+ const feedback=Array.isArray(feedbackResult?.data)?feedbackResult.data as FeedbackRow[]:[];
+  const batches=Array.isArray(batchResult?.data)?batchResult.data as Batch[]:[];
  const priceRows=Array.isArray(rowsResult?.data)?rowsResult.data as Row[]:[];
  const orphan=priceRows.filter(row=>row.store_count===0);
  return <main className={styles.main} lang="es"><div className={styles.container}>
@@ -65,6 +68,21 @@ export default async function AdminPage({searchParams}:P){
      <strong>{x.snapshot_date}</strong><small>{x.status==='published'?'Publicado':'Borrador'} · Actualizado {new Date(x.updated_at).toLocaleString('es-US',{timeZone:'America/New_York'})}</small>
      {x.status==='draft'&&<form action="/admin/grocery-prices/publish" method="post" className="mt-3"><input type="hidden" name="snapshot_date" value={x.snapshot_date}/><button type="submit" className={styles.pill}>Publicar este lote</button></form>}
     </div>)}</div>
+   </section>
+   <section className={styles.section}>
+    <h2>Comentarios de compradores (privados)</h2>
+    <p className={styles.muted}>Solo editores autorizados. Nunca uses los contactos para promociones. El permiso cubre únicamente un seguimiento individual de su comentario. Máximo 50 respuestas recientes.</p>
+    {!feedbackResult?.ok&&<p className={styles.adminNote}>El panel de comentarios se activa después de ejecutar la migración 003 en Supabase.</p>}
+    {feedbackResult?.ok&&feedback.length===0&&<p className={styles.empty}>Aún no hay respuestas.</p>}
+    {feedback.length>0&&<div className={styles.tableWrap}><table className={styles.table}>
+     <thead><tr><th>Recibido</th><th>Respuesta</th><th>Comentario</th><th>Seguimiento consentido</th></tr></thead>
+     <tbody>{feedback.map(x=><tr key={x.id}>
+      <td>{new Date(x.submitted_at).toLocaleString('es-US',{timeZone:'America/New_York'})}<small>{x.section}</small></td>
+      <td>{x.helpful==='yes'?'Sí, útil':'No todavía'}</td>
+      <td>{x.comment||'Sin comentario'}</td>
+      <td>{x.followup_consent?(x.contact_email||x.contact_phone||'Sin contacto'):'No solicitado'}</td>
+     </tr>)}</tbody>
+    </table></div>}
    </section>
    <section className={styles.section}>
     <h2>3. Vista de importaciones recientes</h2>

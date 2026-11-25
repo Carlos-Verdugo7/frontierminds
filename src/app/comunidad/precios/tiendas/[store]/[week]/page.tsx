@@ -1,3 +1,5 @@
+import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {published,fmt,localDate,lastUpdated,defaultCounty} from '@/lib/grocery/data';
@@ -23,7 +25,7 @@ export default async function StoreWeek({params}:P){
  const expired=rows.filter(x=>x.valid_to<today);
  const upcoming=rows.filter(x=>x.valid_from>today);
  const o=rows[0];
- return <main className={styles.main} lang="es"><div className={styles.container}>
+ return <main className={styles.main} lang="es"><GroceryActivityTracker section="store"/><div className={styles.container}>
   <nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios</Link><span>›</span><span>{o.chain}</span></nav>
   <p className={styles.eyebrow}>ANUNCIOS POR SUCURSAL · FLYER {o.flyer_id}</p>
   <h1 className="text-4xl font-semibold tracking-tight mt-3">{o.chain}{o.store_number?' #'+o.store_number:''}: ofertas</h1>
@@ -33,5 +35,5 @@ export default async function StoreWeek({params}:P){
   {upcoming.length>0&&<section className={styles.section}><h2>Ofertas futuras — todavía no vigentes</h2><PriceTable offers={upcoming} showStore={false}/></section>}
   {expired.length>0&&<section className={styles.section}><h2>Archivo — ofertas vencidas</h2><p className={styles.muted}>Estas ofertas son históricas. No uses estos importes como precios actuales.</p><PriceTable offers={expired} showStore={false}/></section>}
   {currentRows.length>0&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJson(groceryJsonLd(currentRows,'Ofertas de '+o.chain))}}/>}
- </div></main>;
+ <GroceryFeedback section="store" contextSlug={store}/></div></main>;
 }
