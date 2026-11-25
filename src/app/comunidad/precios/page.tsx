@@ -1,3 +1,5 @@
+import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import Link from 'next/link';
 import type {Metadata} from 'next';
 import {published,current,compareOffers,defaultCounty,latestSnapshot,weeks,fmt,localDate,lastUpdated,storeUrl} from '@/lib/grocery/data';
@@ -18,7 +20,7 @@ export default async function GroceryHome(){
  const items=[...new Map(comparable.map(o=>[o.item_slug,o])).values()].sort((a,b)=>a.item_name.localeCompare(b.item_name));
  const stores=[...new Map(latest.map(o=>[o.store_slug,o])).values()].sort((a,b)=>a.chain.localeCompare(b.chain)||a.city.localeCompare(b.city));
  const archive=weeks(county);
- return <main className={styles.main} lang="es"><div className={styles.container}>
+ return <main className={styles.main} lang="es"><GroceryActivityTracker section="home"/><div className={styles.container}>
   <div className={styles.breadcrumb}><Link href="/comunidad">Comunidad</Link><span>›</span><span>Precios semanales</span></div>
   <header className={styles.hero}><div>
    <p className={styles.eyebrow}>PRECIOS DE LA SEMANA · PALM BEACH COUNTY</p>

@@ -1,3 +1,5 @@
+import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import Link from 'next/link';
 import {published,current,compareOffers,defaultCounty,lastUpdated,fmt,localDate} from '@/lib/grocery/data';
 import PriceTable from '@/components/grocery/PriceTable';
@@ -24,7 +26,7 @@ export default async function Search({searchParams}:P){
   (!store||o.store_slug===store)&&(!item||o.item_slug===item)&&
   (!query||[o.item_en,o.item_es,o.compare_item,o.chain,o.department,o.brand].filter(Boolean)
   .join(' ').toLowerCase().includes(query.toLowerCase())));
- return <main className={styles.main} lang="es"><div className={styles.container}>
+ return <main className={styles.main} lang="es"><GroceryActivityTracker section="search"/><div className={styles.container}>
   <nav className={styles.breadcrumb}><Link href="/comunidad/precios">Precios</Link><span>›</span><span>Buscar</span></nav>
   <h1 className="text-4xl font-semibold tracking-tight">Buscar ofertas comparables</h1>
   <p className={styles.date}><strong>Fecha:</strong> {fmt(localDate())}. <strong>Última actualización:</strong> {lastUpdated(rows)}. {filtered.length} resultados comparables con vigencia actual.</p>
