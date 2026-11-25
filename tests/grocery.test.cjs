@@ -1,0 +1,40 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const Module=require('node:module');
+const ts=require('typescript');
+const file=path.join(__dirname,'../src/lib/grocery/csv.ts');
+const compiled=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
+const m=new Module(file,module);
+m.filename=file;
+m.paths=Module._nodeModulePaths(path.dirname(file));
+m._compile(compiled,file);
+const {csvRows,templateHeader}=m.exports;
+const valid='test-store,Example Store,100 Sample St,West Palm Beach,33401,ground-beef-80-20-lb,Ground Beef,beef,80/20 ground beef,3.99,lb,"Loyalty card, limit 2",2026-11-23,2026-11-29,https://example.org/ad';
+test('CSV import correctly parses quoted promotions and preserves verification metadata',()=>{
+ const rows=csvRows(templateHeader+valid+'\n');
+ assert.equal(rows.length,1);
+ assert.equal(rows[0].price_usd,'3.99');
+ assert.equal(rows[0].promotion_details,'Loyalty card, limit 2');
+ assert.equal(rows[0].valid_to,'2026-11-29');
+});
+test('CSV import rejects duplicates, bad price, unit, source and incomplete rows',()=>{
+ assert.throws(()=>csvRows(templateHeader+valid+'\n'+valid+'\n'),/duplicados/i);
+ assert.throws(()=>csvRows(templateHeader+valid.replace(',3.99,',',0,')+'\n'),/precio/i);
+ assert.throws(()=>csvRows(templateHeader+valid.replace(',3.99,lb,',',3.99,kg,')+'\n'),/unidad/i);
+ assert.throws(()=>csvRows(templateHeader+valid.replace('https://example.org/ad','http://example.org/ad')+'\n'),/HTTPS/i);
+ assert.throws(()=>csvRows(templateHeader+valid.replace('https://example.org/ad','https://user:pass@example.org/ad')+'\n'),/HTTPS/i);
+ assert.throws(()=>csvRows(templateHeader+'one,two\n'),/columnas/i);
+});
+test('Grocery integration contains no public mutation endpoints or hardcoded offers',()=>{
+ const publicRoute=fs.readFileSync(path.join(__dirname,'../src/app/api/grocery-prices/current/route.ts'),'utf8');
+ assert.ok(!/export async function POST|export async function PUT|export async function DELETE/.test(publicRoute));
+ const data=fs.readFileSync(path.join(__dirname,'../src/lib/grocery/data.ts'),'utf8');
+ assert.ok(!/SUPABASE_SERVICE_ROLE_KEY|process\.env\.OPENAI_API_KEY/.test(data));
+ const sql=fs.readFileSync(path.join(__dirname,'../supabase/migrations/202611250001_grocery_prices.sql'),'utf8');
+ assert.match(sql,/enable row level security/i);
+ assert.match(sql,/grocery_public_prices/);
+ assert.match(sql,/grocery_import_week/);
+ assert.match(sql,/is_grocery_admin/);
+});

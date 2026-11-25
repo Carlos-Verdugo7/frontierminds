@@ -2,6 +2,25 @@
 
 Free interactive learning paths for Data Engineering with AI, Actuarial Exam P and Salesforce & AI Development, built with Next.js, TypeScript and React. Snowflake appears as an optional warehouse in the Data Engineering path; financial mathematics remains on hold.
 
+
+## Grocery Price Watch (in development)
+
+The feature is staged on a PR until Supabase is fully linked and the SQL
+migration has been tested. It never publishes fabricated prices.
+
+- \`/comunidad/precios\` — verified current-week grocery prices
+- \`/comunidad/precios/buscar\` — server-rendered search and filtering
+- \`/comunidad/precios/tiendas/[store]/[week]\` — store/week pages
+- \`/comunidad/precios/archivo\` — archived weekly prices
+- \`/api/grocery-prices/current\` — read-only public current-week JSON
+- \`/admin/grocery-prices\` — private Supabase Auth CSV editor
+
+Read \`supabase/GROCERY_SETUP.md\` before deployment. Apply the SQL migration
+to the intended project, configure Vercel integration variables, provision your
+private admin account, and run the security checks. The public pages contain
+no client-side price fetch. Anon RLS is read-only for published offers.
+
+
 ## Comunidad
 
 - `/comunidad/uscis`: guía independiente en español para aprender a consultar el estatus, usar myUSCIS, interpretar mensajes y tiempos, actualizar dirección y reconocer estafas. Incluye un recorrido interactivo y estados de muestra sin formularios ni datos reales; los trámites se hacen únicamente en USCIS.gov. Las fuentes y fecha de revisión están en `src/content/uscis-guide.ts`.
