@@ -341,5 +341,7 @@ test('USCIS community guide is safe, source linked and complete without case dat
   const component = fs.readFileSync(path.join(__dirname, '../src/components/community/UscisGuide.tsx'), 'utf8');
   assert.ok(!/<input\b|<textarea\b|localStorage|sessionStorage|fetch\(/i.test(component), 'USCIS practice must not collect or submit case data');
   assert.match(component, /no es una página del gobierno/i);
-  assert.match(component, /\/comunidad\/uscis/);
+  const route = fs.readFileSync(path.join(__dirname, '../src/app/comunidad/uscis/page.tsx'), 'utf8');
+  assert.match(route, /UscisGuide/);
+  assert.match(route, /\/comunidad\/uscis/);
 });

@@ -2,6 +2,35 @@
 
 Free interactive learning paths for Data Engineering with AI, Actuarial Exam P and Salesforce & AI Development, built with Next.js, TypeScript and React. Snowflake appears as an optional warehouse in the Data Engineering path; financial mathematics remains on hold.
 
+
+## Grocery Price Watch (CSV-driven)
+
+The community grocery feature uses **exactly two user-supplied CSV files**,
+stored as seed inputs in \`data/grocery/\`:
+
+- \`wpb_grocery_prices.csv\` — 482 advertised rows, 25 original columns.
+- \`wpb_grocery_stores.csv\` — 22 locations, 12 original columns, including
+  the provided Bravo store at 5011 Broadway, West Palm Beach, FL 33407.
+
+The product-to-location relation is \`chain + flyer_id\` (a flyer may cover
+several stores). Comparisons are generated from \`compare_item\` and
+\`price_per_compare_unit\` and show \`match_note\` alongside the price.
+Rows without \`compare_item\` are listed on store pages only. The default
+geographic filter is \`palm_beach_county=yes\`. Current offers require
+\`valid_from <= today <= valid_to\` (Florida time); archives preserve older
+rows. All prices display \`price_type\` and \`membership_required\`.
+
+Public pages are server-rendered, indexed by sitemap/robots and accompanied
+by read-only JSON at \`/api/grocery-prices/current\`.
+The private \`/admin/grocery-prices\` accepts the two exact CSV formats in
+one atomic batch, maintains drafts, and requires an explicit publish action.
+
+**Read [the Supabase setup guide](supabase/GROCERY_SETUP.md) before launch.**
+Apply migrations \`202611250001\` and \`202611250002\` in order. The optional
+\`supabase/seed_grocery_20261125.sql\` loads the original CSV values as
+an unpublished draft. The site does not run migrations on deployment or
+publish anything before administrator approval.
+
 ## Comunidad
 
 - `/comunidad/uscis`: guía independiente en español para aprender a consultar el estatus, usar myUSCIS, interpretar mensajes y tiempos, actualizar dirección y reconocer estafas. Incluye un recorrido interactivo y estados de muestra sin formularios ni datos reales; los trámites se hacen únicamente en USCIS.gov. Las fuentes y fecha de revisión están en `src/content/uscis-guide.ts`.
