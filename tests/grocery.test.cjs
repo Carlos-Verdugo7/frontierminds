@@ -4,37 +4,59 @@ const fs=require('node:fs');
 const path=require('node:path');
 const Module=require('node:module');
 const ts=require('typescript');
-const file=path.join(__dirname,'../src/lib/grocery/csv.ts');
-const compiled=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
-const m=new Module(file,module);
-m.filename=file;
-m.paths=Module._nodeModulePaths(path.dirname(file));
-m._compile(compiled,file);
-const {csvRows,templateHeader}=m.exports;
-const valid='test-store,Example Store,100 Sample St,West Palm Beach,33401,ground-beef-80-20-lb,Ground Beef,beef,80/20 ground beef,3.99,lb,"Loyalty card, limit 2",2026-11-23,2026-11-29,https://example.org/ad';
-test('CSV import correctly parses quoted promotions and preserves verification metadata',()=>{
- const rows=csvRows(templateHeader+valid+'\n');
- assert.equal(rows.length,1);
- assert.equal(rows[0].price_usd,'3.99');
- assert.equal(rows[0].promotion_details,'Loyalty card, limit 2');
- assert.equal(rows[0].valid_to,'2026-11-29');
+function transpiled(relative){
+ const file=path.join(__dirname,'..',relative);
+ const compiled=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{
+  module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020
+ }}).outputText;
+ const mod=new Module(file,module);mod.filename=file;mod.paths=Module._nodeModulePaths(path.dirname(file));mod._compile(compiled,file);return mod.exports;
+}
+const {csvRows,PRICE_COLUMNS,STORE_COLUMNS,validateJoin,jsonRows}=transpiled('src/lib/grocery/csv.ts');
+const pricesCsv=fs.readFileSync(path.join(__dirname,'../data/grocery/wpb_grocery_prices.csv'),'utf8');
+const storesCsv=fs.readFileSync(path.join(__dirname,'../data/grocery/wpb_grocery_stores.csv'),'utf8');
+const prices=csvRows(pricesCsv,'prices');
+const stores=csvRows(storesCsv,'stores');
+
+test('source CSV headers are exact and the 2026 seed is complete',()=>{
+ assert.equal(prices.length,482);
+ assert.equal(stores.length,22); // Original 21 stores + provided Bravo location.
+ assert.deepEqual(Object.keys(prices[0]),[...PRICE_COLUMNS]);
+ assert.deepEqual(Object.keys(stores[0]),[...STORE_COLUMNS]);
+ assert.equal(prices[0].advertised_price,'$3.78 /lb');
+ assert.equal(prices.at(-1).item_en,'Ice Cream, Assorted Varieties');
+ assert.ok(stores.some(x=>x.chain==='Bravo Supermarkets'&&x.flyer_id==='BRAVO'&&x.address==='5011 Broadway'));
+ assert.equal(stores.filter(x=>x.palm_beach_county==='yes').length,17);
 });
-test('CSV import rejects duplicates, bad price, unit, source and incomplete rows',()=>{
- assert.throws(()=>csvRows(templateHeader+valid+'\n'+valid+'\n'),/duplicados/i);
- assert.throws(()=>csvRows(templateHeader+valid.replace(',3.99,',',0,')+'\n'),/precio/i);
- assert.throws(()=>csvRows(templateHeader+valid.replace(',3.99,lb,',',3.99,kg,')+'\n'),/unidad/i);
- assert.throws(()=>csvRows(templateHeader+valid.replace('https://example.org/ad','http://example.org/ad')+'\n'),/HTTPS/i);
- assert.throws(()=>csvRows(templateHeader+valid.replace('https://example.org/ad','https://user:pass@example.org/ad')+'\n'),/HTTPS/i);
- assert.throws(()=>csvRows(templateHeader+'one,two\n'),/columnas/i);
+test('valid flyer join and normalized comparisons come from prices, not an imported view',()=>{
+ const summary=validateJoin(prices,stores);
+ assert.equal(summary.price_count,482);
+ assert.equal(summary.store_count,22);
+ assert.equal(summary.comparable_count,162);
+ assert.equal(summary.groups,55);
+ assert.equal(prices.filter(x=>!x.compare_item).length,320);
+ assert.equal(prices.filter(x=>x.compare_item&&!x.match_note).length,44);
+ assert.equal(prices.filter(x=>x.flyer_id==='BRAVO').length,61);
+ const sample=prices.find(x=>x.compare_item);
+ assert.ok(Number(sample.price_per_compare_unit)>0);
+ assert.equal(jsonRows([sample],'prices')[0].deal_price,Number(sample.deal_price));
+ assert.equal(jsonRows([sample],'prices')[0].compare_unit,sample.compare_unit);
 });
-test('Grocery integration contains no public mutation endpoints or hardcoded offers',()=>{
- const publicRoute=fs.readFileSync(path.join(__dirname,'../src/app/api/grocery-prices/current/route.ts'),'utf8');
- assert.ok(!/export async function POST|export async function PUT|export async function DELETE/.test(publicRoute));
- const data=fs.readFileSync(path.join(__dirname,'../src/lib/grocery/data.ts'),'utf8');
- assert.ok(!/SUPABASE_SERVICE_ROLE_KEY|process\.env\.OPENAI_API_KEY/.test(data));
- const sql=fs.readFileSync(path.join(__dirname,'../supabase/migrations/202611250001_grocery_prices.sql'),'utf8');
- assert.match(sql,/enable row level security/i);
- assert.match(sql,/grocery_public_prices/);
- assert.match(sql,/grocery_import_week/);
+test('reject malformed headers, duplicate IDs, invalid comparison and unknown flyers',()=>{
+ assert.throws(()=>csvRows(pricesCsv.replace('compare_item,compare_qty','compare_item,wrong'), 'prices'),/encabezados/i);
+ assert.throws(()=>validateJoin(prices,stores.filter(x=>x.flyer_id!=='BRAVO')),/flyers/i);
+ const invalid=pricesCsv.replace('Beef inside round, whole,1,lb,3.78','Beef inside round, whole,1,,3.78');
+ assert.throws(()=>csvRows(invalid,'prices'),/compare_unit/i);
+ const dup=storesCsv.trimEnd()+'\n'+storesCsv.split(/\r?\n/)[1]+'\n';
+ assert.throws(()=>csvRows(dup,'stores'),/duplicado/i);
+});
+test('public endpoints stay read-only and migration provides RLS',()=>{
+ const api=fs.readFileSync(path.join(__dirname,'../src/app/api/grocery-prices/current/route.ts'),'utf8');
+ assert.ok(!/export async function (POST|PUT|DELETE|PATCH)/.test(api));
+ const sql=fs.readFileSync(path.join(__dirname,'../supabase/migrations/202611250002_grocery_csv_snapshot.sql'),'utf8');
+ assert.match(sql,/enable row level security/);
+ assert.match(sql,/security_invoker=true/);
  assert.match(sql,/is_grocery_admin/);
+ assert.match(sql,/grocery_import_csv_batch/);
+ assert.match(sql,/grocery_publish_csv_batch/);
+ assert.match(sql,/s\.flyer_id=p\.flyer_id and s\.chain=p\.chain/);
 });
