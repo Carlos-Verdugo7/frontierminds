@@ -123,3 +123,19 @@ export function matchesGroceryQuery(
     comparisonNameEs(product.compare_item),product.chain,product.department,product.brand
   ].filter(Boolean).join(' ')).includes(needle);
 }
+
+export const DEPARTMENT_LABEL_ES:Readonly<Record<string,string>>={
+ 'Beer & Wine':'Cervezas y vinos',
+ 'Cafeteria':'Cafetería',
+ 'Dairy':'Lácteos y huevos',
+ 'Deli':'Embutidos y quesos',
+ 'Frozen':'Congelados',
+ 'Grocery':'Abarrotes',
+ 'Household':'Artículos del hogar',
+ 'Meat':'Carnes',
+ 'Produce':'Frutas y verduras',
+ 'Seafood':'Pescados y mariscos'
+};
+export function departmentNameEs(name:string):string{
+ return DEPARTMENT_LABEL_ES[name]||name;
+}

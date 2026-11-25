@@ -1,4 +1,5 @@
 import type {Offer} from './data';
+import {productNameEs} from './i18n';
 import {comparable,isWebSource,storeUrl} from './data';
 const origin='https://www.frontierminds.io';
 export function offerSchema(o:Offer){
@@ -21,7 +22,7 @@ export function groceryJsonLd(offers:Offer[],name:string){
  return {'@context':'https://schema.org','@type':'ItemList',name,
  itemListElement:offers.map((o,index)=>({
   '@type':'ListItem',position:index+1,item:{'@type':'Product',
-  name:o.item_en,alternateName:o.item_es||undefined,
+  name:productNameEs(o),alternateName:productNameEs(o)!==o.item_en?o.item_en:undefined,
   description:[o.brand,o.size,o.match_note,o.notes,o.price_type,
    'Membresía: '+o.membership_required].filter(Boolean).join(' · '),
   offers:offerSchema(o)}

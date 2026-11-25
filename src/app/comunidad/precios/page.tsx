@@ -1,4 +1,5 @@
 import GroceryActivityTracker from '@/components/grocery/GroceryActivityTracker';
+import {comparisonNameEs} from '@/lib/grocery/i18n';
 import GroceryFeedback from '@/components/grocery/GroceryFeedback';
 import Link from 'next/link';
 import type {Metadata} from 'next';
@@ -17,7 +18,7 @@ export default async function GroceryHome(){
  const latest=latestSnapshot(county);
  const active=current(result.offers);
  const comparable=compareOffers(active);
- const items=[...new Map(comparable.map(o=>[o.item_slug,o])).values()].sort((a,b)=>a.item_name.localeCompare(b.item_name));
+ const items=[...new Map(comparable.map(o=>[o.item_slug,o])).values()].sort((a,b)=>comparisonNameEs(a.compare_item).localeCompare(comparisonNameEs(b.compare_item),'es'));
  const stores=[...new Map(latest.map(o=>[o.store_slug,o])).values()].sort((a,b)=>a.chain.localeCompare(b.chain)||a.city.localeCompare(b.city));
  const archive=weeks(county);
  return <main className={styles.main} lang="es"><GroceryActivityTracker section="home"/><div className={styles.container}>
@@ -35,7 +36,7 @@ export default async function GroceryHome(){
   {result.error&&<p className={styles.error}>{result.error}</p>}
   <section className={styles.section}><h2>Comparaciones vigentes</h2>
    <p className={styles.muted}>{comparable.length} ofertas comparables. Se ordenan por precio normalizado en las páginas de cada producto. Las ofertas sin compare_item se muestran exclusivamente en las páginas de las tiendas.</p>
-   <div className={styles.cards}>{items.map(o=><Link className={styles.card} key={o.item_slug} href={'/comunidad/precios/'+o.item_slug}><strong>{o.compare_item}</strong><small>Comparar por {o.compare_unit} · Ver diferencias y precios</small></Link>)}</div>
+   <div className={styles.cards}>{items.map(o=><Link className={styles.card} key={o.item_slug} href={'/comunidad/precios/'+o.item_slug}><strong>{comparisonNameEs(o.compare_item)}</strong>{comparisonNameEs(o.compare_item)!==o.compare_item&&<small lang="en">{o.compare_item}</small>}<small>Comparar por {o.compare_unit} · Ver diferencias y precios</small></Link>)}</div>
    {!items.length&&<p className={styles.empty}>No hay productos comparables vigentes. Consulta los lotes históricos o vuelve a revisar cuando se publique la próxima semana.</p>}
   </section>
   <section className={styles.section}><h2>Tiendas y sus anuncios</h2>

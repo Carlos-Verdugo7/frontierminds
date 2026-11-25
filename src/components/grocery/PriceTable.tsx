@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {productNameEs,departmentNameEs} from '@/lib/grocery/i18n';
 import type {Offer} from '@/lib/grocery/data';
 import {fmt,money,storeUrl,itemUrl,unit,comparable,isWebSource,localDate} from '@/lib/grocery/data';
 import styles from './grocery.module.css';
@@ -12,10 +13,10 @@ export default function PriceTable({offers,showItem=true,showStore=true,comparis
  <th scope="col">Tipo de precio y membresía</th><th scope="col">Fechas</th><th scope="col">Fuente</th>
  </tr></thead><tbody>{offers.map(o=><tr key={o.id}>
  {showItem&&<td>
- {comparable(o)?<Link href={itemUrl(o)}>{o.item_es||o.item_en}</Link>:<strong>{o.item_es||o.item_en}</strong>}
- {o.item_es&&<small lang="en">{o.item_en}</small>}
+ {comparable(o)?<Link href={itemUrl(o)}>{productNameEs(o)}</Link>:<strong>{productNameEs(o)}</strong>}
+ {productNameEs(o)!==o.item_en&&<small lang="en">{o.item_en}</small>}
  <small>{[o.brand,o.size].filter(Boolean).join(' · ')||'Sin marca o tamaño especificado'}</small>
- <small>{o.department} · {o.flyer_id}</small>
+ <small>{departmentNameEs(o.department)} · {o.flyer_id}</small>
  </td>}
  {showStore&&<td><Link href={storeUrl(o)}>{o.chain}{o.store_number?' #'+o.store_number:''}</Link>
  <small>{o.address}, {o.city}, {o.state} {o.zip}</small></td>}
