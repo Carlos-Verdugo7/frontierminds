@@ -198,6 +198,9 @@ export function optimizeVerifiedBasket(rows:PriceEvidence[],demand:BasketDemand[
  };
  const combos:string[][]=locations.map(x=>[x]);
  if(maxStores===2)for(let i=0;i<locations.length;i++)for(let j=i+1;j<locations.length;j++)combos.push([locations[i],locations[j]]);
+ if(!combos.length)return [{status:'incomplete',stores:[],total:null,
+  missing:demand.map(x=>x.compare_item),lines:[],
+  caveat:'No hay ofertas compatibles con los requisitos; no se inventan precios ni tiendas.'}];
  const plans=combos.map(stores=>{
   const lines:BasketPlan['lines']=[],missing:string[]=[];
   for(const d of demand){
@@ -209,5 +212,5 @@ export function optimizeVerifiedBasket(rows:PriceEvidence[],demand:BasketDemand[
    total:missing.length?null:Number(lines.reduce((s,x)=>s+x.lineTotal,0).toFixed(2)),
    missing,lines,caveat:'Estimación de anuncios vigentes, no compra realizada. No incluye transporte, inventario ni condiciones de múltiples unidades.'};
  });
- return plans.sort((a,b)=>Number(a.status!==b.status)||((a.total??Infinity)-(b.total??Infinity))||a.stores.length-b.stores.length).slice(0,10);
+ return plans.sort((a,b)=>(a.status==='complete'?0:1)-(b.status==='complete'?0:1)||((a.total??Infinity)-(b.total??Infinity))||a.stores.length-b.stores.length).slice(0,10);
 }
