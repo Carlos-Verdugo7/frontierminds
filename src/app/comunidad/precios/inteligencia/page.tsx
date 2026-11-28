@@ -24,6 +24,14 @@ export default function MarketEducation(){
  <p className={styles.muted}>Exploramos cómo un sistema puede observar, estimar, aprender qué falta y decidir qué verificar primero, gastando menos recursos. La etapa inicial evalúa fundamentos y calidad de datos; la predicción y las recomendaciones de compra requieren más historia y pruebas.</p>
  <section className={styles.section}><h2>Observar → Estimar → Predecir → Investigar → Decidir → Validar → Aprender</h2>
  <div className={styles.cards}>{topics.map(t=><article className={styles.card} key={t.name}><strong>{t.name}</strong><p className={styles.muted}>{t.desc}</p></article>)}</div></section>
+ <section className={styles.section}>
+  <details className={styles.card} lang="en">
+   <summary><strong>English overview — How this research works</strong></summary>
+   <p>FrontierMinds is exploring how to gather better grocery information with less work. Weekly advertised prices are observed evidence, not guaranteed checkout prices or future forecasts. Sharing one flyer among multiple stores does not produce independent historical observations.</p>
+   <p>The research studies probability distributions, Bayesian updating, information theory, value of information, chronological evaluation, and constrained shopping optimization. It will test whether selective collection can help real decisions more efficiently than collecting everything. A heuristic priority score is not a calculated expected value of sample information (EVSI).</p>
+   <p>There is currently too little repeated price history for calibrated probability forecasts. Any shopping savings estimates require valid price evidence, store availability, promotion conditions, travel costs, and direct follow-up with real households.</p>
+  </details>
+ </section>
  <section className={styles.section}><h2>Lo que todavía no sabemos</h2>
  <p>Una sola publicación semanal permite comparar ofertas de hoy, pero no conocer con fundamento la volatilidad histórica, la probabilidad de un descuento futuro ni el ahorro efectivamente logrado por una familia. Los modelos solo mejorarán al contrastar sus predicciones con nuevas observaciones.</p>
  <p>Los datos de anuncios nacionales o productos agrícolas pueden dar contexto; no reemplazan la verificación de precios en una sucursal.</p>
