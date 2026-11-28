@@ -120,3 +120,26 @@ test('date-conflicting observations are not silently averaged',()=>{
  assert.deepEqual(result.evidenceDates,['2026-11-08']);
  assert.equal(result.estimate,2);
 });
+
+test('synthetic one-store and two-store basket calculations are deterministic and reject missing items',()=>{
+ const source=joined.find(x=>x.compare_item);
+ assert.ok(source);
+ const a={...source,id:'synthetic-1',batch_id:'fiction',snapshot_date:'2026-11-25',
+  address:'Fictional Address A',zip:'00000',chain:'Fictional A',compare_item:'Eggs',
+  compare_unit:'each',compare_qty:1,price_per_compare_unit:2,
+  membership_required:'no',valid_from:'2026-11-25',valid_to:'2026-12-01',
+  palm_beach_county:'yes'};
+ const b={...a,id:'synthetic-2',address:'Fictional Address B',chain:'Fictional B',
+  price_per_compare_unit:1.5};
+ const demand=[{compare_item:'Eggs',compare_unit:'each',quantity:2}];
+ const x=optimizeVerifiedBasket([a,b],demand,'2026-11-27',1);
+ assert.equal(x[0].status,'complete');
+ assert.equal(x[0].total,3);
+ assert.equal(x[0].stores.length,1);
+ const y=optimizeVerifiedBasket([a,b],[...demand,{compare_item:'Beans',compare_unit:'each',quantity:1}],'2026-11-27');
+ assert.equal(y[0].status,'incomplete');
+ assert.equal(y[0].total,null);
+ assert.deepEqual(y[0].missing,['Beans']);
+ const old=optimizeVerifiedBasket([a,b],demand,'2026-12-02');
+ assert.equal(old[0].status,'incomplete');
+});
