@@ -184,11 +184,10 @@ export function optimizeVerifiedBasket(rows:PriceEvidence[],demand:BasketDemand[
   throw Error('Invalid basket');
  // Conservative: only simple single-unit, non-member, advertised promotions.
  // We cannot model "buy N" thresholds, stocks or actual shopping checkout.
- const eligible=rows.filter(r=>comparable(r)&&r.palm_beach_county==='yes'&&
+ const latest=[...new Set(rows.map(x=>x.snapshot_date))].sort().at(-1);
+ const current=rows.filter(r=>r.snapshot_date===latest&&comparable(r)&&r.palm_beach_county==='yes'&&
   r.valid_from<=asOf&&r.valid_to>=asOf&&r.membership_required==='no'&&
   Number(r.compare_qty)===1&&Number(r.price_per_compare_unit)>0);
- const latest=[...new Set(eligible.map(x=>x.snapshot_date))].sort().at(-1);
- const current=eligible.filter(x=>x.snapshot_date===latest);
  const locations=[...new Set(current.map(locationKey))].sort();
  const offerFor=(stores:string[],d:BasketDemand)=>{
   const offers=current.filter(x=>stores.includes(locationKey(x))&&x.compare_item===d.compare_item&&x.compare_unit===d.compare_unit);
