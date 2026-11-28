@@ -97,3 +97,26 @@ test('research dashboard is authenticated and migration remains proposal-only',(
  assert.match(docs,/is_grocery_admin/);
  assert.doesNotMatch(page,/service_role|SUPABASE_SECRET_KEY/);
 });
+
+test('local profiling CLI runs offline and labels synthetic results separately',()=>{
+ const {execFileSync}=require('node:child_process');
+ const script=path.join(__dirname,'../research/market-intelligence/run.cjs');
+ const output=execFileSync(process.execPath,[script],{encoding:'utf8',maxBuffer:5_000_000});
+ const report=JSON.parse(output);
+ assert.equal(report.profile.sourcePriceRows,482);
+ assert.equal(report.profile.snapshotCount,1);
+ assert.equal(report.queue.length,5);
+ assert.match(report.syntheticExperiment.evidence,/FICTITIOUS/);
+ assert.equal(report.syntheticExperiment.metrics.length,3);
+});
+test('date-conflicting observations are not silently averaged',()=>{
+ const observations=[
+  {date:'2026-11-01',price:1,provenance:'A'},
+  {date:'2026-11-01',price:3,provenance:'B'},
+  {date:'2026-11-08',price:2,provenance:'C'}
+ ];
+ const result=modelBaseline(observations,'2026-11-08');
+ assert.equal(result.sampleSize,1);
+ assert.deepEqual(result.evidenceDates,['2026-11-08']);
+ assert.equal(result.estimate,2);
+});
