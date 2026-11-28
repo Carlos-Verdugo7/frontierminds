@@ -43,7 +43,7 @@ export function profileEvidence(rows:PriceEvidence[],asOf:string){
  const matchedGroups=new Map<string,Set<string>>();
  const snapshotDuplicates=new Map<string,number>();
  const sourceHosts=new Map<string,number>();
- let expired=0,upcoming=0,valid=0,membership=0,spanTotal=0,spanCount=0;
+ let expired=0,upcoming=0,valid=0,membership=0;
  for(const r of rows){
   if(!validIso(r.snapshot_date))continue;
   // Store-expanded duplicates are counted once at the underlying flyer row level.
@@ -55,7 +55,6 @@ export function profileEvidence(rows:PriceEvidence[],asOf:string){
    else if(!r.match_note?.trim())matchingIssues.missingMatchNote++;
    if(r.price_per_compare_unit!==null&&(!Number.isFinite(r.price_per_compare_unit)||r.price_per_compare_unit<=0))matchingIssues.nonPositivePrices++;
    if(r.membership_required!=='no')membership++;
-   if(validIso(r.valid_from)&&validIso(r.valid_to)){spanTotal+=daysBetween(r.valid_from,r.valid_to)+1;spanCount++;}
    let host='sin enlace HTTPS';
    if(r.source_url?.startsWith('https://')){try{host=new URL(r.source_url).host.toLowerCase()}catch{}}
    sourceHosts.set(host,(sourceHosts.get(host)||0)+1);

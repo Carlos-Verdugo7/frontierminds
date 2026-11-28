@@ -56,7 +56,7 @@ export function runSyntheticExperiment(all:Truth[],budgetPerRound=4):ExperimentR
  const market=new Map(all.map(x=>[x.date+'|'+k(x.product,x.store),x]));
  if(market.size!==all.length||keys.some(key=>dates.some(date=>!market.has(date+'|'+key))))
   throw Error('Incomplete grid or duplicate observations');
- const weights=new Map(products.map(p=>[p,all.find(x=>x.product===p)!.demand]));
+ const weights=new Map(products.map(p=>[p,market.get(dates[0]+'|'+keys.find(key=>key.startsWith(p+'|')))!.demand] as const));
  return (['A_fixed','B_statistical','C_decision_aware'] as const).map(strategy=>{
   const known=new Map<string,{price:number;last:number;previous:number|null}>();
   let count=0,sumAbs=0,regret=0,regretCount=0,extra=0;

@@ -6,10 +6,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm test && next build",
+    "build": "npm run market:lint && npm test && next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/*.test.cjs"
+    "test": "node --test tests/*.test.cjs",
+    "market:lint": "eslint src/lib/market-intelligence src/app/admin/grocery-prices/inteligencia src/app/comunidad/precios/inteligencia"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",

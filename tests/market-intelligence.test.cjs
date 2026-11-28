@@ -75,6 +75,7 @@ test('equal-budget chronological synthetic strategies are reproducible, no empir
  const fixture=syntheticMarket();
  assert.equal(fixture.length,72);
  const a=runSyntheticExperiment(fixture,4),b=runSyntheticExperiment(fixture,4);
+ console.log('SYNTHETIC_EXPERIMENT_RESULTS='+JSON.stringify(a));
  assert.deepEqual(a,b);
  assert.equal(a.length,3);
  assert.ok(a.every(x=>x.seedObservationCount===12&&x.additionalObservations===20));
