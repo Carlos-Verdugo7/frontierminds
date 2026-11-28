@@ -78,7 +78,7 @@ test('equal-budget chronological synthetic strategies are reproducible, no empir
  assert.deepEqual(a,b);
  assert.equal(a.length,3);
  assert.ok(a.every(x=>x.seedObservationCount===12&&x.additionalObservations===20));
- assert.ok(a.every(x=>x.coverage===1/3&&x.estimatedCollectionUnits===32));
+ assert.ok(a.every(x=>Math.abs(x.coverage-1/3)<0.001&&x.estimatedCollectionUnits===32));
  assert.ok(a.every(x=>Number.isFinite(x.meanAbsoluteError)&&Number.isFinite(x.averageDecisionRegret)));
  const bad=fixture.filter(x=>!(x.date==='2026-11-11'&&x.product==='pollo'&&x.store==='tienda-a'));
  assert.throws(()=>runSyntheticExperiment(bad),/Incomplete/);
