@@ -61,6 +61,16 @@ Three policies receive the same fully observed synthetic first date, then four p
 - B: observed change and staleness heuristic.
 - C: synthetic demand weighted change/staleness with forced exploratory sampling.
 
+The deterministic fixture produced these actual program-calculated results (synthetic, not observed market outcomes):
+
+| Policy | MAE of price ($ per unit) | Average demand-weighted decision regret ($ per fictional decision) |
+|---|---:|---:|
+| A — fixed | 0.2783 | **0.3675** |
+| B — statistical | **0.2572** | 0.6280 |
+| C — decision-aware | 0.2592 | 0.5225 |
+
+The statistical policy had the lowest prediction MAE while fixed collection had the lowest decision regret. This **does not support** a claim that adaptive collection already helps households; it shows why the decision metric must be audited separately from prediction error.
+
 All three spend exactly **12 bootstrap + 20 sampled = 32 observation units**, compared with 72 fully observed fictional records. After bootstrap they observe 20/60 possible new records (33.33%). Each policy sees only its acquired information at each step; a separate evaluator calculates MAE and per-product choice regret against fictional hidden truth. The metrics are printed by the local report runner and do not establish real shopper savings. The 95%-of-savings with 30%-of-data objective remains untested.
 
 For real experiments we need at least four independent chronological dates per product/store key, ideally more; ensure comparisons by equal acquisition MINUTES, not merely row counts. Evaluate missingness, coverage, predictions against the next chronological observation, and decision regret under complete evidence. Retain failures in the final study.

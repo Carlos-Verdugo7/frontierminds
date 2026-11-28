@@ -143,3 +143,16 @@ test('synthetic one-store and two-store basket calculations are deterministic an
  const old=optimizeVerifiedBasket([a,b],demand,'2026-12-02');
  assert.equal(old[0].status,'incomplete');
 });
+
+test('basket optimizer never falls back to older snapshots when latest batch lacks a product',()=>{
+ const prior=joined.find(r=>r.compare_item==='Eggs');
+ assert.ok(prior);
+ const older={...prior,id:'older-verified',batch_id:'old',snapshot_date:'2026-11-25',
+  compare_item:'Eggs',compare_unit:'each',compare_qty:1,price_per_compare_unit:2,
+  membership_required:'no',valid_from:'2026-11-25',valid_to:'2026-12-01',palm_beach_county:'yes'};
+ const newest={...older,id:'newer-different',batch_id:'new',snapshot_date:'2026-11-26',
+  compare_item:'Rice',compare_unit:'lb',valid_from:'2026-11-26'};
+ const plans=optimizeVerifiedBasket([older,newest],[{compare_item:'Eggs',compare_unit:'each',quantity:1}],'2026-11-27');
+ assert.equal(plans[0].total,null);
+ assert.deepEqual(plans[0].missing,['Eggs']);
+});
