@@ -47,6 +47,7 @@ export default async function AdminPage({searchParams}:P){
    </form>
   </>:<>
    <form action="/admin/grocery-prices/logout" method="post" className={styles.links}><button type="submit" className={styles.pill}>Cerrar sesión</button></form>
+   <div className={styles.links}><Link href="/admin/grocery-prices/inteligencia">Ver investigación y cola de verificación</Link></div>
    <p className={styles.adminNote}>Sube los dos CSV con los encabezados originales, exactamente como wpb_grocery_prices.csv y wpb_grocery_stores.csv. Los registros se relacionan por <code>chain + flyer_id</code>. El lote se guarda como borrador hasta su publicación. La actualización de un lote publicado exige confirmación explícita.</p>
    <form action="/admin/grocery-prices/import" method="post" encType="multipart/form-data" className={styles.form}>
     <h2 className="text-xl font-semibold">1. Importar los dos archivos</h2>
