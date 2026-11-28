@@ -27,7 +27,7 @@ export default async function GroceryHome(){
    <p className={styles.eyebrow}>PRECIOS DE LA SEMANA · PALM BEACH COUNTY</p>
    <h1>Compara precios de supermercado cerca de ti.</h1>
    <p>Datos de anuncios semanales con fuente y fechas. Las comparaciones usan el precio por unidad del archivo y muestran diferencias de marca, grado y tamaño.</p>
-   <div className={styles.links}><Link href="/comunidad/precios/buscar">Buscar y filtrar precios</Link><Link href="/comunidad/precios/archivo">Archivo de precios</Link></div>
+   <div className={styles.links}><Link href="/comunidad/precios/buscar">Buscar y filtrar precios</Link><Link href="/comunidad/precios/archivo">Archivo de precios</Link><Link href="/comunidad/precios/inteligencia">Cómo investigamos los precios</Link></div>
   </div><aside className={styles.heroBox}><strong>Información verificable</strong>
    <p>Mostramos solo sucursales marcadas como Palm Beach County. Las promociones dependen de la tienda y pueden requerir condiciones adicionales.</p>
   </aside></header>
